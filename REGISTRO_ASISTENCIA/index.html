@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro de Asistencia — Ficha 3293992</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sena-verde: #39a900;
+  --sena-verde-dark: #2d8400;
+  --sena-verde-glow: rgba(57,169,0,0.12);
+  --hueso: #F4F2EC;
+  --hueso-dark: #e5e1d4;
+  --surface: #ffffff;
+  --border: #e5e1d4;
+  --texto: #0f172a;
+  --texto-dim: #64748b;
+  --texto-dimmer: #94a3b8;
+  --yellow: #d97706;
+  --yellow-glow: rgba(217,119,6,0.12);
+  --red: #dc2626;
+  --red-glow: rgba(220,38,38,0.10);
+  --shadow-card: 0 10px 30px -10px rgba(15,23,42,0.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--hueso);color:var(--texto);min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+.wrap{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;}
+@media (max-width:900px){ .wrap{ grid-template-columns:1fr; } }
+
+/* ── PANEL IZQUIERDO ── */
+.panel{background:var(--surface);border-right:1px solid var(--border);padding:48px 44px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;}
+.panel-glow{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,var(--sena-verde-glow),transparent 70%);filter:blur(10px);top:-160px;left:-140px;pointer-events:none;}
+
+.panel-brand{display:flex;align-items:center;gap:12px;position:relative;z-index:1;flex-wrap:wrap;}
+.brand-logo{background:var(--sena-verde);color:#fff;font-weight:800;font-size:13px;padding:6px 14px;border-radius:8px;letter-spacing:.5px;box-shadow:0 4px 14px rgba(57,169,0,.3);}
+.brand-info{display:flex;flex-direction:column;gap:2px;}
+.brand-txt{font-size:11.5px;color:var(--texto);font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.brand-centro{font-size:10px;color:var(--texto-dim);font-weight:500;}
+
+.panel-mid{position:relative;z-index:1;margin:32px 0;}
+.panel-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sena-verde-dark);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.panel-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--sena-verde);animation:pulse-dot 1.8s infinite ease-in-out;}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.3;transform:scale(.85);}}
+.panel-title{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,38px);font-weight:800;line-height:1.1;margin-bottom:12px;color:var(--texto);}
+.panel-title span{color:var(--sena-verde-dark);}
+.panel-desc{font-size:13.5px;color:var(--texto-dim);max-width:360px;line-height:1.6;}
+
+.nav-links-row{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;}
+.minimal-btn-link{display:inline-flex;align-items:center;gap:8px;background:var(--hueso);border:1px solid var(--border);color:var(--texto);padding:8px 14px;border-radius:9px;font-size:12px;font-weight:700;text-decoration:none;transition:all .2s ease;}
+.minimal-btn-link:hover{border-color:var(--texto-dimmer);transform:translateY(-1px);}
+.minimal-btn-link.highlight{background:var(--sena-verde-glow);border-color:rgba(57,169,0,.35);color:var(--sena-verde-dark);}
+.minimal-btn-link.highlight:hover{background:rgba(57,169,0,.18);}
+
+.clock-wrap{position:relative;z-index:1;}
+.clock-header-line{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.clock-label{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--texto-dimmer);}
+.status-tag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:6px;}
+.status-tag.open{background:var(--sena-verde-glow);border:1px solid rgba(57,169,0,.35);color:var(--sena-verde-dark);}
+.status-tag.late{background:var(--yellow-glow);border:1px solid rgba(217,119,6,.35);color:var(--yellow);}
+.status-tag.closed{background:var(--hueso-dark);border:1px solid var(--border);color:var(--texto-dim);}
+.clock-big{font-family:'JetBrains Mono',monospace;font-size:clamp(34px,5vw,46px);font-weight:700;color:var(--texto);letter-spacing:.02em;line-height:1;}
+.clock-date{font-size:12.5px;color:var(--texto-dim);margin-top:8px;text-transform:capitalize;}
+
+.window-box{position:relative;z-index:1;margin-top:22px;background:var(--hueso);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;}
+.window-box-icon{color:var(--sena-verde-dark);margin-top:2px;flex-shrink:0;}
+.window-box-txt{font-size:12px;color:var(--texto-dim);line-height:1.5;}
+.window-box-txt strong{color:var(--texto);}
+
+/* ── PANEL DERECHO (Selector de aprendiz) ── */
+.form-panel{display:flex;align-items:center;justify-content:center;padding:48px 36px;}
+.form-inner{max-width:420px;width:100%;}
+.form-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sena-verde-dark);margin-bottom:6px;}
+h1{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;margin-bottom:8px;line-height:1.15;color:var(--texto);}
+.sub{font-size:13.5px;color:var(--texto-dim);margin-bottom:28px;line-height:1.55;}
+
+.field{margin-bottom:22px;}
+label{display:block;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--texto-dim);margin-bottom:8px;}
+
+.input-container{position:relative;display:flex;align-items:center;}
+.input-icon-prefix{position:absolute;left:14px;color:var(--texto-dimmer);pointer-events:none;display:flex;align-items:center;justify-content:center;transition:color .2s ease;z-index:2;}
+input{width:100%;padding:13px 16px 13px 42px;border:1.5px solid var(--border);border-radius:12px;font-size:14px;font-family:'Inter',sans-serif;font-weight:500;color:var(--texto);background:#fff;transition:all .2s ease;}
+input:focus{outline:none;border-color:var(--sena-verde);box-shadow:0 0 0 4px var(--sena-verde-glow);}
+input:disabled{background:var(--hueso);cursor:not-allowed;}
+.input-container:focus-within .input-icon-prefix{color:var(--sena-verde-dark);}
+input.err{border-color:var(--red);}
+input.err:focus{box-shadow:0 0 0 4px var(--red-glow);}
+.hint{font-size:12px;color:var(--texto-dim);margin-top:6px;display:flex;align-items:center;gap:5px;min-height:18px;}
+.hint.err{color:var(--red);font-weight:600;}
+.hint.ok{color:var(--sena-verde-dark);font-weight:600;}
+
+/* Selector propio (mismo patrón que la guía/ejercicios de la Sesión 1) */
+.aprendiz-trigger{width:100%;display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:13px 14px;color:var(--texto);font:600 14px 'Inter',sans-serif;cursor:pointer;text-align:left;transition:border-color .15s,box-shadow .15s;}
+.aprendiz-trigger:hover{border-color:var(--sena-verde);}
+.aprendiz-trigger[aria-expanded="true"]{outline:none;border-color:var(--sena-verde);box-shadow:0 0 0 4px var(--sena-verde-glow);}
+.aprendiz-trigger svg{flex-shrink:0;color:var(--sena-verde-dark);}
+.aprendiz-trigger .aprendiz-chev{margin-left:auto;color:var(--texto-dimmer);transition:transform .2s;}
+.aprendiz-trigger[aria-expanded="true"] .aprendiz-chev{transform:rotate(180deg);}
+.aprendiz-trigger-text{flex:1;min-width:0;line-height:1.3;}
+.aprendiz-trigger-text.placeholder{color:var(--texto-dim);font-weight:500;}
+.aprendiz-panel{position:absolute;z-index:60;left:0;right:0;top:calc(100% + 8px);background:#fff;border:1.5px solid var(--border);border-radius:12px;box-shadow:var(--shadow-card);overflow:hidden;}
+.aprendiz-panel[hidden]{display:none;}
+.aprendiz-wrap-rel{position:relative;}
+.aprendiz-search{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border);color:var(--texto-dim);}
+.aprendiz-search input{flex:1;min-width:0;border:0;background:transparent;font:500 13px 'Inter',sans-serif;color:var(--texto);outline:none;}
+.aprendiz-list{list-style:none;max-height:240px;overflow-y:auto;padding:4px;}
+.aprendiz-list li{display:flex;white-space:nowrap;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;font-size:13px;font-weight:500;color:var(--texto);cursor:pointer;}
+.aprendiz-list li[hidden]{display:none;}
+.aprendiz-list li:hover{background:var(--hueso);}
+.aprendiz-list li[aria-selected="true"]{background:var(--sena-verde-glow);color:var(--sena-verde-dark);font-weight:700;}
+.aprendiz-list li svg{margin-left:auto;flex-shrink:0;opacity:0;}
+.aprendiz-list li[aria-selected="true"] svg{opacity:1;}
+.aprendiz-empty{padding:14px;font-size:12.5px;color:var(--texto-dim);text-align:center;}
+.aprendiz-empty[hidden]{display:none;}
+
+.btn{width:100%;background:var(--sena-verde);color:#fff;border:none;border-radius:12px;padding:15px;font-size:14.5px;font-weight:700;cursor:pointer;transition:all .2s ease;font-family:'Inter',sans-serif;margin-top:6px;box-shadow:0 6px 18px rgba(57,169,0,.22);display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn:hover:not(:disabled){background:var(--sena-verde-dark);transform:translateY(-1px);}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
+
+/* ── TOAST ── */
+.toast-container{position:fixed;top:24px;right:24px;z-index:999;max-width:380px;width:calc(100% - 48px);pointer-events:none;}
+.toast{background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px 20px;color:var(--texto);box-shadow:var(--shadow-card);transform:translateY(-20px) scale(.95);opacity:0;transition:all .35s cubic-bezier(.16,1,.3,1);pointer-events:auto;position:relative;overflow:hidden;}
+.toast.show{transform:translateY(0) scale(1);opacity:1;}
+.toast-body{display:flex;align-items:flex-start;gap:14px;}
+.toast-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.toast.ok .toast-icon{background:var(--sena-verde-glow);color:var(--sena-verde-dark);border:1px solid rgba(57,169,0,.3);}
+.toast.warn .toast-icon{background:var(--yellow-glow);color:var(--yellow);border:1px solid rgba(217,119,6,.3);}
+.toast.err .toast-icon{background:var(--red-glow);color:var(--red);border:1px solid rgba(220,38,38,.3);}
+.toast-content{flex:1;}
+.toast-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:2px;color:var(--texto);}
+.toast-msg{font-size:12.5px;color:var(--texto-dim);line-height:1.45;}
+.toast-action-btn{margin-top:12px;width:100%;background:var(--hueso);border:1px solid var(--border);color:var(--texto);padding:8px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;font-family:inherit;}
+.toast-action-btn:hover{background:var(--hueso-dark);}
+.toast-progress-track{position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--hueso-dark);}
+.toast-progress-bar{height:100%;width:100%;background:var(--sena-verde);transition:width 1s linear;}
+.toast.warn .toast-progress-bar{background:var(--yellow);}
+
+.ic{width:1.1em;height:1.1em;vertical-align:-.15em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;display:inline-block;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <!-- PANEL IZQUIERDO -->
+  <div class="panel">
+    <div class="panel-glow"></div>
+
+    <div class="panel-brand">
+      <div class="brand-logo">SENA</div>
+      <div class="brand-info">
+        <div class="brand-txt">ADSO · Ficha 3293992</div>
+        <div class="brand-centro">SENA Regional Huila — Presencial, lunes</div>
+      </div>
+    </div>
+
+    <div class="panel-mid">
+      <div class="panel-eyebrow"><span class="dot"></span> Control de entrada</div>
+      <h2 class="panel-title">Bienvenido a<br><span>Sesión 1 — Tailwind CSS</span></h2>
+      <p class="panel-desc">Selecciona tu nombre y confirma tu entrada para llevar el registro real de asistencia de la ficha.</p>
+
+      <div class="nav-links-row">
+        <a href="memoria.html" class="minimal-btn-link highlight">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+          Juego de Memoria — Sesión 1
+        </a>
+        <a href="../explorar.html" class="minimal-btn-link">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          Volver al Hub
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <div class="clock-wrap">
+        <div class="clock-header-line">
+          <div class="clock-label">Hora actual</div>
+          <div class="status-tag" id="status-tag">
+            <span id="status-dot">●</span> <span id="status-txt">Verificando...</span>
+          </div>
+        </div>
+        <div class="clock-big" id="reloj">--:--:--</div>
+        <div class="clock-date" id="fecha"></div>
+      </div>
+
+      <div class="window-box">
+        <div class="window-box-icon">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <span class="window-box-txt">
+          <strong>Ventana de entrada: 6:30 PM – 6:45 PM</strong><br>
+          15 minutos de tolerancia. Después de las 6:45 PM el registro queda marcado como "Tarde".
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL DERECHO -->
+  <div class="form-panel">
+    <div class="form-inner">
+      <div class="form-eyebrow">Registro diario</div>
+      <h1>Marca tu asistencia</h1>
+      <p class="sub">Este equipo se usa para registrar a todo el grupo: selecciona tu nombre, digita tu número de documento y confirma. El formulario se reinicia solo para el siguiente aprendiz.</p>
+
+      <div class="field">
+        <label id="aprendiz-label" for="aprendiz-trigger">Nombre del aprendiz</label>
+        <div class="aprendiz-wrap-rel">
+          <button type="button" class="aprendiz-trigger" id="aprendiz-trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="aprendiz-label aprendiz-trigger-text">
+            <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="aprendiz-trigger-text placeholder" id="aprendiz-trigger-text">Selecciona tu nombre</span>
+            <svg class="ic aprendiz-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="aprendiz-panel" id="aprendiz-panel" hidden>
+            <div class="aprendiz-search">
+              <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input type="text" id="aprendiz-search" placeholder="Buscar mi nombre..." autocomplete="off" aria-label="Buscar mi nombre">
+            </div>
+            <ul class="aprendiz-list" id="aprendiz-list" role="listbox" aria-labelledby="aprendiz-label"></ul>
+            <div class="aprendiz-empty" id="aprendiz-empty" hidden>Sin coincidencias</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="doc-input">Número de documento</label>
+        <div class="input-container">
+          <div class="input-icon-prefix">
+            <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+          </div>
+          <input id="doc-input" type="text" inputmode="numeric" placeholder="Ej: 1081699340" autocomplete="off" disabled>
+        </div>
+        <div class="hint" id="doc-hint"></div>
+      </div>
+
+      <button class="btn" id="btn-registrar" disabled>
+        <span>Registrar mi entrada</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container">
+  <div class="toast" id="app-toast">
+    <div class="toast-body">
+      <div class="toast-icon" id="toast-icon-box">
+        <svg class="ic" id="toast-svg-icon" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="toast-content">
+        <div class="toast-title" id="toast-title">Título</div>
+        <div class="toast-msg" id="toast-msg">Mensaje de notificación...</div>
+        <button type="button" class="toast-action-btn" id="btn-toast-reset">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+          <span>Registrar a otro aprendiz (<strong id="reset-countdown">6</strong>s)</span>
+        </button>
+      </div>
+    </div>
+    <div class="toast-progress-track"><div class="toast-progress-bar" id="toast-progress-bar"></div></div>
+  </div>
+</div>
+
+<script>
+/* ═══ Lista de aprendices — ficha 3293992 (nombre + documento real) ═══
+   Esta carpeta está en .gitignore: vive solo en este computador, nunca
+   se sube al repo público, precisamente porque contiene cédulas. */
+const APRENDICES = [
+  { nombre: 'ELIANA MILDRETH VARELA NUPAN',      documento: '1081699340' },
+  { nombre: 'ERICK JULIAN CUBILLOS PEÑA',         documento: '1077855177' },
+  { nombre: 'ERICK SANTIAGO QUIMBAYA RIVERO',     documento: '1077854059' },
+  { nombre: 'JAIRO ALEXIS ORTIZ CALDERON',        documento: '1118367268' },
+  { nombre: 'JESUS ERNEY LAGOS COLLAZOS',         documento: '1077856844' },
+  { nombre: 'JHON ALEJANDRO OLAYA LUGO',          documento: '1077854399' },
+  { nombre: 'JHOSMAN ALBERTO QUIROGA CANDELA',    documento: '1077856538' },
+  { nombre: 'JOHAN ANDRES COLLAZOS CARDONA',      documento: '1077857058' },
+  { nombre: 'JORGE DAVID DEVIA PIPICANO',         documento: '1077854717' },
+  { nombre: 'JORGE STIVEN CANO VARGAS',           documento: '1119213712' },
+  { nombre: 'JOSE ALEJANDRO RODRIGUEZ CALDERON',  documento: '1077856698' },
+  { nombre: 'JOSE ISLEN MORALES CALDERON',        documento: '1077856449' },
+  { nombre: 'JUAN CARLOS GUERRERO MENDEZ',        documento: '1077857405' },
+  { nombre: 'JUAN ESTEBAN VILLARREAL RAMIREZ',    documento: '1076906587' },
+  { nombre: 'JUAN STIVEN JIMENEZ CEDEÑO',         documento: '1077854145' },
+  { nombre: 'JULIAN DAVID DUSSAN QUINTERO',       documento: '1077855797' },
+  { nombre: 'KEISSY DAIANA BENITEZ TRUJILLO',     documento: '1012364384' },
+  { nombre: 'LADY MILENA ORTIZ VARGAS',           documento: '1077855421' },
+  { nombre: 'LAURA VALENTINA PARRA URRIAGO',      documento: '1077856309' },
+  { nombre: 'NIKOL FERNANDA YUCO VARGAS',         documento: '1077856243' },
+  { nombre: 'SAMUEL GERARDO CHAVARRO GARCIA',     documento: '1080183360' },
+  { nombre: 'SARA JULIANA GUZMAN MUÑOZ',          documento: '1077856350' },
+  { nombre: 'SARA MILENA AVILA GARCIA',           documento: '1077856604' },
+  { nombre: 'SEBASTIAN CALDERON SANTANA',         documento: '1077854198' },
+  { nombre: 'TOMAS SARMIENTO RIVERA',             documento: '1089099704' },
+  { nombre: 'YEICI TATIANA BURGOS ANZOLA',        documento: '1077856390' },
+  { nombre: 'YILVER ARLEX JOVEL ANGARITA',        documento: '1077856682' }
+];
+
+/* Vacío hasta que se cree la hoja de Sheets de esta ficha — ver AppsScript_RegistroAsistencia.gs */
+const URL_APPS_SCRIPT = '';
+
+const HORA_INICIO = { h: 18, m: 30 }; // 6:30 PM
+const HORA_CIERRE = { h: 18, m: 45 }; // 6:45 PM
+
+const trigger   = document.getElementById('aprendiz-trigger');
+const triggerTxt= document.getElementById('aprendiz-trigger-text');
+const panel     = document.getElementById('aprendiz-panel');
+const search    = document.getElementById('aprendiz-search');
+const list      = document.getElementById('aprendiz-list');
+const empty     = document.getElementById('aprendiz-empty');
+const btnRegistrar = document.getElementById('btn-registrar');
+const inputDoc  = document.getElementById('doc-input');
+const docHint   = document.getElementById('doc-hint');
+
+let nombreSeleccionado = '';
+
+const ICON_CHECK = `<polyline points="20 6 9 17 4 12"/>`;
+const ICON_ALERT = `<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>`;
+
+function renderLista(filtro = '') {
+  list.innerHTML = '';
+  const q = filtro.toLowerCase().trim();
+  const filtrados = APRENDICES.filter(a => a.nombre.toLowerCase().includes(q));
+  empty.hidden = filtrados.length > 0;
+
+  filtrados.forEach(a => {
+    const li = document.createElement('li');
+    const seleccionado = a.nombre === nombreSeleccionado;
+    li.setAttribute('role', 'option');
+    li.setAttribute('aria-selected', String(seleccionado));
+    li.innerHTML = `<span>${a.nombre}</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>`;
+    li.addEventListener('click', () => seleccionar(a.nombre));
+    list.appendChild(li);
+  });
+}
+
+function seleccionar(nombre) {
+  nombreSeleccionado = nombre;
+  triggerTxt.textContent = nombre;
+  triggerTxt.classList.remove('placeholder');
+  cerrarPanel();
+
+  inputDoc.disabled = false;
+  inputDoc.value = '';
+  inputDoc.classList.remove('err');
+  docHint.innerHTML = '';
+  docHint.className = 'hint';
+  btnRegistrar.disabled = true;
+  inputDoc.focus();
+}
+
+function validarDocumento() {
+  const doc = inputDoc.value.trim();
+  inputDoc.classList.remove('err');
+  docHint.innerHTML = '';
+  docHint.className = 'hint';
+
+  if (!nombreSeleccionado || !doc) {
+    btnRegistrar.disabled = true;
+    return;
+  }
+
+  const aprendiz = APRENDICES.find(a => a.nombre === nombreSeleccionado);
+  const coincide = aprendiz && aprendiz.documento === doc;
+
+  if (coincide) {
+    docHint.innerHTML = `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${ICON_CHECK}</svg> Documento verificado`;
+    docHint.className = 'hint ok';
+    btnRegistrar.disabled = false;
+  } else {
+    docHint.innerHTML = `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${ICON_ALERT}</svg> El documento no coincide con el nombre seleccionado`;
+    docHint.className = 'hint err';
+    inputDoc.classList.add('err');
+    btnRegistrar.disabled = true;
+  }
+}
+
+inputDoc.addEventListener('input', validarDocumento);
+
+function abrirPanel() {
+  panel.hidden = false;
+  trigger.setAttribute('aria-expanded', 'true');
+  search.value = '';
+  renderLista();
+  setTimeout(() => search.focus(), 30);
+}
+
+function cerrarPanel() {
+  panel.hidden = true;
+  trigger.setAttribute('aria-expanded', 'false');
+}
+
+trigger.addEventListener('click', () => { panel.hidden ? abrirPanel() : cerrarPanel(); });
+search.addEventListener('input', () => renderLista(search.value));
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.aprendiz-wrap-rel')) cerrarPanel();
+});
+
+/* Toast */
+const appToast       = document.getElementById('app-toast');
+const toastTitle     = document.getElementById('toast-title');
+const toastMsg       = document.getElementById('toast-msg');
+const toastSvgIcon   = document.getElementById('toast-svg-icon');
+const btnToastReset  = document.getElementById('btn-toast-reset');
+const resetCountSpan = document.getElementById('reset-countdown');
+const progressBar    = document.getElementById('toast-progress-bar');
+
+let timerReset = null;
+
+function resetearFormulario() {
+  if (timerReset) { clearInterval(timerReset); timerReset = null; }
+  appToast.classList.remove('show');
+  nombreSeleccionado = '';
+  triggerTxt.textContent = 'Selecciona tu nombre';
+  triggerTxt.classList.add('placeholder');
+  trigger.disabled = false;
+  cerrarPanel();
+  inputDoc.value = '';
+  inputDoc.disabled = true;
+  inputDoc.classList.remove('err');
+  docHint.innerHTML = '';
+  docHint.className = 'hint';
+  btnRegistrar.disabled = true;
+  btnRegistrar.querySelector('span').textContent = 'Registrar mi entrada';
+}
+
+function mostrarToast(tipo, titulo, mensaje) {
+  appToast.className = `toast ${tipo} show`;
+  toastTitle.textContent = titulo;
+  toastMsg.textContent = mensaje;
+  toastSvgIcon.innerHTML = tipo === 'ok' ? ICON_CHECK : ICON_ALERT;
+
+  let segundos = 6;
+  resetCountSpan.textContent = segundos;
+  progressBar.style.width = '100%';
+  if (timerReset) clearInterval(timerReset);
+
+  timerReset = setInterval(() => {
+    segundos--;
+    resetCountSpan.textContent = segundos;
+    progressBar.style.width = `${(segundos / 6) * 100}%`;
+    if (segundos <= 0) resetearFormulario();
+  }, 1000);
+}
+
+btnToastReset.addEventListener('click', resetearFormulario);
+
+function calcularEstado() {
+  const ahora = new Date();
+  const minutosActual = ahora.getHours() * 60 + ahora.getMinutes();
+  const minutosCierre = HORA_CIERRE.h * 60 + HORA_CIERRE.m;
+  return minutosActual <= minutosCierre ? 'A tiempo' : 'Tarde';
+}
+
+function guardarAsistenciaLocal(nombre, documento, estado) {
+  const hoy = new Date().toLocaleDateString('es-CO');
+  let lista = [];
+  try { lista = JSON.parse(localStorage.getItem('ra-s1-asistencias-hoy') || '[]'); } catch (e) { lista = []; }
+
+  const limpio = String(nombre || '').trim();
+  if (!lista.some(a => a.fecha === hoy && String(a.nombre).trim().toLowerCase() === limpio.toLowerCase())) {
+    lista.push({ nombre: limpio, documento, hora: new Date().toLocaleTimeString('es-CO'), fecha: hoy, estado });
+    localStorage.setItem('ra-s1-asistencias-hoy', JSON.stringify(lista));
+    return true;
+  }
+  return false;
+}
+
+btnRegistrar.addEventListener('click', async () => {
+  const nombre = nombreSeleccionado;
+  const documento = inputDoc.value.trim();
+  if (!nombre || !documento) return;
+
+  btnRegistrar.disabled = true;
+  btnRegistrar.querySelector('span').textContent = 'Registrando...';
+  trigger.disabled = true;
+  inputDoc.disabled = true;
+
+  const estado = calcularEstado();
+  const esNuevo = guardarAsistenciaLocal(nombre, documento, estado);
+
+  if (!esNuevo) {
+    mostrarToast('warn', 'Ya estás registrado hoy', `${nombre.split(' ')[0]}, tu entrada ya quedó registrada hoy.`);
+    btnRegistrar.querySelector('span').textContent = 'Ya registraste tu entrada';
+    return;
+  }
+
+  if (!URL_APPS_SCRIPT) {
+    const titulo = estado === 'A tiempo' ? '¡Registrado a tiempo!' : 'Registrado — llegaste tarde';
+    mostrarToast(estado === 'A tiempo' ? 'ok' : 'warn', titulo, 'El envío a Google Sheets aún no está activo. Tu entrada quedó guardada en este navegador.');
+    btnRegistrar.querySelector('span').textContent = 'Entrada registrada';
+    return;
+  }
+
+  try {
+    const res = await fetch(URL_APPS_SCRIPT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ nombre, documento })
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      const titulo = data.estado === 'A tiempo' ? '¡Registrado a tiempo!' : 'Registrado — llegaste tarde';
+      mostrarToast(data.estado === 'A tiempo' ? 'ok' : 'warn', titulo, data.mensaje);
+    } else if (data.yaRegistrado) {
+      mostrarToast('warn', 'Ya estás registrado hoy', data.mensaje);
+    } else {
+      mostrarToast('err', 'No se pudo registrar', data.mensaje);
+      btnRegistrar.disabled = false;
+      trigger.disabled = false;
+      inputDoc.disabled = false;
+      btnRegistrar.querySelector('span').textContent = 'Registrar mi entrada';
+      return;
+    }
+    btnRegistrar.querySelector('span').textContent = 'Entrada registrada';
+  } catch (err) {
+    mostrarToast('ok', 'Entrada registrada localmente', 'No se pudo conectar con Sheets, pero tu asistencia quedó guardada en este navegador.');
+    btnRegistrar.querySelector('span').textContent = 'Entrada registrada';
+  }
+});
+
+function actualizarReloj() {
+  const ahora = new Date();
+  document.getElementById('reloj').textContent = ahora.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  document.getElementById('fecha').textContent = ahora.toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long' });
+
+  const statusTag = document.getElementById('status-tag');
+  const statusTxt = document.getElementById('status-txt');
+  const totalMins = ahora.getHours() * 60 + ahora.getMinutes();
+  const startMins = HORA_INICIO.h * 60 + HORA_INICIO.m;
+  const endMins   = HORA_CIERRE.h * 60 + HORA_CIERRE.m;
+
+  if (totalMins >= startMins && totalMins <= endMins) {
+    statusTag.className = 'status-tag open';
+    statusTxt.textContent = 'En ventana (a tiempo)';
+  } else if (totalMins > endMins && totalMins < 22 * 60) {
+    statusTag.className = 'status-tag late';
+    statusTxt.textContent = 'Extemporáneo (tarde)';
+  } else {
+    statusTag.className = 'status-tag closed';
+    statusTxt.textContent = 'Fuera de jornada';
+  }
+}
+actualizarReloj();
+setInterval(actualizarReloj, 1000);
+</script>
+</body>
+</html>

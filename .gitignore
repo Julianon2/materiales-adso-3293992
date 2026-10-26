@@ -41,7 +41,7 @@ Thumbs.db
 
 # Registro de asistencia: valida por nombre + número de documento real,
 # así que queda solo en este computador, nunca en el repo público.
-REGISTRO_ASISTENCIA/
+
 
 # Documento interno de planificación del instructor (migración de sesiones)
 GUIA_MIGRAR_SESIONES.md
