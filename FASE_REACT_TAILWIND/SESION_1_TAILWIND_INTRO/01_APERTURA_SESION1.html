@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 1: Introducción a Tailwind CSS | SENA ADSO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sena-verde: #39a900;
+  --sena-verde-dark: #2d8400;
+  --sena-verde-glow: rgba(57,169,0,0.10);
+  --sena-verde-border: rgba(57,169,0,0.30);
+  --sena-naranja: #ff6b00;
+  --sena-naranja-glow: rgba(255,107,0,0.10);
+  --sena-naranja-border: rgba(255,107,0,0.30);
+  --texto: #1a1a2e;
+  --texto-dim: rgba(26,26,46,0.62);
+  --texto-dimmer: rgba(26,26,46,0.38);
+  --bg: #f8fafc;
+  --bg-alt: #f4f7f2;
+  --borde: #e2e8f0;
+  --acento-azul: #3b82f6;
+  --acento-azul-glow: rgba(59,130,246,0.10);
+  --acento-purpura: #8b5cf6;
+  --acento-purpura-glow: rgba(139,92,246,0.10);
+  --alerta-amarillo: #f59e0b;
+  --alerta-amarillo-glow: rgba(245,158,11,0.10);
+  --alerta-rojo: #ef4444;
+  --alerta-rojo-glow: rgba(239,68,68,0.10);
+  --acento-teal: #0ea5e9;
+  --acento-teal-glow: rgba(14,165,233,0.10);
+  --acento-teal-border: rgba(14,165,233,0.30);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:'Inter',sans-serif; color:var(--texto); background:var(--bg); line-height:1.6; overflow-x:hidden; }
+
+@media(min-width:600px){ .topbar-sub{display:block;} }
+@media(min-width:900px){ .topbar-nav{display:flex;} }
+
+/* Scroll continuo tipo landing: mismo fondo en toda la apertura, sin bloques de color alternos */
+.slide.bg-alt, .slide.bg-verde, .slide.bg-azul, .slide.bg-teal { background:var(--bg); }
+.slide-inner { max-width:1200px; margin:0 auto; }
+
+.bg-dots { position:absolute; inset:0; background-image:radial-gradient(var(--sena-verde-border) 1px, transparent 1px); background-size:28px 28px; pointer-events:none; opacity:0.35; }
+.bg-glow { position:absolute; width:600px; height:600px; border-radius:50%; filter:blur(120px); opacity:0.22; pointer-events:none; z-index:0; }
+.bg-glow.g1 { background:radial-gradient(circle, var(--sena-verde-glow), transparent 70%); top:-200px; left:-200px; }
+.bg-glow.g2 { background:radial-gradient(circle, var(--sena-naranja-glow), transparent 70%); bottom:-200px; right:-200px; }
+
+.portada-tag { display:inline-flex; align-items:center; gap:8px; background:var(--sena-verde-glow); border:1px solid var(--sena-verde-border); padding:10px 20px; border-radius:30px; font-size:12px; font-weight:700; color:var(--sena-verde-dark); letter-spacing:1.5px; margin-bottom:32px; position:relative; z-index:1; }
+.portada-tag .dot { width:6px; height:6px; background:var(--sena-verde); border-radius:50%; animation:blink 1.5s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+.portada-titulo { font-family:'Syne',sans-serif; font-size:clamp(40px,7vw,68px); font-weight:800; line-height:1.1; margin-bottom:20px; color:var(--texto); position:relative; z-index:1; }
+.portada-titulo .linea2 { display:block; background:linear-gradient(135deg, var(--acento-teal), var(--acento-azul)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.portada-titulo .linea3 { display:block; background:linear-gradient(135deg, var(--sena-naranja), var(--acento-purpura)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.portada-desc { font-size:clamp(15px,2vw,18px); color:var(--texto-dim); max-width:680px; margin-bottom:40px; position:relative; z-index:1; line-height:1.7; }
+.portada-meta { display:flex; gap:16px; flex-wrap:wrap; position:relative; z-index:1; }
+.portada-meta-item { background:rgba(255,255,255,0.9); border:1px solid var(--borde); padding:10px 20px; border-radius:12px; font-size:14px; font-weight:600; color:var(--texto-dim); }
+
+.sec-header { margin-bottom:40px; position:relative; z-index:1; }
+.sec-tag { display:inline-block; font-size:11px; font-weight:700; padding:6px 14px; border-radius:20px; letter-spacing:1.2px; margin-bottom:14px; text-transform:uppercase; border:1px solid transparent; }
+.sec-tag.verde   { background:var(--sena-verde-glow); color:var(--sena-verde); border-color:var(--sena-verde-border); }
+.sec-tag.naranja { background:var(--sena-naranja-glow); color:var(--sena-naranja); border-color:var(--sena-naranja-border); }
+.sec-tag.azul    { background:var(--acento-azul-glow); color:var(--acento-azul); border-color:rgba(59,130,246,0.30); }
+.sec-tag.purpura { background:var(--acento-purpura-glow); color:var(--acento-purpura); border-color:rgba(139,92,246,0.30); }
+.sec-tag.amarillo{ background:var(--alerta-amarillo-glow); color:var(--alerta-amarillo); border-color:rgba(245,158,11,0.30); }
+.sec-tag.teal    { background:var(--acento-teal-glow); color:var(--acento-teal); border-color:var(--acento-teal-border); }
+.sec-titulo { font-family:'Syne',sans-serif; font-size:clamp(28px,4vw,42px); font-weight:800; color:var(--texto); margin-bottom:12px; line-height:1.2; }
+.sec-desc { font-size:clamp(15px,1.8vw,17px); color:var(--texto-dim); max-width:800px; line-height:1.7; }
+
+.info-box {
+  background:#fff;
+  border:1px solid var(--borde);
+  border-top:3px solid transparent;
+  border-radius:16px;
+  padding:22px 26px;
+  margin:20px 0;
+  position:relative;
+  z-index:1;
+  box-shadow:0 1px 2px rgba(15,23,42,.04), 0 16px 32px -20px rgba(15,23,42,.14);
+}
+.info-box.tip     { border-top-color:var(--sena-verde); }
+.info-box.warning { border-top-color:var(--alerta-amarillo); }
+.info-box.danger  { border-top-color:var(--alerta-rojo); }
+.info-box.info    { border-top-color:var(--acento-azul); }
+.info-box.teal    { border-top-color:var(--acento-teal); }
+.info-box.purpura { border-top-color:var(--acento-purpura); }
+
+.info-box-title { display:flex; align-items:center; gap:12px; font-family:'Syne',sans-serif; font-weight:800; font-size:15px; margin-bottom:12px; color:var(--texto); }
+.info-box-title svg.ic { width:34px; height:34px; min-width:34px; padding:8px; border-radius:10px; box-sizing:border-box; stroke-width:2; vertical-align:middle; }
+.info-box.tip     .info-box-title svg.ic { background:var(--sena-verde-glow); color:var(--sena-verde-dark); }
+.info-box.warning .info-box-title svg.ic { background:var(--alerta-amarillo-glow); color:#92400e; }
+.info-box.danger  .info-box-title svg.ic { background:var(--alerta-rojo-glow); color:#991b1b; }
+.info-box.info    .info-box-title svg.ic { background:var(--acento-azul-glow); color:#1e40af; }
+.info-box.teal    .info-box-title svg.ic { background:var(--acento-teal-glow); color:#0369a1; }
+.info-box.purpura .info-box-title svg.ic { background:var(--acento-purpura-glow); color:#5b21b6; }
+.info-box-content { font-size:14px; color:var(--texto-dim); line-height:1.75; }
+.info-box-content p { margin:0 0 10px; }
+.info-box-content p:last-child { margin-bottom:0; }
+.ejemplo-chips { display:flex; gap:10px; flex-wrap:wrap; margin:14px 0; }
+.ejemplo-chip { display:flex; align-items:center; gap:8px; background:var(--bg-alt); border:1px solid var(--borde); border-radius:10px; padding:8px 14px; font-size:12.5px; }
+.ejemplo-chip .flecha { color:var(--texto-dimmer); font-weight:700; }
+
+/* Grilla para cajas info-box que antes quedaban apiladas una debajo de otra */
+.info-box-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:20px 0; align-items:start; }
+.info-box-grid .info-box { margin:0; }
+@media(max-width:900px){ .info-box-grid { grid-template-columns:1fr; } }
+
+.concepto-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:20px; position:relative; z-index:1; margin-bottom:28px; }
+.concepto-card { background:#fff; border:2px solid var(--borde); border-radius:16px; padding:24px; }
+.concepto-icon  { font-size:36px; margin-bottom:12px; }
+.concepto-titulo{ font-family:'Syne',sans-serif; font-size:16px; font-weight:800; color:var(--texto); margin-bottom:6px; }
+.concepto-desc  { font-size:13px; color:var(--texto-dim); line-height:1.6; }
+.concepto-card.verde   { border-color:var(--sena-verde-border); background:var(--sena-verde-glow); }
+.concepto-card.azul    { border-color:rgba(59,130,246,0.25); background:var(--acento-azul-glow); }
+.concepto-card.teal    { border-color:var(--acento-teal-border); background:var(--acento-teal-glow); }
+.concepto-card.purpura { border-color:rgba(139,92,246,0.25); background:var(--acento-purpura-glow); }
+.concepto-card.naranja { border-color:var(--sena-naranja-border); background:var(--sena-naranja-glow); }
+.concepto-card.amarillo{ border-color:rgba(245,158,11,0.30); background:var(--alerta-amarillo-glow); }
+
+.tabla-wrap { overflow-x:auto; position:relative; z-index:1; margin:20px 0; }
+table { width:100%; border-collapse:collapse; font-size:14px; }
+th { background:var(--sena-verde); color:#fff; padding:12px 16px; text-align:left; font-weight:700; }
+th:first-child { border-radius:8px 0 0 0; } th:last-child { border-radius:0 8px 0 0; }
+td { padding:12px 16px; border-bottom:1px solid var(--borde); vertical-align:top; }
+tr:nth-child(even) td { background:var(--bg-alt); }
+tr:hover td { background:var(--sena-verde-glow); }
+
+.paso-lista { display:flex; flex-direction:column; gap:0; position:relative; z-index:1; }
+.paso-item { display:flex; gap:24px; padding:28px 0; border-bottom:1px solid var(--borde); }
+.paso-item:last-child { border-bottom:none; }
+.paso-num { flex-shrink:0; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-size:18px; font-weight:800; color:#fff; }
+.paso-num.verde   { background:var(--sena-verde); }
+.paso-num.azul    { background:var(--acento-azul); }
+.paso-num.teal    { background:var(--acento-teal); }
+.paso-num.purpura { background:var(--acento-purpura); }
+.paso-num.naranja { background:var(--sena-naranja); }
+.paso-body { flex:1; }
+.paso-titulo { font-family:'Syne',sans-serif; font-size:18px; font-weight:800; color:var(--texto); margin-bottom:6px; }
+.paso-desc { font-size:14px; color:var(--texto-dim); line-height:1.7; margin-bottom:12px; }
+
+.flujo-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:center; margin:32px 0; position:relative; z-index:1; }
+.flujo-nodo { border-radius:12px; padding:16px 22px; text-align:center; border:2px solid; min-width:130px; }
+.flujo-nodo.verde   { background:var(--sena-verde-glow); border-color:var(--sena-verde-border); }
+.flujo-nodo.azul    { background:var(--acento-azul-glow); border-color:rgba(59,130,246,0.30); }
+.flujo-nodo.purpura { background:var(--acento-purpura-glow); border-color:rgba(139,92,246,0.30); }
+.flujo-nodo.naranja { background:var(--sena-naranja-glow); border-color:var(--sena-naranja-border); }
+.flujo-nodo.teal    { background:var(--acento-teal-glow); border-color:var(--acento-teal-border); }
+.flujo-ico { font-size:26px; margin-bottom:6px; }
+.flujo-lbl { font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--texto-dimmer); margin-bottom:4px; }
+.flujo-nom { font-size:13px; font-weight:700; color:var(--texto); }
+.flujo-sub { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--texto-dimmer); margin-top:3px; }
+.flujo-arrow { font-size:22px; color:var(--sena-verde); font-weight:700; padding:0 4px; }
+
+.entregable-box { background:linear-gradient(135deg, var(--sena-verde-glow), var(--acento-teal-glow)); border:2px solid var(--sena-verde-border); border-radius:16px; padding:28px 32px; position:relative; z-index:1; margin-top:32px; }
+.entregable-title { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; color:var(--sena-verde-dark); margin-bottom:16px; }
+.entregable-list { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.entregable-list li { display:flex; align-items:flex-start; gap:10px; font-size:14px; color:var(--texto); }
+.entregable-list li::before { content:'✅'; flex-shrink:0; }
+
+
+/* Mockup de terminal para mostrar instalación */
+.term-mock { background:#1a1a2e; border-radius:14px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,.25); margin:20px 0; position:relative; z-index:1; }
+.term-header { background:#12121f; padding:10px 16px; display:flex; align-items:center; gap:8px; }
+.term-dot { width:11px; height:11px; border-radius:50%; }
+.term-dot.r { background:#ff5f57; } .term-dot.y { background:#febc2e; } .term-dot.g { background:#28c840; }
+.term-title { margin-left:8px; font-family:'JetBrains Mono',monospace; font-size:11px; color:#8892a4; }
+.term-body { padding:20px 22px; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.9; }
+.term-body .prompt { color:#4ade80; }
+.term-body .cmd { color:#e2e8f0; }
+.term-body .out { color:#8892a4; display:block; margin:2px 0 10px 0; }
+.term-body .ok { color:#4ade80; }
+
+/* Comparador de código lado a lado, con resaltado de sintaxis real */
+.code-compare { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:18px 0; position:relative; z-index:1; }
+@media(max-width:900px){ .code-compare{ grid-template-columns:1fr; } }
+
+.slide-2col { display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start; position:relative; z-index:1; }
+@media(max-width:900px){ .slide-2col{ grid-template-columns:1fr; } }
+.slide-2col-code { display:flex; flex-direction:column; gap:18px; }
+.slide-2col-code .code-editor { width:100%; }
+.code-editor { background:#1a1a2e; border-radius:14px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,.25); display:flex; flex-direction:column; }
+.code-editor-header { background:#12121f; padding:10px 16px; display:flex; align-items:center; gap:8px; }
+.code-editor-title { margin-left:8px; font-family:'JetBrains Mono',monospace; font-size:11px; color:#8892a4; flex:1; }
+.code-editor-badge { font-size:9px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:3px 9px; border-radius:5px; }
+.code-editor-badge.antes { background:rgba(248,113,113,.15); color:#f87171; }
+.code-editor-badge.despues { background:rgba(74,222,128,.15); color:#4ade80; }
+.code-editor-body { padding:10px 0; font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:1.9; flex:1; overflow-x:auto; }
+.cl { display:grid; grid-template-columns:34px 1fr; column-gap:12px; padding:0 20px; white-space:pre; }
+.cl .ln { color:#4a5178; user-select:none; text-align:right; }
+.cl .code { color:#e2e8f0; }
+.indent-1 .code { padding-left:18px; }
+.indent-2 .code { padding-left:36px; }
+.cm { color:#565f89; font-style:italic; }
+.sel { color:#7dcfff; }
+.prop { color:#9ece6a; }
+.val { color:#e2e8f0; }
+.var { color:#e0af68; }
+.tag { color:#f7768e; }
+.attr { color:#e0af68; }
+.str { color:#9ece6a; }
+.punc { color:#8892a4; }
+
+@media(max-width:900px){ .flujo-row{flex-direction:column;} }
+@media(max-width:768px){ .slide{padding:60px 24px;} .topbar{padding:10px 20px;} }
+
+/* Iconos Lucide en línea (reemplazan a los emojis) */
+.ic{width:1.15em;height:1.15em;vertical-align:-.2em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;display:inline-block;}
+
+/* ══ Estructura de presentación del portal (sidebar + insignias) ══ */
+/* ============================================================
+   SIDEBAR LATERAL MODERNO (ESTILO IDE / CASE / LUCIDE)
+   ============================================================ */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  background: #ffffff;
+  border-right: 1px solid #e2e8f0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 2px 0 20px rgba(15, 23, 42, 0.04);
+}
+.sidebar.collapsed {
+  transform: translateX(-100%);
+}
+
+.sidebar-header {
+  padding: 16px 18px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+}
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sidebar-logo {
+  background: var(--sena-verde);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px -2px rgba(57, 169, 0, 0.4);
+}
+.sidebar-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+}
+.sidebar-sub {
+  font-size: 10px;
+  color: #64748b;
+  font-weight: 600;
+}
+.sidebar-toggle-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #64748b;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.sidebar-toggle-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #e2e8f0;
+}
+
+.floating-sidebar-toggle {
+  position: fixed;
+  top: 18px;
+  left: 20px;
+  z-index: 999;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #1e293b;
+  height: 38px;
+  padding: 0 14px 0 10px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+  display: none;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.floating-sidebar-toggle:hover {
+  background: #ffffff;
+  color: var(--sena-verde-dark);
+  border-color: var(--sena-verde);
+  box-shadow: 0 8px 22px rgba(57, 169, 0, 0.2);
+  transform: translateY(-1px);
+}
+.sidebar.collapsed ~ .floating-sidebar-toggle,
+.floating-sidebar-toggle.visible {
+  display: inline-flex !important;
+  animation: fadeInToggle 0.25s ease-out forwards;
+}
+@keyframes fadeInToggle {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.sidebar-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 10px;
+}
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.nav-group {
+  margin-bottom: 18px;
+}
+.nav-group-title {
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #94a3b8;
+  padding: 0 10px 6px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  color: #475569;
+  text-decoration: none;
+  font-size: 11.8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  margin-bottom: 2px;
+  position: relative;
+}
+.nav-link:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+.nav-link.active {
+  background: rgba(57, 169, 0, 0.1);
+  color: var(--sena-verde-dark);
+  font-weight: 700;
+}
+.nav-link.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 3.5px;
+  background: var(--sena-verde);
+  border-radius: 0 4px 4px 0;
+}
+.nav-link-num {
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
+  min-width: 15px;
+}
+.nav-link.active .nav-link-num {
+  color: var(--sena-verde);
+}
+.nav-link-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  flex-shrink: 0;
+}
+.nav-link:hover .nav-link-icon {
+  color: #0f172a;
+}
+.nav-link.active .nav-link-icon {
+  color: var(--sena-verde-dark);
+}
+.nav-link-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-footer {
+  padding: 12px 14px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sidebar-corte-badge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255,107,0,0.08);
+  border: 1px solid rgba(255,107,0,0.22);
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #c2410c;
+}
+.sidebar-dashboard-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #0284c7;
+  text-decoration: none;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+.sidebar-dashboard-link:hover {
+  background: rgba(2,132,199,0.08);
+}
+
+.main-content {
+  margin-left: 280px;
+  min-height: 100vh;
+  transition: margin-left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background: var(--bg);
+}
+.main-content.expanded {
+  margin-left: 0;
+}
+
+.slide {
+  min-height: 100vh;
+  padding: 60px 48px;
+  position: relative;
+  scroll-margin-top: 20px;
+}
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1099;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.sidebar-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (max-width: 1024px) {
+  .sidebar { transform: translateX(-100%); z-index: 1200; }
+  .sidebar.open { transform: translateX(0); box-shadow: 10px 0 35px rgba(0, 0, 0, 0.25); }
+  .main-content { margin-left: 0 !important; }
+  .floating-sidebar-toggle { display: flex !important; z-index: 1050; }
+  .slide-block-badge { left: 80px; }
+}
+@media (max-width: 900px) {
+  .col-3 { grid-template-columns: 1fr; gap: 16px; }
+}
+@media (max-width: 768px) {
+  .slide { padding: 68px 18px 40px; }
+  .col-2 { grid-template-columns: 1fr; gap: 16px; }
+  .slide-block-badge { left: 70px; top: 16px; font-size: 9.5px; padding: 4px 10px; }
+  .slide-num-badge { right: 14px; top: 16px; font-size: 10px; padding: 4px 8px; }
+  .floating-sidebar-toggle { top: 12px; left: 14px; height: 34px; padding: 0 10px; font-size: 11px; }
+  .floating-sidebar-toggle span { display: none; }
+  .portada-meta-item { min-width: 100%; }
+  .ddl-modal-overlay { padding: 0; }
+  .ddl-modal-card {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    min-height: auto;
+    border-radius: 0;
+    border: none;
+  }
+}
+.slide-inner{max-width:1200px;margin:0 auto}
+.slide-num-badge{position:absolute;top:20px;right:24px;background:var(--sena-verde-glow);color:var(--sena-verde);font-size:11px;font-weight:700;padding:5px 12px;border-radius:18px;letter-spacing:1px;border:1px solid var(--sena-verde-border)}
+.slide-block-badge{position:absolute;top:20px;left:40px;font-size:10.5px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;padding:5px 14px;border-radius:18px}
+.slide-block-badge.contexto{background:var(--azul-glow);color:var(--azul)}
+.slide-block-badge.teoria{background:var(--sena-verde-glow);color:var(--sena-verde)}
+.slide-block-badge.practica{background:var(--sena-naranja-glow);color:var(--sena-naranja)}
+.slide-block-badge.taller{background:var(--purpura-glow);color:var(--purpura)}
+.slide-num-badge,.slide-block-badge{z-index:2;}
+:root{--azul:var(--acento-azul);--azul-glow:var(--acento-azul-glow);--purpura:var(--acento-purpura);--purpura-glow:var(--acento-purpura-glow);}
+.sidebar-title{font-size:13px;white-space:nowrap;}
+/* ── Ajuste de contenido junto al sidebar ── */
+.main-content{min-width:0;}
+.slide{overflow-x:clip;}
+.slide-2col{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+.slide-2col > *{min-width:0;}
+.code-editor-body,.term-body{overflow-x:auto;}
+.tabla-wrap{overflow-x:auto;}
+@media (max-width:1280px){ .slide-2col{grid-template-columns:minmax(0,1fr);} }
+.main-content.expanded .slide-block-badge{left:200px;}
+@media (max-width:1024px){ .main-content.expanded .slide-block-badge{left:80px;} }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR LATERAL DE NAVEGACIÓN -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">
+        <svg width="24" height="24" viewBox="0 0 64 62" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+          <g transform="translate(-377 -19)">
+            <path d="M409.164 19C412.922 19 415.992 22.09 415.992 25.8778 415.992 29.6656 412.932 32.7556 409.164 32.7556 405.397 32.7556 402.336 29.6656 402.336 25.8778 402.336 22.09 405.407 19 409.164 19"/>
+            <path d="M384.305 41.1884 384.305 41.2183C384.285 41.3379 384.275 41.4177 384.275 41.4675 384.275 41.8264 384.474 42.0855 384.873 42.265 385.282 42.4344 385.9 42.5241 386.747 42.5241 387.395 42.5241 387.893 42.4543 388.262 42.3148 388.631 42.1752 388.81 41.9759 388.81 41.7267 388.81 41.3479 388.082 41.0489 386.647 40.8096 386.478 40.7797 386.348 40.7598 386.268 40.7498 386.179 40.7299 386.039 40.71 385.86 40.6801 383.567 40.3013 382.092 39.8926 381.434 39.454 381.115 39.2347 380.876 38.9855 380.706 38.6965 380.547 38.4074 380.467 38.0785 380.467 37.7096 380.467 36.8125 380.995 36.1248 382.052 35.6563 383.109 35.1878 384.654 34.9486 386.677 34.9486 388.7 34.9486 390.166 35.1678 391.133 35.6064 392.1 36.045 392.578 36.7228 392.578 37.6399L392.578 37.7495 388.78 37.7495 388.78 37.7096C388.78 37.3907 388.591 37.1614 388.202 36.992 387.813 36.8325 387.255 36.7428 386.508 36.7428 385.929 36.7428 385.481 36.8026 385.182 36.9122 384.863 37.0318 384.713 37.1913 384.713 37.4006 384.713 37.7794 385.541 38.1084 387.195 38.3675 387.514 38.4174 387.764 38.4572 387.943 38.4871 389.119 38.6865 389.966 38.8559 390.465 38.9955 390.963 39.135 391.392 39.3045 391.761 39.4939 392.159 39.7132 392.478 39.9923 392.698 40.3312 392.917 40.6701 393.027 41.0389 393.027 41.4476 393.027 42.3746 392.448 43.0823 391.302 43.5907 390.156 44.0891 388.501 44.3383 386.348 44.3383 384.195 44.3383 382.67 44.099 381.723 43.6206 380.766 43.1421 380.298 42.3746 380.298 41.308L380.298 41.1685 384.305 41.1685ZM394.711 44.1987 394.711 35.0881 405.546 35.0881 405.546 37.0518 398.778 37.0518 398.778 38.5071 405.028 38.5071 405.028 40.4508 398.778 40.4508 398.778 42.2151 405.795 42.2151 405.795 44.2087 394.711 44.2087ZM407.5 44.1987 407.5 35.0881 412.643 35.0881 418.155 41.2084 418.155 35.0881 422.063 35.0881 422.063 44.1987 416.72 44.1987 411.387 38.0585 411.387 44.1987 407.49 44.1987ZM432.569 40.5604 430.625 37.2511 428.572 40.5604 432.579 40.5604ZM426.369 44.1987 422.292 44.1987 428.592 35.0881 433.107 35.0881 439.118 44.1987 434.592 44.1987 433.675 42.554 427.366 42.554 426.389 44.1987Z"/>
+            <path d="M389.309 76.3351 385.67 72.9161 396.735 53.6881C397.333 52.6415 396.585 51.3257 395.379 51.3257L377.267 51.3257 377.267 46.5113 406.413 46.5113 389.309 76.3351Z"/>
+            <path d="M428.701 76.3351 432.34 72.9161 421.275 53.6881C420.677 52.6415 421.425 51.3257 422.631 51.3257L440.743 51.3257 440.743 46.5113 411.597 46.5113 428.701 76.3351Z"/>
+            <path d="M408.965 51.5949C408.965 51.5949 409.005 51.5251 409.005 51.5251L425.432 78.7174 421.066 80.99 410.48 63.2373C409.852 62.1907 408.347 62.1907 407.729 63.2373 404.2 69.1981 397.213 80.99 397.213 80.99L392.947 78.8768C392.947 78.8768 408.088 53.09 408.965 51.5949"/>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <div class="sidebar-title">ADSO 3293992</div>
+        <div class="sidebar-sub">Tailwind CSS — Sesión 1</div>
+      </div>
+    </div>
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Ocultar menú lateral">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m8 9-3 3 3 3"/></svg>
+    </button>
+  </div>
+
+  <div class="sidebar-scroll">
+    <div class="nav-group">
+      <div class="nav-group-title">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        Contexto
+      </div>
+      <a href="#portada" class="nav-link active">
+        <span class="nav-link-num">01</span>
+        <span class="nav-link-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></span>
+        <span class="nav-link-text">Portada Sesión</span>
+      </a>
+      <a href="#concepto" class="nav-link">
+        <span class="nav-link-num">02</span>
+        <span class="nav-link-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span>
+        <span class="nav-link-text">¿Qué es Tailwind CSS?</span>
+      </a>
+      <a href="#instalacion" class="nav-link">
+        <span class="nav-link-num">03</span>
+        <span class="nav-link-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></span>
+        <span class="nav-link-text">Herramientas de hoy</span>
+      </a>
+      <a href="#glosario" class="nav-link">
+        <span class="nav-link-num">04</span>
+        <span class="nav-link-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+        <span class="nav-link-text">Glosario rápido</span>
+      </a>
+      <a href="#flujo-slide" class="nav-link">
+        <span class="nav-link-num">05</span>
+        <span class="nav-link-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.91a1 1 0 0 0 0-1.83Z"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/></svg></span>
+        <span class="nav-link-text">Mapa: de la clase al CSS final</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+        Instalación
+      </div>
+      <a href="#paso-comando" class="nav-link">
+        <span class="nav-link-num">06</span>
+        <span class="nav-link-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+        <span class="nav-link-text">Paso 1: Comando</span>
+      </a>
+      <a href="#paso-linter" class="nav-link">
+        <span class="nav-link-num">07</span>
+        <span class="nav-link-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg></span>
+        <span class="nav-link-text">Paso 2: Linter</span>
+      </a>
+      <a href="#paso-install-start" class="nav-link">
+        <span class="nav-link-num">08</span>
+        <span class="nav-link-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></span>
+        <span class="nav-link-text">Paso 3: Instalar y arrancar</span>
+      </a>
+      <a href="#paso-tailwind" class="nav-link">
+        <span class="nav-link-num">09</span>
+        <span class="nav-link-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></span>
+        <span class="nav-link-text">Instalar Tailwind</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.91a1 1 0 0 0 0-1.83Z"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/></svg>
+        Estructura y flujo
+      </div>
+      <a href="#arbol-carpetas" class="nav-link">
+        <span class="nav-link-num">10</span>
+        <span class="nav-link-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg></span>
+        <span class="nav-link-text">Árbol de carpetas</span>
+      </a>
+      <a href="#logros" class="nav-link">
+        <span class="nav-link-num">11</span>
+        <span class="nav-link-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+        <span class="nav-link-text">Logros de hoy</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        Cierre
+      </div>
+      <a href="#plan" class="nav-link">
+        <span class="nav-link-num">12</span>
+        <span class="nav-link-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg></span>
+        <span class="nav-link-text">Plan de la sesión</span>
+      </a>
+      <a href="#prerequisitos" class="nav-link">
+        <span class="nav-link-num">13</span>
+        <span class="nav-link-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span>
+        <span class="nav-link-text">Prerequisitos</span>
+      </a>
+      <a href="#entregable" class="nav-link">
+        <span class="nav-link-num">14</span>
+        <span class="nav-link-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span>
+        <span class="nav-link-text">Entregable y cierre</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <a href="../../explorar.html" class="sidebar-dashboard-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Volver al Hub
+    </a>
+    <div class="sidebar-corte-badge">
+      <span>Sesión 1 — Tailwind CSS</span>
+      <span>26 Oct</span>
+    </div>
+  </div>
+</aside>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar()"></div>
+
+<button class="floating-sidebar-toggle" id="floating-toggle" onclick="toggleSidebar()" title="Mostrar menú lateral (14 slides)" aria-label="Abrir menú">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m14 9 3 3-3 3"/></svg>
+  <span>Menú (14 slides)</span>
+</button>
+
+<main class="main-content" id="main-content">
+
+<!-- ══════════ SLIDE 1 — PORTADA ══════════ -->
+<section class="slide" id="portada">
+  <div class="slide-block-badge contexto">Apertura & Presentación</div>
+  <div class="bg-dots"></div>
+  <div class="bg-glow g1"></div>
+  <div class="bg-glow g2"></div>
+  <div class="slide-inner" style="position:relative;z-index:1;">
+    <div class="portada-tag"><span class="dot"></span> SESIÓN 1 · FASE REACT Y TAILWIND CSS</div>
+    <h1 class="portada-titulo">
+      TechStore Pro<br>
+      <span class="linea2">Estilos Modernos</span>
+      <span class="linea3">con Tailwind CSS</span>
+    </h1>
+    <p class="portada-desc">
+      Hasta hoy escribimos cada estilo a mano en <code style="font-family:'JetBrains Mono',monospace;">styles.css</code>. Hoy conocemos Tailwind — un sistema donde el diseño se construye con clases directamente en el HTML, sin saltar entre archivos. Es el punto de partida de una fase completa: vamos a reconstruir todo el frontend de TechStore Pro con herramientas profesionales.
+    </p>
+    <div class="portada-meta">
+      <div class="portada-meta-item"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg> Sesión 1</div>
+      <div class="portada-meta-item"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg> Utility-first CSS</div>
+      <div class="portada-meta-item"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg> Instalación con Vite</div>
+      <div class="portada-meta-item"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg> Fase React y Tailwind</div>
+    </div>
+  </div>
+  <div class="slide-num-badge">SLIDE 01 / 14</div>
+</section>
+
+<!-- ══════════ SLIDE 2 — CONCEPTO ══════════ -->
+<section class="slide bg-alt" id="concepto">
+  <div class="slide-block-badge teoria">Concepto</div>
+  <div class="slide-inner">
+    <div class="sec-header">
+      <h2 class="sec-titulo">¿Qué es Tailwind CSS?</h2>
+      <p class="sec-desc">Un framework CSS "utility-first": en vez de escribir clases con nombres propios (<code style="font-family:'JetBrains Mono',monospace;">.tarjeta</code>, <code style="font-family:'JetBrains Mono',monospace;">.boton-primario</code>) y luego definir sus estilos en un archivo aparte, usas clases pequeñas y ya definidas (<code style="font-family:'JetBrains Mono',monospace;">flex</code>, <code style="font-family:'JetBrains Mono',monospace;">p-4</code>, <code style="font-family:'JetBrains Mono',monospace;">bg-verde-600</code>) directamente en el HTML.</p>
+    </div>
+
+    <div class="info-box-grid" style="margin-bottom:24px;">
+      <div class="info-box tip">
+        <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg> ¿Qué es exactamente una "clase utility"?</div>
+        <div class="info-box-content">
+          <p>Es una clase CSS que ya viene <strong>escrita y lista para usar</strong>, y que hace <strong>una sola cosa muy específica</strong> — nunca combina varias reglas como haría una clase tradicional. No la escribes tú ni le pones nombre: ya existe dentro de Tailwind, lista para usarse en el <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">className</code> del elemento.</p>
+
+          <div class="ejemplo-chips">
+            <div class="ejemplo-chip"><code style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--sena-verde-dark);">p-4</code> <span class="flecha">→</span> <code style="font-family:'JetBrains Mono',monospace;color:var(--texto-dim);">padding: 1rem</code></div>
+            <div class="ejemplo-chip"><code style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--sena-verde-dark);">text-white</code> <span class="flecha">→</span> <code style="font-family:'JetBrains Mono',monospace;color:var(--texto-dim);">color: white</code></div>
+          </div>
+
+          <p>La diferencia con una clase tradicional (como <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">.tarjeta</code>) es que esa sí la inventas tú, le pones el nombre que quieras, y adentro agrupas varias reglas CSS juntas. Una clase utility es más pequeña y siempre hace lo mismo, sin importar en qué proyecto la uses.</p>
+
+          <p>Por eso se combinan varias en un mismo elemento — <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">className="flex p-4 bg-verde"</code> — para lograr un diseño completo.</p>
+        </div>
+      </div>
+
+      <div class="info-box purpura">
+        <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg> Origen — ¿de dónde salió Tailwind?</div>
+        <div class="info-box-content">
+          <p>Tailwind CSS fue creado por <strong>Adam Wathan</strong> (junto a Jonathan Reinink, Steve Schoger y David Hemphill) y lanzado en <strong>noviembre de 2017</strong>. Adam venía de años escribiendo CSS "tradicional" y notó un patrón: en cada proyecto terminaba reinventando las mismas clases (<code style="font-family:'JetBrains Mono',monospace;font-size:12px;">.card</code>, <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">.btn</code>) una y otra vez, y esas clases crecían sin control con el tiempo — el problema real que resolvió no fue "escribir menos CSS", sino <strong>dejar de inventar nombres y mantener un archivo que nadie se atrevía a tocar</strong>.</p>
+          <p>Hoy Tailwind Labs (la empresa detrás) también mantiene Tailwind UI y Headless UI, y el framework pasó a la versión 4 en 2025 con un motor de compilación mucho más rápido — la versión que instalamos hoy.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="concepto-grid">
+      <div class="concepto-card verde">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.91a1 1 0 0 0 0-1.83Z"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/></svg></div>
+        <div class="concepto-titulo">Clases pequeñas y combinables</div>
+        <div class="concepto-desc">Cada clase hace una sola cosa: <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">flex</code> activa flexbox, <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">p-4</code> agrega padding. Se combinan para lograr cualquier diseño.</div>
+      </div>
+      <div class="concepto-card azul">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+        <div class="concepto-titulo">El estilo vive junto al HTML</div>
+        <div class="concepto-desc">No saltas entre <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">index.html</code> y <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">styles.css</code> — ves la estructura y el diseño en el mismo lugar.</div>
+      </div>
+      <div class="concepto-card teal">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></div>
+        <div class="concepto-titulo">Solo el CSS que usas</div>
+        <div class="concepto-desc">Tailwind analiza tu código y genera un archivo final con únicamente las clases que realmente usaste — nada de código muerto.</div>
+      </div>
+      <div class="concepto-card naranja">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg></div>
+        <div class="concepto-titulo">Estándar de la industria</div>
+        <div class="concepto-desc">Empresas como GitHub, Shopify y OpenAI lo usan en producción. Es la habilidad de CSS más pedida en ofertas de trabajo hoy.</div>
+      </div>
+    </div>
+
+    <div class="sec-desc" style="margin-bottom:18px;font-weight:700;color:var(--texto);">Ejemplo real: el botón <code style="font-family:'JetBrains Mono',monospace;">.btn-primario</code> que ya existe en <code style="font-family:'JetBrains Mono',monospace;">frontend/css/styles.css</code> de TechStore Pro.</div>
+
+    <div class="code-compare">
+      <div class="code-editor">
+        <div class="code-editor-header">
+          <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+          <div class="code-editor-title">frontend/css/styles.css</div>
+          <span class="code-editor-badge antes">Antes</span>
+        </div>
+        <div class="code-editor-body">
+          <div class="cl"><span class="ln">1</span><span class="code"><span class="cm">/* Botón principal del catálogo */</span></span></div>
+          <div class="cl"><span class="ln">2</span><span class="code"><span class="sel">.btn-primario</span> {</span></div>
+          <div class="cl indent-1"><span class="ln">3</span><span class="code"><span class="prop">background-color</span>: <span class="var">var(--color-primario)</span>;</span></div>
+          <div class="cl indent-1"><span class="ln">4</span><span class="code"><span class="prop">color</span>: <span class="val">white</span>;</span></div>
+          <div class="cl indent-1"><span class="ln">5</span><span class="code"><span class="prop">padding</span>: <span class="val">12px 28px</span>;</span></div>
+          <div class="cl indent-1"><span class="ln">6</span><span class="code"><span class="prop">border-radius</span>: <span class="var">var(--radio)</span>;</span></div>
+          <div class="cl indent-1"><span class="ln">7</span><span class="code"><span class="prop">font-weight</span>: <span class="val">700</span>;</span></div>
+          <div class="cl"><span class="ln">8</span><span class="code">}</span></div>
+          <div class="cl"><span class="ln">9</span><span class="code"><span class="sel">.btn-primario:hover</span> {</span></div>
+          <div class="cl indent-1"><span class="ln">10</span><span class="code"><span class="prop">background-color</span>: <span class="var">var(--color-secundario)</span>;</span></div>
+          <div class="cl indent-1"><span class="ln">11</span><span class="code"><span class="prop">transform</span>: <span class="val">translateY(-1px)</span>;</span></div>
+          <div class="cl"><span class="ln">12</span><span class="code">}</span></div>
+        </div>
+      </div>
+
+      <div class="code-editor">
+        <div class="code-editor-header">
+          <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+          <div class="code-editor-title">frontend-react/src/App.jsx</div>
+          <span class="code-editor-badge despues">Ahora</span>
+        </div>
+        <div class="code-editor-body">
+          <div class="cl"><span class="ln">1</span><span class="code"><span class="cm">// Mismo botón, ahora en JSX</span></span></div>
+          <div class="cl"><span class="ln">2</span><span class="code"><span class="punc">&lt;</span><span class="tag">button</span> <span class="attr">className</span>=<span class="punc">{`</span></span></div>
+          <div class="cl indent-1"><span class="ln">3</span><span class="code"><span class="prop">bg-verde</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/* background-color */</span></span></div>
+          <div class="cl indent-1"><span class="ln">4</span><span class="code"><span class="prop">text-white</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/* color */</span></span></div>
+          <div class="cl indent-1"><span class="ln">5</span><span class="code"><span class="prop">py-3 px-7</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/* padding */</span></span></div>
+          <div class="cl indent-1"><span class="ln">6</span><span class="code"><span class="prop">rounded-lg</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/* border-radius */</span></span></div>
+          <div class="cl indent-1"><span class="ln">7</span><span class="code"><span class="prop">font-bold</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/* font-weight */</span></span></div>
+          <div class="cl indent-1"><span class="ln">8</span><span class="code"><span class="prop">hover:bg-verde-dark</span>&nbsp;<span class="cm">/* :hover background */</span></span></div>
+          <div class="cl indent-1"><span class="ln">9</span><span class="code"><span class="prop">hover:-translate-y-0.5</span> <span class="cm">/* :hover transform */</span></span></div>
+          <div class="cl"><span class="ln">10</span><span class="code"><span class="punc">`}&gt;</span></span></div>
+          <div class="cl indent-1"><span class="ln">11</span><span class="code">Agregar al carrito</span></div>
+          <div class="cl"><span class="ln">12</span><span class="code"><span class="punc">&lt;/</span><span class="tag">button</span><span class="punc">&gt;</span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabla-wrap" style="margin-top:20px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Con CSS tradicional (styles.css)</th>
+            <th>Con Tailwind (App.jsx)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>El estilo del botón vive en <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">.btn-primario</code>, en un archivo aparte (<code style="font-family:'JetBrains Mono',monospace;font-size:12px;">styles.css</code>, más de 1000 líneas)</td>
+            <td>El estilo vive junto al botón, en el mismo <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">className</code></td>
+          </tr>
+          <tr>
+            <td>Cada tarjeta (<code style="font-family:'JetBrains Mono',monospace;font-size:12px;">.tarjeta</code>), botón y sección tiene su propia clase inventada</td>
+            <td>Las mismas utilidades (<code style="font-family:'JetBrains Mono',monospace;font-size:12px;">p-4</code>, <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">rounded-lg</code>) se reutilizan en todos los componentes</td>
+          </tr>
+          <tr>
+            <td>Los colores del SENA están en variables <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">--color-primario</code></td>
+            <td>Los mismos colores, configurados como <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">bg-verde</code> (Sesión 1, Paso 3)</td>
+          </tr>
+          <tr>
+            <td>El hover se define aparte, en <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">.btn-primario:hover</code></td>
+            <td>El hover va en la misma línea: <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">hover:bg-verde-dark</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="slide-num-badge">SLIDE 02 / 14</div>
+</section>
+
+<!-- ══════════ SLIDE 3 — HERRAMIENTAS Y UBICACIÓN ══════════ -->
+<section class="slide bg-azul" id="instalacion">
+  <div class="slide-block-badge teoria">Herramientas nuevas</div>
+  <div class="slide-inner">
+    <div class="sec-header">
+      <h2 class="sec-titulo">¿Qué vamos a instalar hoy?</h2>
+      <p class="sec-desc">Hasta ahora el frontend de TechStore Pro era HTML/CSS/JS puro, sin instalación de nada. Hoy nace un proyecto nuevo — <code style="font-family:'JetBrains Mono',monospace;">frontend-react/</code> — con dos herramientas nuevas.</p>
+    </div>
+
+    <div class="concepto-grid">
+      <div class="concepto-card verde">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></div>
+        <div class="concepto-titulo">Vite</div>
+        <div class="concepto-desc">Una herramienta que arma el "esqueleto" del proyecto y lo sirve en el navegador con recarga instantánea al guardar cambios. Reemplaza a Live Server para proyectos modernos.</div>
+      </div>
+      <div class="concepto-card teal">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></div>
+        <div class="concepto-titulo">Tailwind CSS</div>
+        <div class="concepto-desc">El framework de utilidades que vimos en la diapositiva anterior. Se conecta a Vite para generar el CSS final automáticamente.</div>
+      </div>
+    </div>
+
+    <p style="font-size:15px;font-weight:700;color:var(--texto);margin-bottom:14px;">Primero, ¿dónde va a vivir <code style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:400;">frontend-react/</code>?</p>
+
+    <div class="code-editor" style="max-width:640px;margin:0 auto 20px;">
+      <div class="code-editor-header">
+        <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+        <div class="code-editor-title">plantilla_proyecto/ — árbol de carpetas</div>
+      </div>
+      <div class="code-editor-body" style="font-size:13.5px;">
+        <div class="cl"><span class="ln"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg></span><span class="code"><span class="sel">plantilla_proyecto/</span></span></div>
+        <div class="cl indent-1"><span class="ln">├──</span><span class="code"><span class="val">backend/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// ya existe — no se toca</span></span></div>
+        <div class="cl indent-1"><span class="ln">├──</span><span class="code"><span class="val">frontend/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// ya existe — HTML viejo, sigue igual</span></span></div>
+        <div class="cl indent-1"><span class="ln">└──</span><span class="code"><span class="prop">frontend-react/</span>&nbsp;&nbsp;&nbsp;<span class="tag">← NUEVA</span></span></div>
+        <div class="cl" style="grid-template-columns:34px 1fr;"><span class="ln"></span><span class="code" style="padding-left:52px;"><span class="cm">no existe todavía — la crea el comando de la próxima slide</span></span></div>
+      </div>
+    </div>
+
+    <div class="info-box-grid">
+      <div class="info-box tip">
+        <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg> ¿Por qué un proyecto nuevo y no modificar frontend/?</div>
+        <div class="info-box-content"><code style="font-family:'JetBrains Mono',monospace;font-size:12px;">frontend/</code> (el HTML actual) sigue funcionando tal cual durante toda la fase — es nuestra red de seguridad. <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">frontend-react/</code> crece en paralelo, sesión a sesión, y solo al final (Sesión 20) reemplaza al viejo.</div>
+      </div>
+
+      <div class="info-box warning">
+        <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> El backend no cambia</div>
+        <div class="info-box-content">Todo esto es 100% frontend. El servidor Express, MongoDB, las rutas y modelos siguen exactamente igual en <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">backend/</code> — no se toca ni una línea.</div>
+      </div>
+
+      <div class="info-box purpura">
+        <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg> Origen — ¿de dónde salió Vite?</div>
+        <div class="info-box-content">
+          <p>Vite fue creado por <strong>Evan You</strong> — el mismo creador de <strong>Vue.js</strong> — y lanzado en <strong>2020</strong>. Nació de una frustración concreta: con las herramientas de esa época (como Webpack), cada vez que guardabas un cambio en un proyecto grande, esperabas varios segundos a que todo se re-empaquetara antes de ver el resultado.</p>
+          <p>Vite resuelve esto aprovechando los módulos ES que el navegador ya entiende de forma nativa: en desarrollo no empaqueta nada de entrada, solo sirve los archivos que realmente se piden — por eso arranca casi al instante y recarga en milisegundos. Su nombre viene del francés <em>"rápido"</em> (se pronuncia "vit").</p>
+          <p>Hoy ya no es exclusivo de Vue: lo usan proyectos de React (como el nuestro), Svelte, y es la base de frameworks como Astro y SvelteKit.</p>
+        </div>
+      </div>
+
+      <div class="info-box info">
+        <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg> Dato curioso: Tailwind también se puede usar sin instalar nada</div>
+        <div class="info-box-content">
+          <p>Existe una forma de probar Tailwind en segundos, sin Node ni npm: agregar una sola línea en el <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">&lt;head&gt;</code> de cualquier HTML — <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</code> — y ya tienes todas las clases utility disponibles. Es el llamado <strong>Play CDN</strong>, útil para una demo rápida o un CodePen.</p>
+          <p><strong>No es lo que usamos hoy en TechStore Pro</strong>, porque ese script genera el motor completo de Tailwind dentro del navegador de cada visitante (archivo pesado, sin optimizar) y no guarda una configuración propia del proyecto. Lo que instalamos con Vite en la próxima slide compila en nuestra máquina y entrega solo el CSS final, mínimo, listo para producción — la diferencia entre "probar" y "construir".</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num-badge">SLIDE 03 / 14</div>
+</section>
+
+<!-- ══════════ SLIDE 4 — GLOSARIO RÁPIDO ══════════ -->
+<section class="slide bg-alt" id="glosario">
+  <div class="slide-block-badge teoria">Antes de instalar</div>
+  <div class="slide-inner">
+    <div class="sec-header">
+      <h2 class="sec-titulo">Glosario rápido: 4 palabras que vas a escuchar hoy</h2>
+      <p class="sec-desc">No hace falta memorizarlas — solo tenerlas a la mano la primera vez que aparezcan en la instalación. La idea de fondo ya la conoces de la Slide 2: una <strong>clase utility</strong> es algo <strong>ya escrito y listo para usar</strong>, no algo que inventas tú.</p>
+    </div>
+
+    <div class="concepto-grid">
+      <div class="concepto-card verde">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.91a1 1 0 0 0 0-1.83Z"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/></svg></div>
+        <div class="concepto-titulo">Utility-first</div>
+        <div class="concepto-desc">La idea central de Tailwind: construir el diseño combinando clases pequeñas y ya listas (<code style="font-family:'JetBrains Mono',monospace;font-size:11px;">p-4</code>, <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">flex</code>) en vez de inventar nombres propios.</div>
+      </div>
+      <div class="concepto-card azul">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></div>
+        <div class="concepto-titulo">Build tool (herramienta de build)</div>
+        <div class="concepto-desc">Un programa que transforma el código que escribimos (JSX, Tailwind) en archivos que el navegador entiende. Vite es la que usamos hoy.</div>
+      </div>
+      <div class="concepto-card teal">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+        <div class="concepto-titulo">Linter</div>
+        <div class="concepto-desc">Revisa el código mientras escribes y avisa errores de sintaxis antes de correrlo. No cambia cómo se ve la app, solo ayuda a detectar fallos más rápido.</div>
+      </div>
+      <div class="concepto-card purpura">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg></div>
+        <div class="concepto-titulo">Plugin</div>
+        <div class="concepto-desc">Una pieza que se conecta a una herramienta para darle una función nueva. <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">@tailwindcss/vite</code> es el plugin que le enseña a Vite a procesar Tailwind.</div>
+      </div>
+    </div>
+
+    <div class="info-box tip" style="margin-top:8px;">
+      <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> No necesitas aprenderlas de memoria</div>
+      <div class="info-box-content">Estas 4 palabras van a aparecer en la instalación de las próximas slides. Si en algún momento te pierdes, vuelve a esta slide con el botón del sidebar — para eso quedó aquí.</div>
+    </div>
+  </div>
+  <div class="slide-num-badge">SLIDE 04 / 14</div>
+</section>
+
+<!-- ══════════ SLIDE 5 — MAPA: FLUJO (movida antes de instalar) ══════════ -->
+<section class="slide" id="flujo-slide">
+  <div class="slide-block-badge contexto">Mapa de hoy</div>
+  <div class="slide-inner">
+    <div class="sec-header">
+      <h2 class="sec-titulo">De la clase Tailwind al CSS final</h2>
+      <p class="sec-desc">Antes de instalar nada, este es el mapa completo: cuatro pasos desde que escribes una clase hasta que el navegador la pinta en pantalla. Vuelve a esta slide cuando quieras recordar qué pasa "detrás de cámaras" mientras programas.</p>
+    </div>
+
+    <p style="text-align:center;font-size:14px;color:var(--texto-dim);margin-bottom:22px;">Ejemplo con una clase real que ya vimos en la Slide 2: <code style="font-family:'JetBrains Mono',monospace;font-size:13px;background:var(--sena-verde-glow);padding:2px 8px;border-radius:5px;color:var(--sena-verde-dark);font-weight:700;">bg-verde</code></p>
+
+    <div class="flujo-row">
+      <div class="flujo-nodo verde">
+        <div class="flujo-ico"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg></div>
+        <div class="flujo-lbl">Paso 1</div>
+        <div class="flujo-nom">Escribes la clase</div>
+        <div class="flujo-sub">en App.jsx</div>
+      </div>
+      <div class="flujo-arrow">→</div>
+      <div class="flujo-nodo azul">
+        <div class="flujo-ico"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+        <div class="flujo-lbl">Paso 2</div>
+        <div class="flujo-nom">Tailwind la detecta</div>
+        <div class="flujo-sub">al guardar el archivo</div>
+      </div>
+      <div class="flujo-arrow">→</div>
+      <div class="flujo-nodo teal">
+        <div class="flujo-ico"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg></div>
+        <div class="flujo-lbl">Paso 3</div>
+        <div class="flujo-nom">Genera el CSS</div>
+        <div class="flujo-sub">solo para esa clase</div>
+      </div>
+      <div class="flujo-arrow">→</div>
+      <div class="flujo-nodo naranja">
+        <div class="flujo-ico"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg></div>
+        <div class="flujo-lbl">Paso 4</div>
+        <div class="flujo-nom">El botón se pinta verde</div>
+        <div class="flujo-sub">sin recargar la página</div>
+      </div>
+    </div>
+
+    <div class="code-editor" style="max-width:640px;margin:22px auto 0;">
+      <div class="code-editor-header">
+        <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+        <div class="code-editor-title">Qué pasa detrás de cámaras</div>
+      </div>
+      <div class="code-editor-body" style="font-size:13px;">
+        <div class="cl"><span class="ln">1</span><span class="code"><span class="cm">// Escribes esto en App.jsx</span></span></div>
+        <div class="cl"><span class="ln">2</span><span class="code">&lt;<span class="tag">button</span> <span class="attr">className</span>=<span class="str">"bg-verde"</span>&gt;...</span></div>
+        <div class="cl"><span class="ln">3</span><span class="code"></span></div>
+        <div class="cl"><span class="ln">4</span><span class="code"><span class="cm">// Tailwind escanea y genera SOLO esto:</span></span></div>
+        <div class="cl"><span class="ln">5</span><span class="code"><span class="sel">.bg-verde</span> { <span class="prop">background-color</span>: <span class="var">#39a900</span>; }</span></div>
+      </div>
+    </div>
+
+    <div class="info-box tip" style="max-width:640px;margin:20px auto 0;">
+      <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> La idea clave de este flujo</div>
+      <div class="info-box-content">Este proceso completo (escanear → generar CSS → recargar el navegador) pasa <strong>automáticamente cada vez que guardas un archivo</strong>, mientras <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">npm run dev</code> está corriendo. No hay que ejecutar ningún comando extra — por eso Tailwind se siente instantáneo mientras programas. A partir de la siguiente slide, vas a instalar justo lo necesario para que este flujo empiece a funcionar.</div>
+    </div>
+  </div>
+  <div class="slide-num-badge">SLIDE 05 / 14</div>
+</section>
+
+<!-- ══════════ SLIDE 6 — COMANDO + PREGUNTA 1 ══════════ -->
+<section class="slide" id="paso-comando">
+  <div class="slide-block-badge practica">Instalación · Paso 1 de 3</div>
+  <div class="slide-inner">
+    <div class="sec-header">
+      <h2 class="sec-titulo">Ejecutar el comando de creación</h2>
+    </div>
+
+    <div class="slide-2col">
+      <div class="slide-2col-text">
+        <div class="info-box info">
+          <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg> ¿Qué es Vite exactamente?</div>
+          <div class="info-box-content">Vite (se pronuncia "vit", del francés "rápido") es una herramienta de <strong>build</strong>: convierte el código que escribimos (JSX, módulos, Tailwind) en archivos que el navegador entiende, y lo hace en milisegundos gracias a que arranca sin empaquetar todo de una vez. Cumple dos trabajos en este proyecto:
+          <ul style="margin:8px 0 0 18px;line-height:1.8;">
+            <li><strong>Andamio inicial</strong> — el comando de al lado genera toda la estructura de carpetas y archivos de un proyecto React desde cero.</li>
+            <li><strong>Servidor de desarrollo</strong> — después, con <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">npm run dev</code>, sirve el proyecto en el navegador y recarga al instante cada vez que guardamos un archivo (reemplaza a Live Server).</li>
+          </ul>
+          </div>
+        </div>
+
+        <p style="font-size:14px;color:var(--texto-dim);margin:16px 0 0;">El comando se ejecuta <strong style="color:var(--texto);">desde dentro de <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">plantilla_proyecto/</code></strong> (el mismo nivel donde están <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">backend/</code> y <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">frontend/</code>). Vite arma sola la carpeta <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">frontend-react/</code>, con su propio proyecto React adentro.</p>
+
+        <div class="info-box warning" style="margin-top:16px;">
+          <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Primera vez: pide instalar un paquete extra</div>
+          <div class="info-box-content">La primera vez que se usa este comando en una máquina, npm no tiene aún la herramienta <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">create-vite</code> — pregunta si puede instalarla.</div>
+        </div>
+
+        <div class="info-box danger" style="margin-top:16px;">
+          <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> ¿Ves algo distinto? Es normal</div>
+          <div class="info-box-content">
+            <strong>"command not found: npm"</strong> → Node.js no está instalado, o abriste una terminal antes de instalarlo. Cierra y abre una terminal nueva.<br>
+            <strong>Número de versión distinto a <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">create-vite@9.2.1</code></strong> → normal, Vite se actualiza seguido. Sigue igual.
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-2col-code">
+        <div class="code-editor">
+          <div class="code-editor-header">
+            <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+            <div class="code-editor-title">Terminal — dentro de plantilla_proyecto/</div>
+          </div>
+          <div class="code-editor-body" style="font-size:14px;">
+            <div class="cl"><span class="ln"></span><span class="code"><span class="prop">npm create vite@latest frontend-react -- --template react</span></span></div>
+          </div>
+        </div>
+
+        <div class="code-editor">
+          <div class="code-editor-header">
+            <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+            <div class="code-editor-title">Terminal — primera pregunta</div>
+          </div>
+          <div class="code-editor-body" style="font-size:14px;">
+            <div class="cl"><span class="ln"></span><span class="code"><span class="cm">Need to install the following packages:</span></span></div>
+            <div class="cl"><span class="ln"></span><span class="code"><span class="cm">create-vite@9.2.1</span></span></div>
+            <div class="cl"><span class="ln"></span><span class="code"><span class="sel">Ok to proceed? (y)</span> <span class="tag">y</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num-badge">SLIDE 06 / 14</div>
+</section>
+
+<!-- ══════════ SLIDE 7 — PREGUNTA 2: LINTER ══════════ -->
+<section class="slide bg-alt" id="paso-linter">
+  <div class="slide-block-badge practica">Instalación · Paso 2 de 3</div>
+  <div class="slide-inner">
+    <div class="sec-header">
+      <h2 class="sec-titulo">El asistente pregunta qué linter usar</h2>
+      <p class="sec-desc">Un <strong>linter</strong> es una herramienta que revisa el código mientras escribes y avisa errores de sintaxis antes de correrlo — no cambia cómo se ve la app, solo ayuda a detectar errores más rápido.</p>
+    </div>
+
+    <div class="code-editor" style="max-width:600px;margin:0 auto 24px;">
+      <div class="code-editor-header">
+        <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+        <div class="code-editor-title">Terminal — asistente interactivo</div>
+      </div>
+      <div class="code-editor-body" style="font-size:14px;">
+        <div class="cl"><span class="ln">│</span><span class="code"></span></div>
+        <div class="cl"><span class="ln">◆</span><span class="code">Which linter to use?</span></div>
+        <div class="cl"><span class="ln">│</span><span class="code"><span class="prop">● Oxlint</span></span></div>
+        <div class="cl"><span class="ln">│</span><span class="code">○ ESLint</span></div>
+        <div class="cl"><span class="ln">│</span><span class="code">○ None</span></div>
+        <div class="cl"><span class="ln">└</span><span class="code"></span></div>
+      </div>
+    </div>
+
+    <div class="info-box tip" style="max-width:600px;margin:0 auto;">
+      <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> Elegir "Oxlint" (opción marcada por defecto)</div>
+      <div class="info-box-content">Es el linter que trae Vite en su versión más reciente — no requiere ningún archivo de configuración extra, a diferencia de ESLint. Nos movemos con las flechas ↑↓ y confirmamos con Enter.</div>
+    </div>
+
+    <div class="info-box danger" style="max-width:600px;margin:16px auto 0;">
+      <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> ¿No ves flechas, solo números?</div>
+      <div class="info-box-content">Algunas terminales viejas muestran la lista como texto plano numerado en vez del menú interactivo. En ese caso, escribe el número de la opción (Oxlint) y presiona Enter.</div>
+    </div>
+  </div>
+  <div class="slide-num-badge">SLIDE 07 / 14</div>
+</section>
+
+<!-- ══════════ SLIDE 8 — PREGUNTA 3: INSTALL & START ══════════ -->
+<section class="slide bg-teal" id="paso-install-start">
+  <div class="slide-block-badge practica">Instalación · Paso 3 de 3</div>
+  <div class="slide-inner">
+    <div class="sec-header">
+      <h2 class="sec-titulo">¿Instalar y arrancar automáticamente?</h2>
+      <p class="sec-desc">La última pregunta del asistente reemplaza tres comandos manuales (<code style="font-family:'JetBrains Mono',monospace;">cd</code>, <code style="font-family:'JetBrains Mono',monospace;">npm install</code>, <code style="font-family:'JetBrains Mono',monospace;">npm run dev</code>) por una sola confirmación.</p>
+    </div>
+
+    <div class="code-editor" style="max-width:600px;margin:0 auto 24px;">
+      <div class="code-editor-header">
+        <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+        <div class="code-editor-title">Terminal — última pregunta</div>
+      </div>
+      <div class="code-editor-body" style="font-size:14px;">
+        <div class="cl"><span class="ln">◆</span><span class="code">Install with npm and start now?</span></div>
+        <div class="cl"><span class="ln">│</span><span class="code"><span class="prop">● Yes</span> / ○ No</span></div>
+      </div>
+    </div>
+
+    <div class="info-box tip" style="max-width:600px;margin:0 auto 20px;">
+      <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> Elegir "Yes" (Enter)</div>
+      <div class="info-box-content">El asistente instala las dependencias y levanta el servidor solo, sin escribir nada más.</div>
+    </div>
+
+    <div class="code-editor" style="max-width:600px;margin:0 auto;">
+      <div class="code-editor-header">
+        <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+        <div class="code-editor-title">Terminal — resultado</div>
+      </div>
+      <div class="code-editor-body" style="font-size:14px;">
+        <div class="cl"><span class="ln"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="code"><span class="val">Proyecto creado en frontend-react/</span></span></div>
+        <div class="cl"><span class="ln"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="code"><span class="val">Dependencias instaladas</span></span></div>
+        <div class="cl"><span class="ln">➜</span><span class="code">Local: <span class="prop">http://localhost:5173/</span></span></div>
+      </div>
+    </div>
+
+    <div class="info-box tip" style="max-width:600px;margin:20px auto 0;">
+      <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> ¿Cómo sé que funcionó?</div>
+      <div class="info-box-content">La terminal muestra la línea <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">Local: http://localhost:5173/</code> y <strong>no se cierra sola</strong>. Mientras esa ventana quede abierta, el servidor sigue corriendo — así se ve tu proyecto en el navegador.</div>
+    </div>
+
+    <div class="info-box danger" style="max-width:600px;margin:16px auto 0;">
+      <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> ¿Dice "Port 5173 is already in use"?</div>
+      <div class="info-box-content">No es un error: Vite abre automáticamente el siguiente puerto libre (<code style="font-family:'JetBrains Mono',monospace;font-size:12px;">5174</code>, <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">5175</code>...). Usa siempre la URL exacta que te muestre tu terminal, no asumas que siempre será 5173.</div>
+    </div>
+  </div>
+  <div class="slide-num-badge">SLIDE 08 / 14</div>
+</section>
+
+<!-- ══════════ SLIDE 9 — INSTALAR TAILWIND ══════════ -->
+<section class="slide bg-verde" id="paso-tailwind">
+  <div class="slide-block-badge practica">Instalación · Tailwind CSS</div>
+  <div class="slide-inner">
+    <div class="sec-header">
+      <h2 class="sec-titulo">Ahora sí, instalar Tailwind</h2>
+      <p class="sec-desc">Con el proyecto React ya corriendo en <code style="font-family:'JetBrains Mono',monospace;">localhost:5173</code>, entramos a la carpeta nueva e instalamos <strong>dos paquetes</strong> — no es uno solo, cada uno cumple un rol distinto.</p>
+    </div>
+
+    <div class="concepto-grid" style="margin-bottom:22px;">
+      <div class="concepto-card verde">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></div>
+        <div class="concepto-titulo"><code style="font-family:'JetBrains Mono',monospace;font-size:13px;">tailwindcss</code></div>
+        <div class="concepto-desc">El framework en sí: el motor que lee las clases del código (<code style="font-family:'JetBrains Mono',monospace;font-size:11px;">flex</code>, <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">p-4</code>...) y genera el CSS final con solo las que se usaron.</div>
+      </div>
+      <div class="concepto-card azul">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg></div>
+        <div class="concepto-titulo"><code style="font-family:'JetBrains Mono',monospace;font-size:13px;">@tailwindcss/vite</code></div>
+        <div class="concepto-desc">El plugin que conecta Tailwind con Vite — sin él, Vite no sabe que debe pasar los archivos por el motor de Tailwind al compilar.</div>
+      </div>
+    </div>
+
+    <div class="code-editor" style="max-width:680px;margin:0 auto 20px;">
+      <div class="code-editor-header">
+        <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+        <div class="code-editor-title">Terminal — dentro de frontend-react/</div>
+      </div>
+      <div class="code-editor-body" style="font-size:14px;">
+        <div class="cl"><span class="ln"></span><span class="code"><span class="prop">cd frontend-react</span></span></div>
+        <div class="cl"><span class="ln"></span><span class="code"><span class="prop">npm install tailwindcss @tailwindcss/vite</span></span></div>
+      </div>
+    </div>
+
+    <div class="code-editor" style="max-width:680px;margin:0 auto;">
+      <div class="code-editor-header">
+        <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+        <div class="code-editor-title">Terminal — resultado</div>
+      </div>
+      <div class="code-editor-body" style="font-size:14px;">
+        <div class="cl"><span class="ln"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="code"><span class="val">added 2 packages</span></span></div>
+        <div class="cl"><span class="ln"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="code"><span class="val">Tailwind CSS instalado</span></span></div>
+      </div>
+    </div>
+
+    <div class="info-box info" style="max-width:680px;margin:20px auto 0;">
+      <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg> Todavía falta un paso</div>
+      <div class="info-box-content">Instalar el paquete no activa Tailwind por sí solo — falta registrar el plugin en <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">vite.config.js</code> y agregar el import en el CSS. Ese código exacto está en la guía paso a paso de hoy.</div>
+    </div>
+  </div>
+  <div class="slide-num-badge">SLIDE 09 / 14</div>
+</section>
+
+<!-- ══════════ SLIDE 10 — ÁRBOL DE CARPETAS ══════════ -->
+<section class="slide bg-alt" id="arbol-carpetas">
+  <div class="slide-block-badge teoria">Resultado</div>
+  <div class="slide-inner">
+    <div class="sec-header">
+      <h2 class="sec-titulo">Lo que acaba de aparecer en frontend-react/</h2>
+      <p class="sec-desc">Todo esto lo generó Vite automáticamente — son archivos y carpetas nuevos que no existían en <code style="font-family:'JetBrains Mono',monospace;">frontend/</code> (el HTML viejo). No hace falta memorizarlos hoy, solo saber para qué sirve cada uno.</p>
+    </div>
+
+    <div class="slide-2col">
+      <div class="code-editor">
+        <div class="code-editor-header">
+          <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+          <div class="code-editor-title">frontend-react/ — árbol completo</div>
+        </div>
+        <div class="code-editor-body" style="font-size:12.5px;">
+          <div class="cl"><span class="ln"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg></span><span class="code"><span class="sel">frontend-react/</span></span></div>
+          <div class="cl indent-1"><span class="ln">├──</span><span class="code"><span class="val">node_modules/</span></span></div>
+          <div class="cl indent-1"><span class="ln">├──</span><span class="code"><span class="val">public/</span></span></div>
+          <div class="cl indent-2"><span class="ln">│</span><span class="code"><span class="prop">├─ favicon.svg</span></span></div>
+          <div class="cl indent-2"><span class="ln">│</span><span class="code"><span class="prop">└─ icons.svg</span></span></div>
+          <div class="cl indent-1"><span class="ln">├──</span><span class="code"><span class="val">src/</span></span></div>
+          <div class="cl indent-2"><span class="ln">│</span><span class="code"><span class="prop">├─ assets/</span></span></div>
+          <div class="cl indent-2"><span class="ln">│</span><span class="code"><span class="prop">├─ App.css</span></span></div>
+          <div class="cl indent-2"><span class="ln">│</span><span class="code"><span class="prop">├─ App.jsx</span></span></div>
+          <div class="cl indent-2"><span class="ln">│</span><span class="code"><span class="prop">├─ index.css</span></span></div>
+          <div class="cl indent-2"><span class="ln">│</span><span class="code"><span class="prop">└─ main.jsx</span></span></div>
+          <div class="cl indent-1"><span class="ln">├──</span><span class="code"><span class="val">.gitignore</span></span></div>
+          <div class="cl indent-1"><span class="ln">├──</span><span class="code"><span class="val">.oxlintrc.json</span></span></div>
+          <div class="cl indent-1"><span class="ln">├──</span><span class="code"><span class="val">index.html</span></span></div>
+          <div class="cl indent-1"><span class="ln">├──</span><span class="code"><span class="val">package-lock.json</span></span></div>
+          <div class="cl indent-1"><span class="ln">├──</span><span class="code"><span class="val">package.json</span></span></div>
+          <div class="cl indent-1"><span class="ln">├──</span><span class="code"><span class="val">README.md</span></span></div>
+          <div class="cl indent-1"><span class="ln">└──</span><span class="code"><span class="val">vite.config.js</span></span></div>
+        </div>
+      </div>
+
+      <div class="slide-2col-text">
+        <div class="concepto-grid" style="grid-template-columns:1fr;gap:10px;">
+          <div class="concepto-card verde" style="padding:14px 16px;">
+            <div class="concepto-titulo" style="font-size:13px;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg> node_modules/</div>
+            <div class="concepto-desc">Código descargado de cada paquete instalado (React, Vite, Tailwind...). No se edita ni se sube a Git.</div>
+          </div>
+          <div class="concepto-card azul" style="padding:14px 16px;">
+            <div class="concepto-titulo" style="font-size:13px;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg> public/</div>
+            <div class="concepto-desc"><code style="font-family:'JetBrains Mono',monospace;font-size:11px;">favicon.svg</code> e <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">icons.svg</code> — archivos estáticos que se sirven tal cual, sin pasar por Vite.</div>
+          </div>
+          <div class="concepto-card teal" style="padding:14px 16px;">
+            <div class="concepto-titulo" style="font-size:13px;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg> src/assets/</div>
+            <div class="concepto-desc">Imágenes que sí se importan desde el código (a diferencia de <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">public/</code>) — Vite las optimiza al compilar.</div>
+          </div>
+          <div class="concepto-card naranja" style="padding:14px 16px;">
+            <div class="concepto-titulo" style="font-size:13px;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.91a1 1 0 0 0 0-1.83Z"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/></svg> src/App.jsx</div>
+            <div class="concepto-desc">El componente principal. Aquí escribimos el navbar migrado en el Paso 5 de la guía.</div>
+          </div>
+          <div class="concepto-card purpura" style="padding:14px 16px;">
+            <div class="concepto-titulo" style="font-size:13px;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg> src/App.css / src/index.css</div>
+            <div class="concepto-desc"><code style="font-family:'JetBrains Mono',monospace;font-size:11px;">index.css</code> es donde va <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">@import "tailwindcss"</code> (Paso 2). <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">App.css</code> lo vamos a borrar — todo el estilo se hace con clases Tailwind.</div>
+          </div>
+          <div class="concepto-card amarillo" style="padding:14px 16px;">
+            <div class="concepto-titulo" style="font-size:13px;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 4h3a2 2 0 0 1 2 2v14"/><path d="M2 20h3"/><path d="M13 20h9"/><path d="M10 12v.01"/><path d="M13 4.562v16.157a1 1 0 0 1-1.242.97L5 20V5.562a2 2 0 0 1 1.515-1.94l4-1A2 2 0 0 1 13 4.561Z"/></svg> src/main.jsx</div>
+            <div class="concepto-desc">Punto de entrada — conecta <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">App.jsx</code> con el HTML. Casi nunca se edita.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="concepto-grid" style="margin-top:18px;">
+      <div class="concepto-card verde">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div>
+        <div class="concepto-titulo">index.html</div>
+        <div class="concepto-desc">El HTML raíz — solo tiene un <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">&lt;div id="root"&gt;</code> vacío. React inyecta todo ahí dentro.</div>
+      </div>
+      <div class="concepto-card azul">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg></div>
+        <div class="concepto-titulo">vite.config.js</div>
+        <div class="concepto-desc">La configuración de Vite. Aquí registramos el plugin de Tailwind (Paso 2 de la guía).</div>
+      </div>
+      <div class="concepto-card teal">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></div>
+        <div class="concepto-titulo">package.json / package-lock.json</div>
+        <div class="concepto-desc"><code style="font-family:'JetBrains Mono',monospace;font-size:11px;">package.json</code> lista dependencias y comandos (<code style="font-family:'JetBrains Mono',monospace;font-size:11px;">npm run dev</code>). <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">package-lock.json</code> fija la versión exacta de cada una — no se edita a mano.</div>
+      </div>
+      <div class="concepto-card naranja">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+        <div class="concepto-titulo">.oxlintrc.json</div>
+        <div class="concepto-desc">Configuración del linter Oxlint que elegimos en el asistente — reglas de estilo de código, viene lista por defecto.</div>
+      </div>
+      <div class="concepto-card purpura">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg></div>
+        <div class="concepto-titulo">.gitignore</div>
+        <div class="concepto-desc">Lista de archivos y carpetas que Git ignora — por defecto ya excluye <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">node_modules/</code>.</div>
+      </div>
+      <div class="concepto-card amarillo">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></div>
+        <div class="concepto-titulo">README.md</div>
+        <div class="concepto-desc">Documentación básica generada por Vite. La vamos a reemplazar con información real del proyecto más adelante.</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num-badge">SLIDE 10 / 14</div>
+</section>
+
+<!-- ══════════ SLIDE 11 — LOGROS ══════════ -->
+<section class="slide bg-teal" id="logros">
+  <div class="slide-block-badge contexto">Objetivos</div>
+  <div class="slide-inner">
+    <div class="sec-header">
+      <h2 class="sec-titulo">¿Qué vamos a lograr?</h2>
+      <p class="sec-desc">Al terminar la sesión, tendremos el primer proyecto Tailwind corriendo y un componente real migrado.</p>
+    </div>
+
+    <div class="paso-lista">
+      <div class="paso-item">
+        <div class="paso-num verde">01</div>
+        <div class="paso-body">
+          <div class="paso-titulo">Proyecto frontend-react/ creado</div>
+          <div class="paso-desc">Con Vite y Tailwind instalados y configurados, corriendo en el navegador.</div>
+        </div>
+      </div>
+      <div class="paso-item">
+        <div class="paso-num azul">02</div>
+        <div class="paso-body">
+          <div class="paso-titulo">Colores del proyecto configurados</div>
+          <div class="paso-desc">Los mismos tokens de color que ya usaba styles.css, ahora como clases Tailwind personalizadas.</div>
+        </div>
+      </div>
+      <div class="paso-item">
+        <div class="paso-num teal">03</div>
+        <div class="paso-body">
+          <div class="paso-titulo">Primeras clases utility dominadas</div>
+          <div class="paso-desc">Espaciado, colores, tipografía y flexbox básico, todo con clases de Tailwind.</div>
+        </div>
+      </div>
+      <div class="paso-item">
+        <div class="paso-num purpura">04</div>
+        <div class="paso-body">
+          <div class="paso-titulo">Navbar migrado como prueba de concepto</div>
+          <div class="paso-desc">El primer componente real del proyecto, reconstruido 100% con Tailwind.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num-badge">SLIDE 11 / 14</div>
+</section>
+
+<!-- ══════════ SLIDE 12 — PLAN ══════════ -->
+<section class="slide" id="plan">
+  <div class="slide-block-badge contexto">Agenda</div>
+  <div class="slide-inner">
+    <div class="sec-header">
+      <h2 class="sec-titulo">Plan de la sesión</h2>
+      <p class="sec-desc">240 minutos para instalar Tailwind y dominar las primeras clases.</p>
+    </div>
+
+    <div class="tabla-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Tiempo</th>
+            <th>Bloque</th>
+            <th>Actividad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>0–20 min</td>
+            <td>Apertura</td>
+            <td>Qué es utility-first, por qué usar Tailwind, cómo funciona el flujo de compilación</td>
+          </tr>
+          <tr>
+            <td>20–60 min</td>
+            <td>Instalación</td>
+            <td>Crear el proyecto con Vite, instalar Tailwind, verificar que corre en el navegador</td>
+          </tr>
+          <tr>
+            <td>60–100 min</td>
+            <td>Configuración</td>
+            <td>Definir los colores del proyecto (tokens) en la configuración de Tailwind</td>
+          </tr>
+          <tr>
+            <td>100–180 min</td>
+            <td>Práctica guiada</td>
+            <td>Clases de espaciado, color, tipografía y flexbox — ejercicios cortos aplicados</td>
+          </tr>
+          <tr>
+            <td>180–230 min</td>
+            <td>Aplicación real</td>
+            <td>Migrar el navbar de TechStore Pro usando solo clases Tailwind</td>
+          </tr>
+          <tr>
+            <td>230–240 min</td>
+            <td>Cierre</td>
+            <td>Revisión de entregables y vista previa de la Sesión 2 — componentes y responsive</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="slide-num-badge">SLIDE 12 / 14</div>
+</section>
+
+<!-- ══════════ SLIDE 13 — PREREQUISITOS ══════════ -->
+<section class="slide bg-alt" id="prerequisitos">
+  <div class="slide-block-badge contexto">Antes de empezar</div>
+  <div class="slide-inner">
+    <div class="sec-header">
+      <h2 class="sec-titulo">Prerequisitos</h2>
+      <p class="sec-desc">Esto debes tener listo antes de comenzar la sesión.</p>
+    </div>
+
+    <div class="concepto-grid">
+      <div class="concepto-card verde">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <div class="concepto-titulo">TechStore Pro funcionando</div>
+        <div class="concepto-desc">Backend en Express + MongoDB corriendo, frontend HTML actual funcional — se mantiene intacto.</div>
+      </div>
+      <div class="concepto-card verde">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <div class="concepto-titulo">Node.js instalado</div>
+        <div class="concepto-desc">Ya lo usamos desde la Fase 3 para el backend — la misma instalación sirve para Vite.</div>
+      </div>
+      <div class="concepto-card verde">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <div class="concepto-titulo">CSS de TechStore Pro conocido</div>
+        <div class="concepto-desc">Familiaridad con los colores y componentes de styles.css — hoy los recreamos con Tailwind.</div>
+      </div>
+      <div class="concepto-card naranja">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg></div>
+        <div class="concepto-titulo">Espacio en disco para node_modules</div>
+        <div class="concepto-desc">El proyecto nuevo tendrá su propia carpeta de dependencias — es normal, no afecta al backend.</div>
+      </div>
+    </div>
+
+    <div class="info-box-grid">
+      <div class="info-box warning">
+        <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> No se necesita conocer React todavía</div>
+        <div class="info-box-content">Hoy solo instalamos el proyecto con la plantilla de React de Vite (porque lo usaremos desde la Sesión 3), pero toda la práctica de hoy es HTML normal con clases Tailwind — React llega después.</div>
+      </div>
+
+      <div class="info-box teal">
+        <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg> Un solo backend, dos frontends conviviendo</div>
+        <div class="info-box-content">
+          <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">backend/</code> — sin cambios, sigue corriendo en <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">localhost:3000</code>.<br>
+          <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">frontend/</code> — el HTML viejo, sigue funcionando toda la fase.<br>
+          <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">frontend-react/</code> — el proyecto nuevo que nace hoy, con Vite + Tailwind + React.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num-badge">SLIDE 13 / 14</div>
+</section>
+
+<!-- ══════════ SLIDE 14 — ENTREGABLE ══════════ -->
+<section class="slide bg-verde" id="entregable">
+  <div class="slide-block-badge taller">Cierre · Sesión 1</div>
+  <div class="bg-dots"></div>
+  <div class="slide-inner">
+    <div class="sec-header">
+      <h2 class="sec-titulo">¡Empezamos!</h2>
+    </div>
+
+    <div class="entregable-box">
+      <div class="entregable-title">Criterios de evaluación</div>
+      <ul class="entregable-list">
+        <li>Proyecto frontend-react/ creado con Vite dentro de plantilla_proyecto/</li>
+        <li>Tailwind CSS instalado y funcionando (sin errores en consola)</li>
+        <li>Colores del proyecto configurados como tokens Tailwind</li>
+        <li>Servidor de desarrollo corriendo con recarga en vivo</li>
+        <li>Navbar de TechStore Pro migrado usando solo clases Tailwind</li>
+        <li>Backend original (Express + MongoDB) sin ninguna modificación</li>
+        <li>frontend/ (HTML viejo) sigue funcionando exactamente igual</li>
+      </ul>
+    </div>
+
+    <div class="concepto-grid" style="margin-top:24px;">
+      <div class="concepto-card azul">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></div>
+        <div class="concepto-titulo">02 — Guía paso a paso</div>
+        <div class="concepto-desc">La parte <strong>obligatoria</strong> de hoy: instalar Vite + Tailwind, configurar los colores del SENA y migrar el navbar real de TechStore Pro. Sigue cada paso en orden.</div>
+        <a href="02_GUIA_TAILWIND_INTRO.html" target="_blank" style="display:inline-block;margin-top:10px;color:#1e40af;font-weight:700;text-decoration:underline;font-size:13px;">Abrir guía →</a>
+      </div>
+      <div class="concepto-card teal">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg></div>
+        <div class="concepto-titulo">03 — Ejercicios de práctica</div>
+        <div class="concepto-desc"><strong>Opcional</strong> — solo si sobra tiempo después de terminar la guía 02. Tres ejercicios cortos (tarjeta, botón secundario, footer) para reforzar las mismas clases, sin contenido nuevo.</div>
+        <a href="03_EJERCICIOS_PRACTICA.html" target="_blank" style="display:inline-block;margin-top:10px;color:#0369a1;font-weight:700;text-decoration:underline;font-size:13px;">Abrir ejercicios →</a>
+      </div>
+    </div>
+
+    <div class="info-box teal" style="margin-top:20px;">
+      <div class="info-box-title">Próxima sesión — S2</div>
+      <div class="info-box-content">Con Tailwind instalado, la Sesión 2 profundiza en componentes reutilizables, diseño responsive con breakpoints y modo oscuro — recreando la tarjeta de producto y el catálogo completo.</div>
+    </div>
+  </div>
+  <div class="slide-num-badge">SLIDE 14 / 14</div>
+</section>
+
+<!-- ── FOOTER NAV FIJO ── -->
+</main>
+
+<script>
+// Alternar sidebar (colapsado en escritorio, drawer en móvil)
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const main = document.getElementById('main-content');
+  const toggleBtn = document.getElementById('floating-toggle');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  if (window.innerWidth <= 1024) {
+    const abierto = sidebar.classList.toggle('open');
+    backdrop.classList.toggle('active', abierto);
+  } else {
+    const colapsado = sidebar.classList.toggle('collapsed');
+    main.classList.toggle('expanded', colapsado);
+    toggleBtn.classList.toggle('visible', colapsado);
+  }
+}
+
+// Cerrar el drawer al elegir un slide en móvil
+document.querySelectorAll('.sidebar .nav-link').forEach((link) => {
+  link.addEventListener('click', () => {
+    if (window.innerWidth <= 1024) {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarBackdrop').classList.remove('active');
+    }
+  });
+});
+
+// ScrollSpy: marca en el menú el slide visible
+const secciones = document.querySelectorAll('section.slide[id]');
+const enlaces = document.querySelectorAll('.sidebar .nav-link');
+const observador = new IntersectionObserver((entradas) => {
+  entradas.forEach((e) => {
+    if (!e.isIntersecting) return;
+    const id = e.target.id;
+    enlaces.forEach((l) => {
+      const activo = l.getAttribute('href') === '#' + id;
+      l.classList.toggle('active', activo);
+      if (activo) l.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+  });
+}, { root: null, rootMargin: '-15% 0px -65% 0px', threshold: 0 });
+secciones.forEach((s) => observador.observe(s));
+</script>
+</body>
+</html>

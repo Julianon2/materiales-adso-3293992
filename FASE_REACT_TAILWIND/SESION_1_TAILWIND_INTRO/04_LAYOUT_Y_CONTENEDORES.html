@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Por qué todo se ve pegado? | SENA ADSO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sena-verde: #39a900;
+  --sena-verde-dark: #2d8400;
+  --sena-verde-glow: rgba(57,169,0,0.10);
+  --sena-verde-border: rgba(57,169,0,0.30);
+  --sena-naranja: #ff6b00;
+  --sena-naranja-glow: rgba(255,107,0,0.10);
+  --sena-naranja-border: rgba(255,107,0,0.30);
+  --texto: #1a1a2e;
+  --texto-dim: rgba(26,26,46,0.62);
+  --texto-dimmer: rgba(26,26,46,0.38);
+  --bg: #f8fafc;
+  --bg-alt: #f4f7f2;
+  --borde: #e2e8f0;
+  --acento-azul: #3b82f6;
+  --acento-azul-glow: rgba(59,130,246,0.10);
+  --acento-purpura: #8b5cf6;
+  --acento-purpura-glow: rgba(139,92,246,0.10);
+  --alerta-amarillo: #f59e0b;
+  --alerta-amarillo-glow: rgba(245,158,11,0.10);
+  --alerta-rojo: #ef4444;
+  --alerta-rojo-glow: rgba(239,68,68,0.10);
+  --acento-teal: #0ea5e9;
+  --acento-teal-glow: rgba(14,165,233,0.10);
+  --acento-teal-border: rgba(14,165,233,0.30);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:'Inter',sans-serif; color:var(--texto); background:var(--bg); line-height:1.6; overflow-x:hidden; }
+
+.topbar { position:sticky; top:0; z-index:100; background:rgba(255,255,255,0.95); backdrop-filter:blur(16px); border-bottom:2px solid var(--sena-verde); padding:12px 32px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px var(--sena-verde-glow); }
+.topbar-left { display:flex; align-items:center; gap:16px; }
+.sena-logo { background:var(--sena-verde); color:#fff; font-weight:900; font-size:18px; padding:8px 16px; border-radius:8px; letter-spacing:1px; }
+.topbar-brand { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:var(--sena-verde-dark); }
+.topbar-sub { font-size:12px; color:var(--texto-dimmer); margin-top:2px; display:none; }
+@media(min-width:600px){ .topbar-sub{display:block;} }
+.topbar-nav { display:none; gap:4px; flex-wrap:wrap; }
+@media(min-width:900px){ .topbar-nav{display:flex;} }
+.topbar-nav a { color:var(--texto-dim); text-decoration:none; font-size:11px; font-weight:600; padding:6px 14px; border-radius:20px; border:1px solid transparent; transition:all .25s; white-space:nowrap; }
+.topbar-nav a:hover { color:var(--sena-verde-dark); border-color:var(--sena-verde-border); background:var(--sena-verde-glow); }
+
+.slide { min-height:100vh; padding:80px 48px; position:relative; scroll-margin-top:64px; border-bottom:1px solid var(--borde); }
+.slide.bg-alt { background:var(--bg-alt); }
+.slide.bg-verde { background:linear-gradient(135deg, var(--sena-verde-glow) 0%, #ffffff 60%); }
+.slide.bg-azul  { background:linear-gradient(135deg, var(--acento-azul-glow) 0%, #ffffff 60%); }
+.slide.bg-teal  { background:linear-gradient(135deg, var(--acento-teal-glow) 0%, #ffffff 60%); }
+.slide-inner { max-width:1200px; margin:0 auto; }
+.slide-num-badge { position:absolute; top:24px; right:24px; background:var(--sena-verde-glow); color:var(--sena-verde); font-size:11px; font-weight:700; padding:6px 12px; border-radius:20px; letter-spacing:1px; border:1px solid var(--sena-verde-border); }
+
+.bg-dots { position:absolute; inset:0; background-image:radial-gradient(var(--sena-verde-border) 1px, transparent 1px); background-size:28px 28px; pointer-events:none; opacity:0.35; }
+.bg-glow { position:absolute; width:600px; height:600px; border-radius:50%; filter:blur(120px); opacity:0.22; pointer-events:none; z-index:0; }
+.bg-glow.g1 { background:radial-gradient(circle, var(--sena-verde-glow), transparent 70%); top:-200px; left:-200px; }
+.bg-glow.g2 { background:radial-gradient(circle, var(--sena-naranja-glow), transparent 70%); bottom:-200px; right:-200px; }
+
+.portada-tag { display:inline-flex; align-items:center; gap:8px; background:var(--sena-verde-glow); border:1px solid var(--sena-verde-border); padding:10px 20px; border-radius:30px; font-size:12px; font-weight:700; color:var(--sena-verde-dark); letter-spacing:1.5px; margin-bottom:32px; position:relative; z-index:1; }
+.portada-tag .dot { width:6px; height:6px; background:var(--sena-verde); border-radius:50%; animation:blink 1.5s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+.portada-titulo { font-family:'Syne',sans-serif; font-size:clamp(36px,6vw,58px); font-weight:800; line-height:1.1; margin-bottom:20px; color:var(--texto); position:relative; z-index:1; }
+.portada-titulo .linea2 { display:block; background:linear-gradient(135deg, var(--acento-teal), var(--acento-azul)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.portada-desc { font-size:clamp(15px,2vw,18px); color:var(--texto-dim); max-width:680px; margin-bottom:40px; position:relative; z-index:1; line-height:1.7; }
+.portada-meta { display:flex; gap:16px; flex-wrap:wrap; position:relative; z-index:1; }
+.portada-meta-item { background:rgba(255,255,255,0.9); border:1px solid var(--borde); padding:10px 20px; border-radius:12px; font-size:14px; font-weight:600; color:var(--texto-dim); }
+
+.sec-header { margin-bottom:40px; position:relative; z-index:1; }
+.sec-tag { display:inline-block; font-size:11px; font-weight:700; padding:6px 14px; border-radius:20px; letter-spacing:1.2px; margin-bottom:14px; text-transform:uppercase; border:1px solid transparent; }
+.sec-tag.verde   { background:var(--sena-verde-glow); color:var(--sena-verde); border-color:var(--sena-verde-border); }
+.sec-tag.naranja { background:var(--sena-naranja-glow); color:var(--sena-naranja); border-color:var(--sena-naranja-border); }
+.sec-tag.azul    { background:var(--acento-azul-glow); color:var(--acento-azul); border-color:rgba(59,130,246,0.30); }
+.sec-tag.rojo    { background:var(--alerta-rojo-glow); color:var(--alerta-rojo); border-color:rgba(239,68,68,0.30); }
+.sec-tag.teal    { background:var(--acento-teal-glow); color:var(--acento-teal); border-color:var(--acento-teal-border); }
+.sec-titulo { font-family:'Syne',sans-serif; font-size:clamp(26px,3.6vw,38px); font-weight:800; color:var(--texto); margin-bottom:12px; line-height:1.2; }
+.sec-desc { font-size:clamp(15px,1.8vw,17px); color:var(--texto-dim); max-width:800px; line-height:1.7; }
+
+.info-box { border-radius:12px; padding:20px 24px; margin:20px 0; border-left:4px solid; position:relative; z-index:1; }
+.info-box.tip     { background:var(--sena-verde-glow); border-color:var(--sena-verde); }
+.info-box.warning { background:var(--alerta-amarillo-glow); border-color:var(--alerta-amarillo); }
+.info-box.danger  { background:var(--alerta-rojo-glow); border-color:var(--alerta-rojo); }
+.info-box.info    { background:var(--acento-azul-glow); border-color:var(--acento-azul); }
+.info-box-title   { font-weight:700; font-size:14px; margin-bottom:8px; }
+.info-box.tip     .info-box-title { color:var(--sena-verde-dark); }
+.info-box.warning .info-box-title { color:#92400e; }
+.info-box.danger  .info-box-title { color:#991b1b; }
+.info-box.info    .info-box-title { color:#1e40af; }
+.info-box-content { font-size:14px; color:var(--texto-dim); line-height:1.7; }
+
+.concepto-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:20px; position:relative; z-index:1; margin-bottom:28px; }
+.concepto-card { background:#fff; border:2px solid var(--borde); border-radius:16px; padding:24px; }
+.concepto-icon  { font-size:36px; margin-bottom:12px; }
+.concepto-titulo{ font-family:'Syne',sans-serif; font-size:16px; font-weight:800; color:var(--texto); margin-bottom:6px; }
+.concepto-desc  { font-size:13px; color:var(--texto-dim); line-height:1.6; }
+.concepto-card.verde   { border-color:var(--sena-verde-border); background:var(--sena-verde-glow); }
+.concepto-card.azul    { border-color:rgba(59,130,246,0.25); background:var(--acento-azul-glow); }
+.concepto-card.rojo    { border-color:rgba(239,68,68,0.25); background:var(--alerta-rojo-glow); }
+
+.code-editor { background:#1a1a2e; border-radius:14px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,.25); display:flex; flex-direction:column; }
+.code-editor-header { background:#12121f; padding:10px 16px; display:flex; align-items:center; gap:8px; }
+.term-dot { width:11px; height:11px; border-radius:50%; }
+.term-dot.r { background:#ff5f57; } .term-dot.y { background:#febc2e; } .term-dot.g { background:#28c840; }
+.code-editor-title { margin-left:8px; font-family:'JetBrains Mono',monospace; font-size:11px; color:#8892a4; flex:1; }
+.code-editor-body { padding:16px 0; font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:1.85; flex:1; overflow-x:auto; }
+.cl { display:grid; grid-template-columns:22px 1fr; column-gap:10px; padding:0 18px; white-space:pre; }
+.cl .ln { color:#4a5178; user-select:none; text-align:right; }
+.cl .code { color:#e2e8f0; }
+.indent-1 .code { padding-left:18px; }
+.cm { color:#565f89; font-style:italic; }
+.sel { color:#7dcfff; }
+.prop { color:#9ece6a; }
+.val { color:#e2e8f0; }
+.tag { color:#f7768e; }
+.attr { color:#e0af68; }
+.str { color:#9ece6a; }
+.punc { color:#8892a4; }
+
+/* ═══ Sandbox visual: simula un navegador dentro de la slide ═══ */
+.browser-mock { border-radius:14px; overflow:hidden; border:1.5px solid var(--borde); box-shadow:0 20px 50px rgba(0,0,0,.08); background:#fff; }
+.browser-bar { background:#f1f5f9; padding:9px 14px; display:flex; align-items:center; gap:8px; border-bottom:1px solid var(--borde); }
+.browser-dot { width:10px; height:10px; border-radius:50%; }
+.browser-dot.r{background:#ff5f57;} .browser-dot.y{background:#febc2e;} .browser-dot.g{background:#28c840;}
+.browser-url { margin-left:8px; font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#94a3b8; background:#fff; padding:3px 10px; border-radius:5px; border:1px solid var(--borde); flex:1; }
+.browser-view { min-height:220px; }
+
+/* Elementos de ejemplo — sin contenedor (apilados, pegados) */
+.demo-nav { display:flex; align-items:center; justify-content:space-between; padding:14px 24px; background:#fff; border-bottom:1px solid var(--borde); font-weight:800; font-size:13px; color:var(--sena-verde-dark); }
+.demo-nav span:last-child { background:var(--sena-verde); color:#fff; padding:5px 12px; border-radius:6px; font-size:11px; }
+.demo-card-sin { background:#fff; border:1px solid var(--borde); border-radius:10px; padding:12px; width:140px; box-shadow:0 4px 10px rgba(0,0,0,.05); }
+.demo-card-sin img { width:100%; height:70px; background:var(--borde); border-radius:6px; display:block; margin-bottom:6px; }
+.demo-card-sin .t { font-size:11px; font-weight:700; }
+.demo-card-sin .p { font-size:11px; color:var(--sena-verde-dark); font-weight:800; }
+.demo-btn { background:#fff; color:var(--sena-verde-dark); border:2px solid var(--sena-verde); padding:8px 16px; border-radius:8px; font-size:11px; font-weight:700; display:inline-block; }
+.demo-footer { background:var(--texto); color:#fff; padding:12px 20px; font-size:11px; display:flex; justify-content:space-between; }
+
+/* Contenedor "sin nada" (fragment) */
+.frag-outline { border:2px dashed var(--alerta-rojo); border-radius:10px; position:relative; padding:2px; }
+.frag-label { position:absolute; top:-11px; left:12px; background:var(--alerta-rojo); color:#fff; font-size:9.5px; font-weight:800; padding:2px 8px; border-radius:5px; letter-spacing:.04em; }
+
+/* Contenedor real (con clases) */
+.container-real { max-width:640px; margin:0 auto; padding:24px; display:flex; flex-direction:column; gap:16px; border:2px dashed var(--sena-verde); border-radius:14px; position:relative; }
+.container-label { position:absolute; top:-11px; left:16px; background:var(--sena-verde); color:#fff; font-size:9.5px; font-weight:800; padding:2px 8px; border-radius:5px; letter-spacing:.04em; }
+.container-real .demo-card-sin { align-self:center; }
+.container-real .demo-btn { align-self:center; }
+
+.vs-row { display:grid; grid-template-columns:1fr auto 1fr; gap:16px; align-items:center; margin:24px 0; }
+.vs-badge { width:44px; height:44px; border-radius:50%; background:var(--texto); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-weight:800; font-size:13px; }
+@media(max-width:900px){ .vs-row{grid-template-columns:1fr;} .vs-badge{justify-self:center;} }
+
+.roadmap-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:22px; position:relative; z-index:1; margin-bottom:8px; }
+@media(max-width:900px){ .roadmap-grid{ grid-template-columns:1fr; } }
+.roadmap-card { background:#fff; border:2px solid var(--borde); border-radius:18px; padding:28px 24px 24px; position:relative; overflow:hidden; transition:transform .2s, box-shadow .2s; }
+.roadmap-card:hover { transform:translateY(-4px); box-shadow:0 16px 32px rgba(14,165,233,.14); border-color:var(--acento-teal-border); }
+.roadmap-num { position:absolute; top:-6px; right:4px; font-family:'Syne',sans-serif; font-size:72px; font-weight:800; color:var(--acento-teal); opacity:.10; line-height:1; pointer-events:none; }
+.roadmap-icon { font-size:34px; margin-bottom:14px; }
+.roadmap-tag { display:inline-block; font-family:'JetBrains Mono',monospace; font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--acento-teal); background:var(--acento-teal-glow); border:1px solid var(--acento-teal-border); padding:4px 10px; border-radius:20px; margin-bottom:12px; }
+.roadmap-titulo { font-family:'Syne',sans-serif; font-size:18px; font-weight:800; color:var(--texto); margin-bottom:10px; line-height:1.25; }
+.roadmap-desc { font-size:13px; color:var(--texto-dim); line-height:1.65; }
+
+.footer-nav { position:fixed; bottom:0; left:0; right:0; z-index:90; background:rgba(255,255,255,0.95); backdrop-filter:blur(16px); border-top:2px solid var(--sena-verde); padding:14px 32px; display:flex; align-items:center; justify-content:space-between; }
+.footer-btn { background:var(--sena-verde); color:#fff; border:none; padding:10px 24px; border-radius:8px; font-weight:700; font-size:14px; cursor:pointer; transition:all .2s; }
+.footer-btn:hover { background:var(--sena-verde-dark); transform:translateY(-1px); }
+.footer-btn:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+.footer-page { font-size:13px; font-weight:600; color:var(--texto-dim); }
+
+@media(max-width:768px){ .slide{padding:60px 24px;} .topbar{padding:10px 20px;} }
+
+/* Iconos Lucide en línea (reemplazan a los emojis) */
+.ic{width:1.15em;height:1.15em;vertical-align:-.2em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;display:inline-block;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="sena-logo">SENA</div>
+    <div>
+      <div class="topbar-brand">ADSO · Construcción de Software</div>
+      <div class="topbar-sub">Ficha 3293992 · Garzón, Huila</div>
+    </div>
+  </div>
+  <nav class="topbar-nav">
+    <a href="#portada">Inicio</a>
+    <a href="#problema">El problema</a>
+    <a href="#fragment">Qué es un fragment</a>
+    <a href="#comparacion">Sin vs. con contenedor</a>
+    <a href="#solucion">Solución de hoy</a>
+    <a href="#futuro">Qué viene después</a>
+  </nav>
+</div>
+
+<!-- ══════════ SLIDE 1 — PORTADA ══════════ -->
+<section class="slide" id="portada">
+  <div class="bg-dots"></div>
+  <div class="bg-glow g1"></div>
+  <div class="bg-glow g2"></div>
+  <div class="slide-inner" style="position:relative;z-index:1;">
+    <div class="portada-tag"><span class="dot"></span> COMPLEMENTO · SESIÓN 1</div>
+    <h1 class="portada-titulo">
+      ¿Por qué todo se ve<br>
+      <span class="linea2">pegado y apilado?</span>
+    </h1>
+    <p class="portada-desc">
+      Terminaste los ejercicios de la Sesión 1 y el navbar, la tarjeta, el botón y el footer aparecen uno debajo del otro, pegados al borde izquierdo, sin espacio entre ellos. No es un error — es lo que pasa cuando el JSX no tiene un <strong>contenedor con layout</strong> alrededor. Esta guía corta explica por qué, y qué hacer al respecto.
+    </p>
+    <div class="portada-meta">
+      <div class="portada-meta-item"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.91a1 1 0 0 0 0-1.83Z"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/></svg> Fragment vs. contenedor</div>
+      <div class="portada-meta-item"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg> Qué es un "layout"</div>
+      <div class="portada-meta-item"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> Se resuelve en serio en S2</div>
+    </div>
+  </div>
+  <span class="slide-num-badge">01 / 06</span>
+</section>
+
+<!-- ══════════ SLIDE 2 — EL PROBLEMA ══════════ -->
+<section class="slide bg-alt" id="problema">
+  <div class="slide-inner">
+    <div class="sec-header">
+      <span class="sec-tag rojo">El problema</span>
+      <h2 class="sec-titulo">Lo que se ve ahora mismo en frontend-react/</h2>
+      <p class="sec-desc">El navbar, la tarjeta, el botón y el footer de los 3 ejercicios están todos ahí — el código es correcto — pero visualmente se ven así:</p>
+    </div>
+
+    <div class="browser-mock">
+      <div class="browser-bar">
+        <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+        <div class="browser-url">localhost:5173</div>
+      </div>
+      <div class="browser-view">
+        <div class="demo-nav"><span>TechStore Pro</span><span>Ingresar</span></div>
+        <div style="padding:14px;">
+          <div class="demo-card-sin">
+            <img>
+            <div class="t">Mouse Inalámbrico</div>
+            <div class="p">$89.900</div>
+          </div>
+        </div>
+        <div style="padding:0 14px;"><div class="demo-btn">Ver más detalles</div></div>
+        <div class="demo-footer"><span>© 2026 TechStore Pro</span><span>Hecho con Tailwind</span></div>
+      </div>
+    </div>
+
+    <div class="info-box danger">
+      <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg> Todo pegado al borde izquierdo, sin separación entre secciones</div>
+      <div class="info-box-content">La tarjeta está a 14px del borde, el botón casi tocando la tarjeta, y no hay ningún "aire" entre el navbar y el resto de la página. Cada elemento se ve técnicamente correcto (colores, bordes, tipografía) — el problema no es el elemento, es <strong>cómo se organizan entre sí</strong>.</div>
+    </div>
+  </div>
+  <span class="slide-num-badge">02 / 06</span>
+</section>
+
+<!-- ══════════ SLIDE 3 — QUÉ ES UN FRAGMENT ══════════ -->
+<section class="slide" id="fragment">
+  <div class="slide-inner">
+    <div class="sec-header">
+      <span class="sec-tag azul">La causa raíz</span>
+      <h2 class="sec-titulo">El fragment agrupa, pero no organiza</h2>
+      <p class="sec-desc">En el Ejercicio 1 de hoy, el <code style="font-family:'JetBrains Mono',monospace;">App.jsx</code> quedó así — todo envuelto en <code style="font-family:'JetBrains Mono',monospace;">&lt;&gt;...&lt;/&gt;</code>:</p>
+    </div>
+
+    <div class="code-editor" style="max-width:520px;margin:0 auto 24px;">
+      <div class="code-editor-header">
+        <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+        <div class="code-editor-title">frontend-react/src/App.jsx</div>
+      </div>
+      <div class="code-editor-body">
+        <div class="cl"><span class="ln">1</span><span class="code"><span class="prop">function</span> App() {</span></div>
+        <div class="cl"><span class="ln">2</span><span class="code"><span class="prop">return</span> (</span></div>
+        <div class="cl indent-1"><span class="ln">3</span><span class="code"><span class="tag">&lt;&gt;</span> <span class="cm">{/* ← el fragment empieza aquí */}</span></span></div>
+        <div class="cl indent-1"><span class="ln">4</span><span class="code">  &lt;nav&gt;...&lt;/nav&gt;</span></div>
+        <div class="cl indent-1"><span class="ln">5</span><span class="code">  &lt;div&gt;...&lt;/div&gt;  <span class="cm">{/* tarjeta */}</span></span></div>
+        <div class="cl indent-1"><span class="ln">6</span><span class="code">  &lt;button&gt;...&lt;/button&gt;</span></div>
+        <div class="cl indent-1"><span class="ln">7</span><span class="code">  &lt;footer&gt;...&lt;/footer&gt;</span></div>
+        <div class="cl indent-1"><span class="ln">8</span><span class="code"><span class="tag">&lt;/&gt;</span> <span class="cm">{/* ← y termina aquí */}</span></span></div>
+        <div class="cl"><span class="ln">9</span><span class="code">)</span></div>
+        <div class="cl"><span class="ln">10</span><span class="code">}</span></div>
+      </div>
+    </div>
+
+    <div class="concepto-grid">
+      <div class="concepto-card azul">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg></div>
+        <div class="concepto-titulo">No genera HTML</div>
+        <div class="concepto-desc">El fragment existe solo para React — cuando el navegador recibe la página, <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">&lt;&gt;</code> y <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">&lt;/&gt;</code> desaparecen. No hay ningún <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">&lt;div&gt;</code> real ahí.</div>
+      </div>
+      <div class="concepto-card azul">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg></div>
+        <div class="concepto-titulo">No admite className</div>
+        <div class="concepto-desc">Como no genera un elemento real, no se le puede poner <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">className="p-8 flex flex-col gap-8"</code> — no hay nada ahí para estilizar.</div>
+      </div>
+      <div class="concepto-card azul">
+        <div class="concepto-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></div>
+        <div class="concepto-titulo">Solo resuelve una regla de JSX</div>
+        <div class="concepto-desc">React exige que <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">return</code> devuelva un único elemento — el fragment cumple esa regla técnica, nada más.</div>
+      </div>
+    </div>
+
+    <div class="info-box info">
+      <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg> Consecuencia directa</div>
+      <div class="info-box-content">Como no hay ningún contenedor con estilo alrededor de <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">&lt;nav&gt;</code>, <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">&lt;div&gt;</code>, <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">&lt;button&gt;</code> y <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">&lt;footer&gt;</code>, cada uno se comporta como el navegador decide por defecto: son elementos <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">block</code>, así que ocupan todo el ancho disponible y se apilan uno debajo del otro, sin ningún margen ni padding general.</div>
+    </div>
+  </div>
+  <span class="slide-num-badge">03 / 06</span>
+</section>
+
+<!-- ══════════ SLIDE 4 — COMPARACIÓN VISUAL ══════════ -->
+<section class="slide bg-verde" id="comparacion">
+  <div class="bg-dots"></div>
+  <div class="slide-inner">
+    <div class="sec-header">
+      <span class="sec-tag verde">Comparación</span>
+      <h2 class="sec-titulo">Sin contenedor vs. con contenedor</h2>
+      <p class="sec-desc">Mismo navbar, misma tarjeta, mismo botón — la única diferencia es si hay algo real alrededor con <code style="font-family:'JetBrains Mono',monospace;">className</code>.</p>
+    </div>
+
+    <div class="vs-row">
+      <div>
+        <div class="frag-outline">
+          <span class="frag-label">&lt;&gt; fragment — sin estilo</span>
+          <div class="browser-mock" style="border:none;box-shadow:none;">
+            <div class="browser-bar">
+              <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+            </div>
+            <div style="padding:0;">
+              <div class="demo-card-sin" style="margin:10px;">
+                <img><div class="t">Producto</div><div class="p">$89.900</div>
+              </div>
+              <div style="margin:0 10px 10px;"><div class="demo-btn">Ver más</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vs-badge">VS</div>
+
+      <div>
+        <div class="container-real">
+          <div class="container-label">&lt;div className="p-8 flex flex-col items-center gap-6"&gt;</div>
+          <div class="demo-card-sin"><img><div class="t">Producto</div><div class="p">$89.900</div></div>
+          <div class="demo-btn">Ver más</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabla-wrap" style="margin-top:8px;">
+      <table>
+        <thead><tr><th>Sin contenedor (fragment solo)</th><th>Con contenedor (div + clases)</th></tr></thead>
+        <tbody>
+          <tr><td>Elementos pegados al borde de la ventana</td><td><code style="font-family:'JetBrains Mono',monospace;font-size:12px;">p-8</code> agrega aire alrededor de todo</td></tr>
+          <tr><td>Cada uno ocupa el 100% del ancho (comportamiento block)</td><td><code style="font-family:'JetBrains Mono',monospace;font-size:12px;">flex flex-col items-center</code> los centra y los hace del tamaño de su contenido</td></tr>
+          <tr><td>Sin separación uniforme entre secciones</td><td><code style="font-family:'JetBrains Mono',monospace;font-size:12px;">gap-6</code> separa todo de forma pareja</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <span class="slide-num-badge">04 / 06</span>
+</section>
+
+<!-- ══════════ SLIDE 5 — LA SOLUCIÓN DE HOY ══════════ -->
+<section class="slide" id="solucion">
+  <div class="slide-inner">
+    <div class="sec-header">
+      <span class="sec-tag verde">Prueba rápida (opcional)</span>
+      <h2 class="sec-titulo">Envolver la tarjeta y el botón en un contenedor</h2>
+      <p class="sec-desc">Si quieres ver el efecto ahora mismo, sin esperar a la Sesión 2, esto ya lo puedes hacer con lo que aprendiste hoy — es solo un <code style="font-family:'JetBrains Mono',monospace;">&lt;div&gt;</code> con clases utility, nada nuevo.</p>
+    </div>
+
+    <div style="max-width:900px;margin:0 auto;">
+      <div class="code-editor">
+        <div class="code-editor-header">
+          <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+          <div class="code-editor-title">App.jsx — con el contenedor agregado</div>
+        </div>
+        <div class="code-editor-body" style="font-size:12.5px;">
+          <div class="cl"><span class="ln">1</span><span class="code"><span class="prop">function</span> <span class="sel">App</span>() {</span></div>
+          <div class="cl"><span class="ln">2</span><span class="code">  <span class="prop">return</span> (</span></div>
+          <div class="cl"><span class="ln">3</span><span class="code">    <span class="punc">&lt;&gt;</span></span></div>
+          <div class="cl"><span class="ln">4</span><span class="code">    <span class="punc">&lt;</span><span class="tag">nav</span> <span class="attr">className</span>=<span class="str">"flex items-center justify-between px-8 py-4 bg-white border-b border-slate-200"</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">5</span><span class="code">      <span class="punc">&lt;</span><span class="tag">div</span> <span class="attr">className</span>=<span class="str">"text-xl font-extrabold text-verde"</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">6</span><span class="code">        TechStore Pro</span></div>
+          <div class="cl"><span class="ln">7</span><span class="code">      <span class="punc">&lt;/</span><span class="tag">div</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">8</span><span class="code">      <span class="punc">&lt;</span><span class="tag">ul</span> <span class="attr">className</span>=<span class="str">"flex gap-6 text-sm font-semibold text-texto-dim"</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">9</span><span class="code">        <span class="punc">&lt;</span><span class="tag">li</span><span class="punc">&gt;</span>Inicio<span class="punc">&lt;/</span><span class="tag">li</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">10</span><span class="code">        <span class="punc">&lt;</span><span class="tag">li</span><span class="punc">&gt;</span>Productos<span class="punc">&lt;/</span><span class="tag">li</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">11</span><span class="code">        <span class="punc">&lt;</span><span class="tag">li</span><span class="punc">&gt;</span>Nosotros<span class="punc">&lt;/</span><span class="tag">li</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">12</span><span class="code">        <span class="punc">&lt;</span><span class="tag">li</span><span class="punc">&gt;</span>Contacto<span class="punc">&lt;/</span><span class="tag">li</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">13</span><span class="code">      <span class="punc">&lt;/</span><span class="tag">ul</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">14</span><span class="code">      <span class="punc">&lt;</span><span class="tag">button</span> <span class="attr">className</span>=<span class="str">"bg-verde text-white py-2 px-5 rounded-lg font-bold text-sm"</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">15</span><span class="code">        Ingresar</span></div>
+          <div class="cl"><span class="ln">16</span><span class="code">      <span class="punc">&lt;/</span><span class="tag">button</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">17</span><span class="code">    <span class="punc">&lt;/</span><span class="tag">nav</span><span class="punc">&gt;</span></span></div>
+          <div class="cl" style="background:rgba(74,222,128,.10);"><span class="ln">18</span><span class="code">    <span class="punc">&lt;</span><span class="tag">div</span> <span class="attr">className</span>=<span class="str">"p-8 flex flex-col items-center gap-6"</span><span class="punc">&gt;</span> <span class="cm">{/* ← NUEVO */}</span></span></div>
+          <div class="cl"><span class="ln">19</span><span class="code">      <span class="punc">&lt;</span><span class="tag">div</span> <span class="attr">className</span>=<span class="str">"flex flex-col gap-2 p-4 rounded-xl shadow-md max-w-xs"</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">20</span><span class="code">        <span class="punc">&lt;</span><span class="tag">img</span> <span class="attr">src</span>=<span class="str">"https://placehold.co/300x200"</span> <span class="attr">className</span>=<span class="str">"rounded-lg"</span> <span class="punc">/&gt;</span></span></div>
+          <div class="cl"><span class="ln">21</span><span class="code">        <span class="punc">&lt;</span><span class="tag">h3</span> <span class="attr">className</span>=<span class="str">"font-bold text-lg"</span><span class="punc">&gt;</span>Mouse Inalámbrico<span class="punc">&lt;/</span><span class="tag">h3</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">22</span><span class="code">        <span class="punc">&lt;</span><span class="tag">p</span> <span class="attr">className</span>=<span class="str">"text-verde font-extrabold"</span><span class="punc">&gt;</span>$89.900<span class="punc">&lt;/</span><span class="tag">p</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">23</span><span class="code">      <span class="punc">&lt;/</span><span class="tag">div</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">24</span><span class="code">      <span class="punc">&lt;</span><span class="tag">button</span> <span class="attr">className</span>=<span class="str">"bg-transparent text-verde border-2 border-verde py-3 px-6 rounded-xl font-bold"</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">25</span><span class="code">        Ver más detalles</span></div>
+          <div class="cl"><span class="ln">26</span><span class="code">      <span class="punc">&lt;/</span><span class="tag">button</span><span class="punc">&gt;</span></span></div>
+          <div class="cl" style="background:rgba(74,222,128,.10);"><span class="ln">27</span><span class="code">    <span class="punc">&lt;/</span><span class="tag">div</span><span class="punc">&gt;</span> <span class="cm">{/* ← NUEVO */}</span></span></div>
+          <div class="cl"><span class="ln">28</span><span class="code">    <span class="punc">&lt;</span><span class="tag">footer</span> <span class="attr">className</span>=<span class="str">"flex justify-between items-center p-6 bg-texto text-white"</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">29</span><span class="code">      <span class="punc">&lt;</span><span class="tag">p</span><span class="punc">&gt;</span>© 2026 TechStore Pro<span class="punc">&lt;/</span><span class="tag">p</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">30</span><span class="code">      <span class="punc">&lt;</span><span class="tag">p</span> <span class="attr">className</span>=<span class="str">"text-sm"</span><span class="punc">&gt;</span>Hecho con Tailwind CSS<span class="punc">&lt;/</span><span class="tag">p</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">31</span><span class="code">    <span class="punc">&lt;/</span><span class="tag">footer</span><span class="punc">&gt;</span></span></div>
+          <div class="cl"><span class="ln">32</span><span class="code">    <span class="punc">&lt;/&gt;</span></span></div>
+          <div class="cl"><span class="ln">33</span><span class="code">  )</span></div>
+          <div class="cl"><span class="ln">34</span><span class="code">}</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box tip" style="margin-top:20px;">
+      <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> Qué cambia — solo 2 líneas nuevas</div>
+      <div class="info-box-content">La tarjeta (línea 18-22 original) y el botón (línea 24-26 original) — que antes estaban sueltos, directo dentro del fragment — ahora quedan envueltos por un <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">&lt;div className="p-8 flex flex-col items-center gap-6"&gt;</code> nuevo (marcado en verde). Nada del código de adentro cambia — solo se agregan esas 2 líneas: la apertura del div antes de la tarjeta, y su cierre después del botón. El <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">&lt;nav&gt;</code> y el <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">&lt;footer&gt;</code> quedan fuera de ese div a propósito — cada uno ya tiene su propio ancho completo, que es como debe ser.</div>
+    </div>
+  </div>
+  <span class="slide-num-badge">05 / 06</span>
+</section>
+
+<!-- ══════════ SLIDE 6 — QUÉ VIENE DESPUÉS ══════════ -->
+<section class="slide bg-teal" id="futuro">
+  <div class="bg-dots"></div>
+  <div class="slide-inner">
+    <div class="sec-header">
+      <span class="sec-tag teal">Cierre</span>
+      <h2 class="sec-titulo">El orden llega en 3 paradas del camino</h2>
+      <p class="sec-desc">Hoy el objetivo era que cada clase utility funcionara por separado — no armar una página terminada. El layout real se construye por etapas, en lo que ya está planeado para las próximas sesiones:</p>
+    </div>
+
+    <div class="roadmap-grid">
+      <div class="roadmap-card">
+        <div class="roadmap-num">01</div>
+        <div class="roadmap-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg></div>
+        <div class="roadmap-tag">Sesión 2</div>
+        <div class="roadmap-titulo">Componentes y responsive</div>
+        <div class="roadmap-desc">Grid y flexbox aplicados a layouts completos, breakpoints (<code style="font-family:'JetBrains Mono',monospace;font-size:11.5px;">md:</code>, <code style="font-family:'JetBrains Mono',monospace;font-size:11.5px;">lg:</code>) y la tarjeta de producto dentro de un grid real de catálogo — no un elemento suelto.</div>
+      </div>
+      <div class="roadmap-card">
+        <div class="roadmap-num">02</div>
+        <div class="roadmap-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.91a1 1 0 0 0 0-1.83Z"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/></svg></div>
+        <div class="roadmap-tag">Sesión 3 en adelante</div>
+        <div class="roadmap-titulo">Componentes de React</div>
+        <div class="roadmap-desc">El navbar, el footer y las tarjetas se separan en archivos propios (<code style="font-family:'JetBrains Mono',monospace;font-size:11.5px;">Navbar.jsx</code>, <code style="font-family:'JetBrains Mono',monospace;font-size:11.5px;">Footer.jsx</code>) — cada uno ya trae su propio contenedor bien definido.</div>
+      </div>
+      <div class="roadmap-card">
+        <div class="roadmap-num">03</div>
+        <div class="roadmap-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+        <div class="roadmap-tag">Sesión 9</div>
+        <div class="roadmap-titulo">Migrar páginas completas</div>
+        <div class="roadmap-desc">Ahí se arma el layout de página de verdad: un contenedor general, secciones bien espaciadas, todo centrado y responsive — el resultado final que hoy todavía no se ve.</div>
+      </div>
+    </div>
+
+    <div class="info-box tip" style="margin-top:8px;">
+      <div class="info-box-title"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> Con esto en claro</div>
+      <div class="info-box-content">Si hoy tu proyecto se ve "feo" o desordenado, no significa que algo esté mal — significa que ya sabes usar las clases utility, que era el objetivo de la Sesión 1. El orden visual llega con el layout, que es el tema de las próximas sesiones.</div>
+    </div>
+  </div>
+  <span class="slide-num-badge">06 / 06</span>
+</section>
+
+<!-- ── FOOTER NAV FIJO ── -->
+<nav class="footer-nav">
+  <button class="footer-btn" id="btn-prev" onclick="navSlide(-1)" disabled>← Anterior</button>
+  <span class="footer-page" id="footer-page">Slide 1 de 6</span>
+  <button class="footer-btn" id="btn-next" onclick="navSlide(1)">Siguiente →</button>
+</nav>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+let current = 0;
+const btnPrev = document.getElementById('btn-prev');
+const btnNext = document.getElementById('btn-next');
+const pageLabel = document.getElementById('footer-page');
+
+function updateNav() {
+  btnPrev.disabled = current === 0;
+  btnNext.disabled = current === slides.length - 1;
+  pageLabel.textContent = 'Slide ' + (current + 1) + ' de ' + slides.length;
+}
+
+function navSlide(dir) {
+  current = Math.max(0, Math.min(slides.length - 1, current + dir));
+  slides[current].scrollIntoView({ behavior: 'smooth' });
+  updateNav();
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      current = slides.indexOf(e.target);
+      updateNav();
+    }
+  });
+}, { threshold: 0.5 });
+slides.forEach(s => observer.observe(s));
+
+updateNav();
+</script>
+</body>
+</html>
