@@ -651,7 +651,7 @@ modalPass.addEventListener('keydown', e => { if (e.key === 'Enter') intentarDesb
 modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) cerrarModal(); });
 
 /* ═══ Selector de aprendiz + envío a Google Sheets (Apps Script) ═══ */
-const URL_APPS_SCRIPT = ''; // Pegar aquí la URL /exec del Apps Script de la ficha 3293992 (ver AppsScript_Progreso_S1.gs)
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzHCBDSjIhE5SwS0Uue_gQXZMM3GNwtUukK-3d1LiuGFhgtluVolOTZhVh9WwBZxX0/exec';
 const ARCHIVO_ACTUAL  = '03_EJERCICIOS_PRACTICA';
 const APRENDIZ_KEY    = 'sena-aprendiz-nombre';
 
@@ -755,6 +755,7 @@ btnEnviar.addEventListener('click', async () => {
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({
+        tipo: 'progreso',
         aprendiz: aprendiz,
         archivo: ARCHIVO_ACTUAL,
         completados: pasosCompletados.length,

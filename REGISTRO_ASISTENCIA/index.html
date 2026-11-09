@@ -295,8 +295,7 @@ const APRENDICES = [
   { nombre: 'YILVER ARLEX JOVEL ANGARITA',        documento: '1077856682' }
 ];
 
-/* Vacío hasta que se cree la hoja de Sheets de esta ficha — ver AppsScript_RegistroAsistencia.gs */
-const URL_APPS_SCRIPT = '';
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzHCBDSjIhE5SwS0Uue_gQXZMM3GNwtUukK-3d1LiuGFhgtluVolOTZhVh9WwBZxX0/exec';
 
 const HORA_INICIO = { h: 18, m: 30 }; // 6:30 PM
 const HORA_CIERRE = { h: 18, m: 45 }; // 6:45 PM
@@ -495,7 +494,7 @@ btnRegistrar.addEventListener('click', async () => {
     const res = await fetch(URL_APPS_SCRIPT, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ nombre, documento })
+      body: JSON.stringify({ tipo: 'asistencia', nombre, documento })
     });
     const data = await res.json();
 
