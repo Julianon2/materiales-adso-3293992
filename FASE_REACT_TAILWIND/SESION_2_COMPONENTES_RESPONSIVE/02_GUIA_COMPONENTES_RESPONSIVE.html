@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Paso a Paso S2 — Componentes y Responsive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg:#F4F2EC; --surface:#ffffff; --surface2:#ECE9DF; --border:#e5e1d4;
+  --txt:#0f172a; --txt-dim:#64748b;
+  --accent:#0284c7; --accent-glow:rgba(2,132,199,.10);
+  --green:#16a34a; --green-bg:rgba(22,163,74,.10);
+  --red:#dc2626; --red-bg:rgba(220,38,38,.08);
+  --yellow:#d97706; --yellow-bg:rgba(217,119,6,.10);
+  --purple:#7c3aed; --purple-bg:rgba(124,58,237,.08);
+  --teal:#018751; --teal-bg:rgba(1,135,81,.09);
+  --code-bg:#0d1117; --sidebar-w:260px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt);font-size:15px;line-height:1.7;display:flex;min-height:100vh;user-select:none;}
+pre, pre * { user-select:none; }
+
+.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:0;left:0;bottom:0;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;padding:24px 0 40px;display:flex;flex-direction:column;}
+.sidebar-brand{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.sidebar-brand .curso{font-size:11px;color:var(--teal);font-weight:600;letter-spacing:.08em;text-transform:uppercase;}
+.sidebar-brand h1{font-size:14px;font-weight:700;color:var(--txt);margin-top:4px;line-height:1.3;}
+.sidebar-brand .ficha{font-size:11px;color:var(--txt-dim);margin-top:2px;}
+.progress-wrap{padding:16px 20px;border-bottom:1px solid var(--border);margin-bottom:8px;}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--txt-dim);margin-bottom:8px;}
+.progress-label span:last-child{color:var(--teal);font-weight:700;}
+.progress-bar-bg{height:6px;background:var(--surface2);border-radius:10px;overflow:hidden;}
+.progress-bar-fill{height:100%;background:var(--teal);border-radius:10px;transition:width .4s ease;width:0%;}
+.nav-section{padding:0 12px;margin-bottom:4px;}
+.nav-label{font-size:10px;color:var(--txt-dim);letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:8px 8px 4px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:7px;cursor:pointer;color:var(--txt-dim);font-size:13px;font-weight:500;text-decoration:none;transition:background .15s,color .15s;border:none;background:none;width:100%;text-align:left;}
+.nav-item:hover{background:var(--accent-glow);color:var(--txt);}
+.nav-item.active{background:var(--accent-glow);color:var(--accent);}
+.nav-item.active .nav-dot{background:var(--accent);}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background .15s;}
+.nav-item:hover .nav-dot{background:var(--txt-dim);}
+.nav-item.done{color:var(--teal);}
+.nav-item.done .nav-dot{background:var(--teal);}
+.sidebar-footer{margin-top:auto;padding:14px 20px;border-top:1px solid var(--border);}
+.sidebar-hub-link{display:flex;align-items:center;gap:8px;color:var(--accent);text-decoration:none;font-size:12.5px;font-weight:700;padding:8px 10px;border-radius:8px;transition:background .15s;}
+.sidebar-hub-link:hover{background:var(--accent-glow);}
+
+.main{margin-left:var(--sidebar-w);flex:1;padding:48px 56px 80px;max-width:820px;}
+
+.page-header{margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--border);}
+.page-tag{font-size:11px;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:8px;}
+.page-title{font-size:28px;font-weight:700;color:var(--txt);line-height:1.2;text-wrap:balance;}
+.page-subtitle{font-size:14px;color:var(--txt-dim);margin-top:8px;}
+.page-warning{margin-top:20px;background:var(--yellow-bg);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--yellow);font-weight:500;}
+
+.intro-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px 36px;margin-bottom:52px;}
+.intro-tag{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+.intro-title{font-size:20px;font-weight:800;color:var(--txt);line-height:1.25;margin-bottom:10px;}
+.intro-sub{font-size:14px;color:var(--txt-dim);margin-bottom:20px;line-height:1.6;}
+.intro-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.intro-item{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.intro-item-icon{margin-bottom:8px;color:var(--teal);}
+.intro-item-icon svg{width:22px;height:22px;}
+.intro-item-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--txt-dim);margin-bottom:4px;}
+.intro-item-desc{font-size:13px;color:var(--txt);font-weight:500;line-height:1.4;}
+
+.section{margin-bottom:56px;scroll-margin-top:32px;}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.step-badge{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;background:var(--accent-glow);color:var(--accent);border:1px solid rgba(59,130,246,.3);border-radius:6px;padding:3px 10px;white-space:nowrap;letter-spacing:.04em;flex-shrink:0;}
+.step-badge.green{background:var(--green-bg);color:var(--green);border-color:rgba(34,197,94,.3);}
+.step-badge.yellow{background:var(--yellow-bg);color:var(--yellow);border-color:rgba(245,158,11,.3);}
+.step-badge.extra{background:var(--purple-bg);color:var(--purple);border-color:rgba(167,139,250,.3);}
+.step-badge.teal{background:var(--teal-bg);color:var(--teal);border-color:rgba(45,212,191,.3);}
+.section-title{font-size:20px;font-weight:700;color:var(--txt);text-wrap:balance;}
+
+.step-list{display:flex;flex-direction:column;gap:20px;}
+.step-item{display:flex;gap:16px;}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--accent);font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.step-body{flex:1;}
+.step-body p{color:var(--txt);font-size:14px;}
+.step-body strong{color:var(--txt);font-weight:600;}
+
+.code-wrap{margin:12px 0;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+.code-header{display:flex;align-items:center;gap:8px;background:var(--surface2);padding:8px 14px;border-bottom:1px solid var(--border);}
+.code-dots{display:flex;gap:5px;}
+.code-dot{width:10px;height:10px;border-radius:50%;}
+.code-dot.r{background:#ff5f57;} .code-dot.y{background:#febc2e;} .code-dot.g{background:#28c840;}
+.code-filename{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-dim);flex:1;}
+.code-tag{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;}
+.code-tag.blue{background:rgba(59,130,246,.15);color:var(--accent);}
+.code-tag.green{background:var(--green-bg);color:var(--green);}
+.code-tag.yellow{background:var(--yellow-bg);color:var(--yellow);}
+.code-tag.purple{background:var(--purple-bg);color:var(--purple);}
+pre{background:var(--code-bg);padding:18px 20px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.65;color:#abb2bf;}
+pre .c{color:#5c6370;} pre .k{color:#c678dd;} pre .s{color:#98c379;}
+pre .f{color:#61afef;} pre .n{color:#e5c07b;} pre .y{color:#d19a66;}
+pre .edit{color:#fbbf24;background:rgba(245,158,11,.12);border-radius:3px;padding:0 2px;}
+
+.callout{display:flex;gap:10px;align-items:flex-start;padding:12px 16px;border-radius:8px;font-size:13px;margin:14px 0;line-height:1.5;}
+.callout.ok{background:var(--green-bg);border:1px solid rgba(34,197,94,.2);color:var(--green);}
+.callout.err{background:var(--red-bg);border:1px solid rgba(248,113,113,.2);color:var(--red);}
+.callout.warn{background:var(--yellow-bg);border:1px solid rgba(245,158,11,.2);color:var(--yellow);}
+.callout.info{background:var(--accent-glow);border:1px solid rgba(59,130,246,.2);color:#1e40af;}
+.callout.teal{background:var(--teal-bg);border:1px solid rgba(45,212,191,.2);color:var(--teal);}
+.callout.tip{background:var(--green-bg);border:1px solid rgba(34,197,94,.2);color:var(--green);}
+.callout-icon{flex-shrink:0;margin-top:1px;}
+.callout-icon svg{width:15px;height:15px;}
+.callout strong{color:inherit;font-weight:600;}
+
+.table-wrap{overflow-x:auto;margin:16px 0;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:var(--surface2);color:var(--txt-dim);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--txt);vertical-align:top;}
+td:first-child{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--teal);}
+tr:last-child td{border-bottom:none;}
+
+.checklist{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.checklist li{display:flex;align-items:flex-start;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--txt-dim);cursor:pointer;transition:all .15s;}
+.checklist li:hover{border-color:var(--teal);}
+.checklist li.marcado{background:var(--teal-bg);border-color:rgba(45,212,191,.35);color:var(--txt);}
+.check-box{width:18px;height:18px;border-radius:4px;border:2px solid var(--border);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--teal);}
+.checklist li.marcado .check-box{border-color:var(--teal);background:var(--teal-bg);}
+.checklist li strong{color:var(--txt);font-weight:600;}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--surface2);padding:1px 6px;border-radius:4px;color:#0369a1;}
+
+.subsec{margin:28px 0 16px;}
+.subsec-title{font-size:15px;font-weight:700;color:var(--txt);padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+
+.responsive-demo{display:flex;gap:14px;margin:16px 0;align-items:flex-end;}
+.rd-box{background:var(--surface2);border:1.5px dashed var(--border);border-radius:8px;padding:10px;text-align:center;}
+.rd-box .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt-dim);margin-bottom:6px;}
+.rd-box .cards{display:grid;gap:4px;}
+.rd-box .c{background:var(--accent-glow);border:1px solid rgba(2,132,199,.3);border-radius:4px;height:18px;width:28px;}
+
+.complete-btn{display:flex;align-items:center;gap:10px;margin-top:28px;padding:14px 20px;background:var(--teal-bg);border:1px solid rgba(45,212,191,.3);border-radius:10px;color:var(--teal);font-size:14px;font-weight:600;cursor:pointer;width:100%;transition:all .2s;font-family:'Inter',sans-serif;}
+.complete-btn:hover{border-color:var(--teal);}
+.complete-btn.done{cursor:default;}
+.complete-btn .btn-icon{display:flex;}
+.complete-btn .btn-txt{flex:1;text-align:left;}
+.complete-btn .btn-badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:rgba(45,212,191,.15);color:var(--teal);opacity:0;}
+.complete-btn.done .btn-badge{opacity:1;}
+.confetti-wrap{position:fixed;inset:0;pointer-events:none;z-index:999;}
+
+.submit-wrap{margin-top:28px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:12px;}
+.submit-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px 20px;background:var(--accent);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;}
+.submit-btn:hover{background:#2f6fe0;transform:translateY(-1px);}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.submit-status{margin-top:10px;font-size:12.5px;text-align:center;color:var(--txt-dim);}
+.submit-status.ok{color:var(--green);}
+.submit-status.err{color:var(--red);}
+
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+h1,h2,.page-title,.sidebar-brand h1{font-family:'Syne','Inter',sans-serif;}
+pre,pre *,.code-block,.code-block *{color:#e2e8f0;}
+.sidebar{box-shadow:0 10px 30px -10px rgba(15,23,42,.07);}
+
+.ic{width:1.15em;height:1.15em;vertical-align:-.2em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;display:inline-block;}
+
+.aprendiz-wrap{padding:14px 20px;border-bottom:1px solid var(--border);margin-bottom:8px;}
+.aprendiz-label{font-size:10px;color:var(--txt-dim);letter-spacing:.1em;text-transform:uppercase;font-weight:600;display:block;margin-bottom:6px;}
+.aprendiz-trigger{width:100%;display:flex;align-items:center;gap:8px;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:9px 10px;color:var(--txt);font:600 12.5px 'Inter',sans-serif;cursor:pointer;text-align:left;transition:border-color .15s,box-shadow .15s;}
+.aprendiz-trigger:hover{border-color:var(--teal);}
+.aprendiz-trigger:focus-visible,.aprendiz-trigger[aria-expanded="true"]{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-bg);}
+.aprendiz-trigger.falta{border-color:var(--yellow);box-shadow:0 0 0 3px var(--yellow-bg);}
+.aprendiz-trigger svg{flex-shrink:0;color:var(--teal);}
+.aprendiz-trigger .aprendiz-chev{margin-left:auto;color:var(--txt-dim);transition:transform .2s;}
+.aprendiz-trigger[aria-expanded="true"] .aprendiz-chev{transform:rotate(180deg);}
+.aprendiz-trigger-text{flex:1;min-width:0;line-height:1.3;word-break:break-word;}
+.aprendiz-trigger-text.placeholder{color:var(--txt-dim);font-weight:500;}
+.aprendiz-panel{position:fixed;z-index:60;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;box-shadow:0 18px 40px -12px rgba(15,23,42,.25);overflow:hidden;}
+.aprendiz-panel[hidden]{display:none;}
+.aprendiz-search{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--border);color:var(--txt-dim);}
+.aprendiz-search input{flex:1;min-width:0;border:0;background:transparent;font:500 12.5px 'Inter',sans-serif;color:var(--txt);outline:none;user-select:text;}
+.aprendiz-list{list-style:none;max-height:224px;overflow-y:auto;padding:4px;}
+.aprendiz-list li{display:flex;white-space:nowrap;line-height:1.35;align-items:center;gap:8px;padding:7px 8px;border-radius:7px;font-size:12px;font-weight:500;color:var(--txt);cursor:pointer;}
+.aprendiz-list li[hidden]{display:none;}
+.aprendiz-list li:hover,.aprendiz-list li.activo{background:var(--surface2);}
+.aprendiz-list li[aria-selected="true"]{background:var(--teal-bg);color:var(--teal);font-weight:700;}
+.aprendiz-list li svg{margin-left:auto;flex-shrink:0;opacity:0;}
+.aprendiz-list li[aria-selected="true"] svg{opacity:1;}
+.aprendiz-empty{padding:12px;font-size:12px;color:var(--txt-dim);text-align:center;}
+.aprendiz-empty[hidden]{display:none;}
+</style>
+<canvas class="confetti-wrap" id="confetti-canvas"></canvas>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-brand">
+    <div class="curso">SENA ADSO · S2</div>
+    <h1>Componentes y Responsive — Guía Paso a Paso</h1>
+    <div class="ficha">Ficha 3293992 · Nov 2026</div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-label"><span>Progreso</span><span id="progress-txt">0 / 5</span></div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill"></div></div>
+  </div>
+  <div class="aprendiz-wrap">
+    <span class="aprendiz-label" id="aprendiz-label">Aprendiz</span>
+    <button type="button" class="aprendiz-trigger" id="aprendiz-trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="aprendiz-label aprendiz-trigger-text">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="aprendiz-trigger-text placeholder" id="aprendiz-trigger-text">Selecciona tu nombre</span>
+      <svg class="aprendiz-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div class="aprendiz-panel" id="aprendiz-panel" hidden>
+      <div class="aprendiz-search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="aprendiz-search" placeholder="Buscar mi nombre..." autocomplete="off" aria-label="Buscar mi nombre"></div>
+      <ul class="aprendiz-list" id="aprendiz-list" role="listbox" aria-labelledby="aprendiz-label">
+      <li role="option" aria-selected="false" data-nombre="ELIANA MILDRETH VARELA NUPAN">Eliana Mildreth Varela Nupan<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="ERICK JULIAN CUBILLOS PEÑA">Erick Julian Cubillos Peña<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="ERICK SANTIAGO QUIMBAYA RIVERO">Erick Santiago Quimbaya Rivero<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="JAIRO ALEXIS ORTIZ CALDERON">Jairo Alexis Ortiz Calderon<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="JESUS ERNEY LAGOS COLLAZOS">Jesus Erney Lagos Collazos<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="JHON ALEJANDRO OLAYA LUGO">Jhon Alejandro Olaya Lugo<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="JHOSMAN ALBERTO QUIROGA CANDELA">Jhosman Alberto Quiroga Candela<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="JOHAN ANDRES COLLAZOS CARDONA">Johan Andres Collazos Cardona<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="JORGE DAVID DEVIA PIPICANO">Jorge David Devia Pipicano<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="JORGE STIVEN CANO VARGAS">Jorge Stiven Cano Vargas<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="JOSE ALEJANDRO RODRIGUEZ CALDERON">Jose Alejandro Rodriguez Calderon<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="JOSE ISLEN MORALES CALDERON">Jose Islen Morales Calderon<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="JUAN CARLOS GUERRERO MENDEZ">Juan Carlos Guerrero Mendez<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="JUAN ESTEBAN VILLARREAL RAMIREZ">Juan Esteban Villarreal Ramirez<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="JUAN STIVEN JIMENEZ CEDEÑO">Juan Stiven Jimenez Cedeño<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="JULIAN DAVID DUSSAN QUINTERO">Julian David Dussan Quintero<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="KEISSY DAIANA BENITEZ TRUJILLO">Keissy Daiana Benitez Trujillo<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="LADY MILENA ORTIZ VARGAS">Lady Milena Ortiz Vargas<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="LAURA VALENTINA PARRA URRIAGO">Laura Valentina Parra Urriago<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="NIKOL FERNANDA YUCO VARGAS">Nikol Fernanda Yuco Vargas<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="SAMUEL GERARDO CHAVARRO GARCIA">Samuel Gerardo Chavarro Garcia<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="SARA JULIANA GUZMAN MUÑOZ">Sara Juliana Guzman Muñoz<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="SARA MILENA AVILA GARCIA">Sara Milena Avila Garcia<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="SEBASTIAN CALDERON SANTANA">Sebastian Calderon Santana<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="TOMAS SARMIENTO RIVERA">Tomas Sarmiento Rivera<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="YEICI TATIANA BURGOS ANZOLA">Yeici Tatiana Burgos Anzola<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      <li role="option" aria-selected="false" data-nombre="YILVER ARLEX JOVEL ANGARITA">Yilver Arlex Jovel Angarita<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></li>
+      </ul>
+      <div class="aprendiz-empty" id="aprendiz-empty" hidden>Sin coincidencias</div>
+    </div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Layout</div>
+    <a class="nav-item active" href="#paso1"><span class="nav-dot"></span>Paso 1 — Contenedor real</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Catálogo</div>
+    <a class="nav-item" href="#paso2"><span class="nav-dot"></span>Paso 2 — Grid de productos</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Responsive</div>
+    <a class="nav-item" href="#paso3"><span class="nav-dot"></span>Paso 3 — Breakpoints</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Navbar</div>
+    <a class="nav-item" href="#paso4"><span class="nav-dot"></span>Paso 4 — Navbar responsive</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Referencia</div>
+    <a class="nav-item" href="#extra"><span class="nav-dot"></span>Extra — ¿Dónde vive el CSS?</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Cierre</div>
+    <a class="nav-item" href="#checklist"><span class="nav-dot"></span>Checklist final</a>
+  </div>
+  <div class="sidebar-footer">
+    <a href="../../explorar.html" class="sidebar-hub-link">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Volver al Hub
+    </a>
+  </div>
+</div>
+
+<main class="main">
+
+  <div class="page-header">
+    <div class="page-tag">Sesión 2 · Fase React y Tailwind</div>
+    <h1 class="page-title">Componentes y Diseño Responsive</h1>
+    <p class="page-subtitle">SENA ADSO · Ficha 3293992 · Noviembre 2026</p>
+    <div class="page-warning"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Sigue cada paso en orden. No avances al siguiente hasta que el anterior funcione y hayas marcado el check.</div>
+  </div>
+
+  <div class="intro-card" style="margin-bottom:24px;">
+    <div class="intro-tag">El problema que resolvemos hoy</div>
+    <div class="intro-sub" style="margin-bottom:0;">En la Sesión 1, <code>App.jsx</code> quedó así — el navbar, la tarjeta, el botón y el footer sueltos dentro de un fragment, sin ningún contenedor:</div>
+    <div class="code-wrap" style="margin-top:14px;"><div class="code-header"><div class="code-dots"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span></div><span class="code-filename">frontend-react/src/App.jsx — estado actual</span><span class="code-tag yellow">antes de hoy</span></div><pre><span class="k">function</span> <span class="f">App</span>() {
+  <span class="k">return</span> (
+    &lt;&gt;
+    &lt;<span class="f">nav</span>&gt;...&lt;/<span class="f">nav</span>&gt;
+    &lt;<span class="f">div</span>&gt;...&lt;/<span class="f">div</span>&gt;  <span class="c">{/* tarjeta suelta */}</span>
+    &lt;<span class="f">button</span>&gt;...&lt;/<span class="f">button</span>&gt;
+    &lt;<span class="f">footer</span>&gt;...&lt;/<span class="f">footer</span>&gt;
+    &lt;/&gt;
+  )
+}</pre></div>
+    <div class="callout warn" style="margin-top:14px;"><span class="callout-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span><span>Si en tu proyecto real ya agregaste el contenedor extra sugerido al final de la Sesión 1, no pasa nada — el Paso 1 de hoy lo reemplaza igual, sin conflicto.</span></div>
+  </div>
+
+  <div class="intro-card">
+    <div class="intro-tag">¿Qué construimos hoy?</div>
+    <div class="intro-title">Un layout de página real + catálogo responsive</div>
+    <p class="intro-sub">Reemplazamos el fragment por un <code>&lt;main&gt;</code> con estructura, construimos un grid con varias tarjetas de producto (datos reales, mismo formato que el backend), y hacemos que el número de columnas cambie según el tamaño de pantalla.</p>
+    <div class="intro-grid">
+      <div class="intro-item"><div class="intro-item-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></div><div class="intro-item-label">Contenedor</div><div class="intro-item-desc">Un &lt;main&gt; real con ancho máximo, centrado y espaciado — reemplaza el fragment suelto</div></div>
+      <div class="intro-item"><div class="intro-item-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></div><div class="intro-item-label">Grid</div><div class="intro-item-desc">3 tarjetas de producto reales organizadas con CSS Grid, no elementos sueltos</div></div>
+      <div class="intro-item"><div class="intro-item-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></div><div class="intro-item-label">Responsive</div><div class="intro-item-desc">1 columna en celular, 2 en tablet, 3 en escritorio — con los prefijos sm:/md:/lg:</div></div>
+    </div>
+  </div>
+
+  <!-- ════ PASO 1 ════ -->
+  <section class="section" id="paso1" data-step="paso1">
+    <div class="section-header">
+      <span class="step-badge yellow">Paso 1 · Layout</span>
+      <h2 class="section-title">Reemplazar el fragment por un contenedor real</h2>
+    </div>
+    <p style="color:var(--txt-dim);font-size:14px;margin-bottom:20px;">El <code>&lt;&gt;...&lt;/&gt;</code> no genera HTML ni admite <code>className</code> — por eso todo se veía pegado al borde. Hoy se reemplaza por un <code>&lt;main&gt;</code>, que sí es un elemento real.</p>
+
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-body">
+        <p>Abrir <code>src/App.jsx</code>. Buscar la primera línea (<code>&lt;&gt;</code>) y la última (<code>&lt;/&gt;</code>) dentro del <code>return (...)</code> — son las únicas dos líneas que cambian:</p>
+        <div class="code-wrap"><div class="code-header"><div class="code-dots"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span></div><span class="code-filename">frontend-react/src/App.jsx</span><span class="code-tag yellow">líneas a reemplazar</span></div><pre>    &lt;&gt;
+    <span class="c">... todo el contenido (nav, tarjeta, botón, footer) ...</span>
+    &lt;/&gt;</pre></div>
+
+        <p style="color:var(--txt-dim);font-size:14px;margin:14px 0 6px;">Reemplazarlas por un <code>&lt;main&gt;</code> con clases de layout — el contenido de adentro <strong>no cambia</strong>:</p>
+        <div class="code-wrap"><div class="code-header"><div class="code-dots"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span></div><span class="code-filename">frontend-react/src/App.jsx</span><span class="code-tag green">reemplazar</span></div><pre>    <span class="edit">&lt;main className="max-w-6xl mx-auto px-6 py-10 flex flex-col gap-10"&gt;</span>
+    <span class="c">... todo el contenido (nav, tarjeta, botón, footer) sigue igual ...</span>
+    <span class="edit">&lt;/main&gt;</span></pre></div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+            <tbody>
+              <tr><td>max-w-6xl</td><td>El contenido nunca supera ~1152px de ancho, aunque la pantalla sea más grande</td></tr>
+              <tr><td>mx-auto</td><td>Centra ese bloque horizontalmente (margen automático a los dos lados)</td></tr>
+              <tr><td>px-6</td><td>Espacio a los costados, para que nada toque el borde de la pantalla</td></tr>
+              <tr><td>py-10</td><td>Espacio arriba y abajo de todo el contenido</td></tr>
+              <tr><td>flex flex-col gap-10</td><td>El navbar, la tarjeta y el footer se apilan en columna con separación uniforme</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout ok"><span class="callout-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span><span><strong>Cómo verificar:</strong> en <code>localhost:5173</code>, todo el contenido debe verse centrado en la pantalla, con aire a los lados y separación clara entre el navbar, la tarjeta y el footer — ya no pegado al borde izquierdo.</span></div>
+      </div></div>
+
+      <div class="step-item"><div class="step-num">2</div><div class="step-body">
+        <p><strong>Borrar la tarjeta suelta y el botón secundario</strong> de los Ejercicios 1 y 2 de la Sesión 1, si siguen en tu <code>App.jsx</code>. No basta con que estén dentro del <code>&lt;main&gt;</code>: <code>flex flex-col</code> solo los apila en orden, pero cada uno sigue estirándose a <strong>todo el ancho</strong> del contenedor si no tiene su propio <code>max-w-*</code> — la tarjeta (que sí tiene <code>max-w-xs</code>) se ve angosta, mientras el botón (que no tiene <code>max-w</code>) se estira igual de ancho que el navbar y el footer. Por eso se ve descuadrado.</p>
+
+        <div class="code-wrap"><div class="code-header"><div class="code-dots"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span></div><span class="code-filename">frontend-react/src/App.jsx</span><span class="code-tag green">borrar estas líneas</span></div><pre><span class="edit">&lt;div className="p-8 flex flex-col items-center gap-6"&gt;
+  &lt;div className="flex flex-col gap-2 p-4 rounded-xl shadow-md max-w-xs"&gt;
+    &lt;img src="https://placehold.co/300x200" className="rounded-lg" /&gt;
+    &lt;h3 className="font-bold text-lg"&gt;Mouse Inalámbrico&lt;/h3&gt;
+    &lt;p className="text-verde font-extrabold"&gt;$89.900&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;button className="bg-transparent text-verde border-2 border-verde py-3 px-6 rounded-xl font-bold"&gt;
+    Ver más detalles
+  &lt;/button&gt;
+&lt;/div&gt;</span></pre></div>
+
+        <div class="callout warn" style="margin-top:10px;"><span class="callout-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span><span>El <code>&lt;div className="p-8 flex flex-col items-center gap-6"&gt;</code> que envuelve la tarjeta y el botón también se borra — si solo se borra lo de adentro, queda un <code>&lt;div&gt;</code> vacío colgando.</span></div>
+
+        <p style="color:var(--txt-dim);font-size:14px;margin:14px 0 6px;"><code>App.jsx</code> debe quedar así — solo con <code>&lt;main&gt;</code>, <code>&lt;nav&gt;</code> y <code>&lt;footer&gt;</code>:</p>
+
+        <div class="code-wrap"><div class="code-header"><div class="code-dots"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span></div><span class="code-filename">frontend-react/src/App.jsx</span><span class="code-tag blue">cómo queda</span></div><pre><span class="k">function</span> <span class="f">App</span>() {
+  <span class="k">return</span> (
+
+  &lt;<span class="f">main</span> <span class="n">className</span>=<span class="s">"max-w-6xl mx-auto px-6 py-10 flex flex-col gap-10"</span>&gt;
+
+    &lt;<span class="f">nav</span> <span class="n">className</span>=<span class="s">"flex items-center justify-between px-8 py-4 bg-white border-b border-slate-200"</span>&gt;
+      &lt;<span class="f">div</span> <span class="n">className</span>=<span class="s">"text-xl font-extrabold text-verde"</span>&gt;
+        TechStore <span class="k">Pro</span>
+      &lt;/<span class="f">div</span>&gt;
+      &lt;<span class="f">ul</span> <span class="n">className</span>=<span class="s">"flex gap-6 text-sm font-semibold text-texto-dim"</span>&gt;
+        &lt;<span class="f">li</span>&gt;Inicio&lt;/<span class="f">li</span>&gt;
+        &lt;<span class="f">li</span>&gt;Productos&lt;/<span class="f">li</span>&gt;
+        &lt;<span class="f">li</span>&gt;Nosotros&lt;/<span class="f">li</span>&gt;
+        &lt;<span class="f">li</span>&gt;Contacto&lt;/<span class="f">li</span>&gt;
+      &lt;/<span class="f">ul</span>&gt;
+      &lt;<span class="f">button</span> <span class="n">className</span>=<span class="s">"bg-verde text-white py-2 px-5 rounded-lg font-bold text-sm"</span>&gt;
+        Ingresar
+      &lt;/<span class="f">button</span>&gt;
+    &lt;/<span class="f">nav</span>&gt;
+
+     &lt;<span class="f">footer</span> <span class="n">className</span>=<span class="s">"flex justify-between items-center p-6 bg-texto text-white"</span>&gt;
+        &lt;<span class="f">p</span>&gt;© 2026 TechStore Pro&lt;/<span class="f">p</span>&gt;
+        &lt;<span class="f">p</span> <span class="n">className</span>=<span class="s">"text-sm"</span>&gt;Hecho con Tailwind CSS&lt;/<span class="f">p</span>&gt;
+     &lt;/<span class="f">footer</span>&gt;
+
+  &lt;/<span class="f">main</span>&gt;
+  )
+}
+
+<span class="k">export default</span> App</pre></div>
+
+        <div class="callout ok"><span class="callout-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span><span><strong>Cómo verificar:</strong> entre el navbar y el footer solo debe quedar espacio vacío (el <code>gap-10</code> del <code>&lt;main&gt;</code>) — sin tarjeta ni botón sueltos.</span></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ════ PASO 2 ════ -->
+  <section class="section" id="paso2" data-step="paso2">
+    <div class="section-header">
+      <span class="step-badge">Paso 2 · Catálogo</span>
+      <h2 class="section-title">Construir el grid de productos</h2>
+    </div>
+    <p style="color:var(--txt-dim);font-size:14px;margin-bottom:20px;">TechStore Pro guarda cada producto con <code>nombre</code>, <code>descripcion</code>, <code>precio</code> (como texto, ej. <code>"$89.900"</code>) e <code>imagen</code> — igual que en <code>backend/models/Producto.js</code>. Hoy usamos 3 productos de ejemplo con ese mismo formato.</p>
+
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-body">
+        <p>Dentro del <code>&lt;main&gt;</code>, justo después del <code>&lt;/nav&gt;</code> y antes del contenido de práctica (o del <code>&lt;/main&gt;</code> si ya lo borraste), agregar el grid:</p>
+        <div class="code-wrap"><div class="code-header"><div class="code-dots"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span></div><span class="code-filename">frontend-react/src/App.jsx</span><span class="code-tag green">agregar</span></div><pre>&lt;<span class="f">section</span> <span class="n">className</span>=<span class="s">"grid grid-cols-1 gap-6"</span>&gt;
+
+  <span class="c">{/* Tarjeta 1 */}</span>
+  &lt;<span class="f">div</span> <span class="n">className</span>=<span class="s">"flex flex-col gap-2 p-4 rounded-xl shadow-md bg-white"</span>&gt;
+    &lt;<span class="f">img</span> <span class="n">src</span>=<span class="s">"https://placehold.co/300x200"</span> <span class="n">className</span>=<span class="s">"rounded-lg"</span> /&gt;
+    &lt;<span class="f">h3</span> <span class="n">className</span>=<span class="s">"font-bold text-lg"</span>&gt;Mouse Inalámbrico&lt;/<span class="f">h3</span>&gt;
+    &lt;<span class="f">p</span> <span class="n">className</span>=<span class="s">"text-texto-dim text-sm"</span>&gt;Mouse ergonómico, conexión Bluetooth&lt;/<span class="f">p</span>&gt;
+    &lt;<span class="f">p</span> <span class="n">className</span>=<span class="s">"text-verde font-extrabold"</span>&gt;$89.900&lt;/<span class="f">p</span>&gt;
+  &lt;/<span class="f">div</span>&gt;
+
+  <span class="c">{/* Tarjeta 2 */}</span>
+  &lt;<span class="f">div</span> <span class="n">className</span>=<span class="s">"flex flex-col gap-2 p-4 rounded-xl shadow-md bg-white"</span>&gt;
+    &lt;<span class="f">img</span> <span class="n">src</span>=<span class="s">"https://placehold.co/300x200"</span> <span class="n">className</span>=<span class="s">"rounded-lg"</span> /&gt;
+    &lt;<span class="f">h3</span> <span class="n">className</span>=<span class="s">"font-bold text-lg"</span>&gt;Teclado Mecánico&lt;/<span class="f">h3</span>&gt;
+    &lt;<span class="f">p</span> <span class="n">className</span>=<span class="s">"text-texto-dim text-sm"</span>&gt;Switches azules, retroiluminado RGB&lt;/<span class="f">p</span>&gt;
+    &lt;<span class="f">p</span> <span class="n">className</span>=<span class="s">"text-verde font-extrabold"</span>&gt;$149.900&lt;/<span class="f">p</span>&gt;
+  &lt;/<span class="f">div</span>&gt;
+
+  <span class="c">{/* Tarjeta 3 */}</span>
+  &lt;<span class="f">div</span> <span class="n">className</span>=<span class="s">"flex flex-col gap-2 p-4 rounded-xl shadow-md bg-white"</span>&gt;
+    &lt;<span class="f">img</span> <span class="n">src</span>=<span class="s">"https://placehold.co/300x200"</span> <span class="n">className</span>=<span class="s">"rounded-lg"</span> /&gt;
+    &lt;<span class="f">h3</span> <span class="n">className</span>=<span class="s">"font-bold text-lg"</span>&gt;Monitor 24"&lt;/<span class="f">h3</span>&gt;
+    &lt;<span class="f">p</span> <span class="n">className</span>=<span class="s">"text-texto-dim text-sm"</span>&gt;Full HD, 75Hz, panel IPS&lt;/<span class="f">p</span>&gt;
+    &lt;<span class="f">p</span> <span class="n">className</span>=<span class="s">"text-verde font-extrabold"</span>&gt;$899.900&lt;/<span class="f">p</span>&gt;
+  &lt;/<span class="f">div</span>&gt;
+
+&lt;/<span class="f">section</span>&gt;</pre></div>
+
+        <p style="color:var(--txt-dim);font-size:14px;margin:14px 0 6px;">Desglose de las dos clases nuevas de este paso:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+            <tbody>
+              <tr><td>grid</td><td>Activa CSS Grid en el <code>&lt;section&gt;</code> — sus hijos directos (las tarjetas) se organizan en celdas</td></tr>
+              <tr><td>grid-cols-1</td><td>Define 1 sola columna por ahora — todas las tarjetas caen una debajo de otra</td></tr>
+              <tr><td>gap-6</td><td>Separación uniforme entre tarjetas, tanto horizontal como vertical</td></tr>
+              <tr><td>flex flex-col</td><td>Dentro de cada tarjeta: apila imagen, título, descripción y precio en columna</td></tr>
+              <tr><td>gap-2</td><td>Separación pequeña entre esos 4 elementos internos de la tarjeta</td></tr>
+              <tr><td>rounded-xl shadow-md</td><td>Esquinas redondeadas y sombra suave — el mismo estilo de tarjeta de la Sesión 1</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout ok"><span class="callout-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span><span><strong>Cómo verificar:</strong> deben verse las 3 tarjetas, una debajo de otra (todavía en 1 columna, porque el grid solo tiene <code>grid-cols-1</code> por ahora) — cada una con imagen, nombre, descripción corta y precio en verde SENA.</span></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ════ PASO 3 ════ -->
+  <section class="section" id="paso3" data-step="paso3">
+    <div class="section-header">
+      <span class="step-badge extra">Paso 3 · Responsive</span>
+      <h2 class="section-title">Aplicar los breakpoints al grid</h2>
+    </div>
+    <p style="color:var(--txt-dim);font-size:14px;margin-bottom:20px;">El grid de productos ya funciona, pero sigue en 1 columna sin importar el tamaño de pantalla. Con dos prefijos más se vuelve responsive de verdad.</p>
+
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-body">
+        <p>Volver a la línea del <code>&lt;section&gt;</code> del Paso 2 y agregar dos clases más al <code>className</code>:</p>
+        <div class="code-wrap"><div class="code-header"><div class="code-dots"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span></div><span class="code-filename">frontend-react/src/App.jsx</span><span class="code-tag yellow">antes</span></div><pre>&lt;<span class="f">section</span> <span class="n">className</span>=<span class="s">"grid grid-cols-1 gap-6"</span>&gt;</pre></div>
+        <div class="code-wrap"><div class="code-header"><div class="code-dots"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span></div><span class="code-filename">frontend-react/src/App.jsx</span><span class="code-tag green">después</span></div><pre>&lt;<span class="f">section</span> <span class="n">className</span>=<span class="s">"grid grid-cols-1 <span class="edit">md:grid-cols-2 lg:grid-cols-3</span> gap-6"</span>&gt;</pre></div>
+
+        <div class="responsive-demo">
+          <div class="rd-box">
+            <div class="lbl">&lt; 768px</div>
+            <div class="cards" style="grid-template-columns:1fr;"><div class="c"></div><div class="c"></div><div class="c"></div></div>
+          </div>
+          <div class="rd-box">
+            <div class="lbl">768px – 1023px</div>
+            <div class="cards" style="grid-template-columns:1fr 1fr;"><div class="c"></div><div class="c"></div><div class="c"></div></div>
+          </div>
+          <div class="rd-box">
+            <div class="lbl">≥ 1024px</div>
+            <div class="cards" style="grid-template-columns:1fr 1fr 1fr;"><div class="c"></div><div class="c"></div><div class="c"></div></div>
+          </div>
+        </div>
+
+        <p style="color:var(--txt-dim);font-size:14px;margin:14px 0 6px;">Desglose de la clase completa <code>grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6</code>:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Trozo</th><th>Qué significa</th></tr></thead>
+            <tbody>
+              <tr><td>grid-cols-1</td><td>Sin prefijo → aplica siempre, empezando en celular: 1 columna</td></tr>
+              <tr><td>md:grid-cols-2</td><td>Desde 768px en adelante: cambia a 2 columnas</td></tr>
+              <tr><td>lg:grid-cols-3</td><td>Desde 1024px en adelante: cambia a 3 columnas</td></tr>
+              <tr><td>gap-6</td><td>Separación entre tarjetas — no cambia con el tamaño de pantalla</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout ok"><span class="callout-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span><span><strong>Cómo verificar:</strong> con el navegador en pantalla completa, deben verse las 3 tarjetas en una sola fila. Achicar la ventana del navegador poco a poco (sin usar el modo responsive del inspector, solo arrastrando el borde) — a los ~1024px debe bajar a 2 columnas, y cerca de los 768px a 1 columna.</span></div>
+        <div class="callout info"><span class="callout-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span>Si tienes DevTools abierto (F12), también puedes usar el ícono de "Toggle device toolbar" para simular un celular directamente, sin cambiar el tamaño real de la ventana.</span></div>
+      </div></div>
+    </div>
+
+  </section>
+
+  <!-- ════ PASO 4 ════ -->
+  <section class="section" id="paso4" data-step="paso4">
+    <div class="section-header">
+      <span class="step-badge teal">Paso 4 · Navbar</span>
+      <h2 class="section-title">El navbar todavía no es responsive</h2>
+    </div>
+    <p style="color:var(--txt-dim);font-size:14px;margin-bottom:20px;">El grid de productos ya se ajusta a la pantalla, pero el <code>&lt;nav&gt;</code> no. En celular, los 4 links (<code>Inicio, Productos, Nosotros, Contacto</code>) no caben en una fila — el navegador los saca fuera de la pantalla y aparece scroll horizontal.</p>
+
+    <div class="callout warn"><span class="callout-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span><span><strong>Por qué pasa:</strong> el <code>&lt;ul&gt;</code> de los links usa <code>flex gap-6</code>, pero nada le dice qué hacer cuando no hay espacio — no se encoge, no se apila, simplemente se desborda.</span></div>
+
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-body">
+        <p>Un menú hamburguesa real (que se abra con un clic) necesita guardar un estado — eso se aprende con <code>useState</code> más adelante en la fase. Por ahora, la solución simple: <strong>ocultar los links en celular</strong> y mostrarlos solo desde tablet en adelante.</p>
+
+        <div class="code-wrap"><div class="code-header"><div class="code-dots"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span></div><span class="code-filename">frontend-react/src/App.jsx</span><span class="code-tag yellow">antes</span></div><pre>&lt;<span class="f">ul</span> <span class="n">className</span>=<span class="s">"flex gap-6 text-sm font-semibold text-texto-dim"</span>&gt;</pre></div>
+        <div class="code-wrap"><div class="code-header"><div class="code-dots"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span></div><span class="code-filename">frontend-react/src/App.jsx</span><span class="code-tag green">después</span></div><pre>&lt;<span class="f">ul</span> <span class="n">className</span>=<span class="s">"<span class="edit">hidden md:flex</span> gap-6 text-sm font-semibold text-texto-dim"</span>&gt;</pre></div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+            <tbody>
+              <tr><td>hidden</td><td>Oculta el elemento por completo — es el comportamiento base, para celular</td></tr>
+              <tr><td>md:flex</td><td>Desde 768px en adelante, vuelve a mostrarse como flex (los links en fila)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout ok"><span class="callout-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span><span><strong>Cómo verificar:</strong> con DevTools en modo celular, el navbar debe verse solo con el logo "TechStore Pro" a la izquierda y el botón "Ingresar" a la derecha — sin scroll horizontal. Desde tablet (≥768px) en adelante, los 4 links reaparecen en el medio, igual que antes.</span></div>
+        <div class="callout info"><span class="callout-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span>Esto no es un menú hamburguesa funcional — es una solución temporal y honesta: en celular esos links simplemente no están visibles por ahora. El botón de menú que abre y cierra una lista llega cuando se aprende a manejar estado con <code>useState</code>, más adelante en la fase.</span></div>
+      </div></div>
+    </div>
+
+    <div class="callout teal" style="margin-top:24px;">
+      <span class="callout-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></span>
+      <span><strong>Próxima sesión — S3:</strong> arranca React de verdad — componentes, JSX, Virtual DOM, y el primer <code>&lt;Navbar /&gt;</code> separado en su propio archivo.</span>
+    </div>
+  </section>
+
+  <!-- ════ EXTRA ════ -->
+  <section class="section" id="extra" data-step="extra">
+    <div class="section-header">
+      <span class="step-badge extra">Extra · Referencia</span>
+      <h2 class="section-title">¿Dónde vive todo este CSS?</h2>
+    </div>
+    <p style="color:var(--txt-dim);font-size:14px;margin-bottom:20px;">Contenido informativo, no un paso a ejecutar — para entender qué pasa detrás de cámaras con las clases de Tailwind que venimos escribiendo.</p>
+
+    <div class="subsec">
+      <div class="subsec-title">Cómo compila Vite</div>
+      <p style="color:var(--txt-dim);font-size:14px;line-height:1.7;">Mientras <code>npm run dev</code> está corriendo, Vite no genera ningún archivo <code>.css</code> en el disco — todo el CSS de Tailwind se procesa en memoria y se inyecta directo en el navegador vía JavaScript. Por eso el cambio se ve al instante al guardar, sin buscar ningún archivo compilado.</p>
+      <p style="color:var(--txt-dim);font-size:14px;line-height:1.7;margin-top:10px;">Un archivo <code>.css</code> real solo aparece cuando se ejecuta <code>npm run build</code> (para producción, más adelante en la fase) — ahí Vite genera algo como <code>dist/assets/index-XXXXX.css</code>, con todo el CSS final ya minificado.</p>
+    </div>
+
+    <div class="subsec">
+      <div class="subsec-title">index.css vs. App.css — no son lo mismo</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Archivo</th><th>Qué es</th><th>¿Se usa?</th></tr></thead>
+          <tbody>
+            <tr><td>src/index.css</td><td>El CSS de entrada real — tiene <code>@import "tailwindcss"</code> y el bloque <code>@theme</code> con los colores del SENA (Paso 3 de la Sesión 1)</td><td>Sí, es el que procesa Tailwind</td></tr>
+            <tr><td>src/App.css</td><td>Viene de la plantilla por defecto de Vite (estilos del logo girando, #root, etc.)</td><td>No — su <code>import</code> se borró junto con el contenido de práctica de la Sesión 1</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout info" style="margin-top:12px;"><span class="callout-icon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span><code>src/App.css</code> es un archivo huérfano — no rompe nada tenerlo, pero tampoco hace nada. Se puede borrar sin problema; nada lo importa.</span></div>
+    </div>
+
+    <div class="subsec">
+      <div class="subsec-title">Autocompletado de clases en VS Code</div>
+      <p style="color:var(--txt-dim);font-size:14px;line-height:1.7;margin-bottom:10px;">La extensión <strong>Tailwind CSS IntelliSense</strong> ya está instalada, y en <code>frontend-react/.vscode/settings.json</code> quedó esta configuración:</p>
+      <div class="code-wrap"><div class="code-header"><div class="code-dots"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span></div><span class="code-filename">frontend-react/.vscode/settings.json</span></div><pre>{
+  <span class="s">"tailwindCSS.experimental.configFile"</span>: <span class="s">"src/index.css"</span>
+}</pre></div>
+      <p style="color:var(--txt-dim);font-size:14px;line-height:1.7;margin-top:10px;">Es necesaria porque Tailwind v4 (instalada en la Sesión 1) ya no usa <code>tailwind.config.js</code> — apunta directo al CSS de entrada. Con esto, al escribir <code>className="</code> aparecen sugerencias de clases con vista previa de color.</p>
+    </div>
+  </section>
+
+  <!-- ════ CHECKLIST ════ -->
+  <section class="section" id="checklist" data-step="checklist">
+    <div class="section-header">
+      <span class="step-badge green">Cierre</span>
+      <h2 class="section-title">Checklist final de la sesión</h2>
+    </div>
+    <ul class="checklist" id="checklist-ul">
+      <li data-check="chk1"><span class="check-box"></span><span><strong>App.jsx</strong> envuelto en un &lt;main&gt; real (max-w-6xl, mx-auto, px-6, py-10)</span></li>
+      <li data-check="chk2"><span class="check-box"></span><span>Grid con 3 tarjetas de producto, datos reales (nombre, descripción, precio con formato "$XX.XXX")</span></li>
+      <li data-check="chk3"><span class="check-box"></span><span>Grid responsive: grid-cols-1 md:grid-cols-2 lg:grid-cols-3 aplicado</span></li>
+      <li data-check="chk4"><span class="check-box"></span><span>Probado achicando la ventana del navegador — cambia de 3 a 2 a 1 columna sin errores</span></li>
+      <li data-check="chk5"><span class="check-box"></span><span>Navbar sin scroll horizontal en celular — links ocultos con hidden md:flex</span></li>
+    </ul>
+  </section>
+
+  <div class="submit-wrap">
+    <button class="submit-btn" id="btn-enviar">
+      <span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></span><span>Enviar todo mi progreso</span>
+    </button>
+    <div class="submit-status" id="submit-status"></div>
+  </div>
+
+</main>
+
+<script>
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('copy', e => e.preventDefault());
+document.addEventListener('cut', e => e.preventDefault());
+document.addEventListener('paste', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && ['s','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
+});
+
+const STEPS = ['paso1','paso2','paso3','paso4','checklist'];
+const KEY   = 's2-progress';
+
+function getState() { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } }
+function saveState(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {} }
+
+function updateProgress() {
+  const state = getState();
+  const done  = STEPS.filter(s => state[s]).length;
+  const pct   = Math.round((done / STEPS.length) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-txt').textContent  = done + ' / ' + STEPS.length;
+}
+
+function renderButtons() {
+  const state = getState();
+  STEPS.forEach(id => {
+    const section = document.querySelector(`[data-step="${id}"]`);
+    if (!section || section.querySelector('.complete-btn')) return;
+    const btn = document.createElement('button');
+    btn.className = 'complete-btn' + (state[id] ? ' done' : '');
+    btn.dataset.step = id;
+    btn.innerHTML = `<span class="btn-icon">${state[id] ? '<svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>' : '<svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>'}</span>
+      <span class="btn-txt">${state[id] ? '¡Paso completado!' : 'Marcar como completado'}</span>
+      <span class="btn-badge">LISTO</span>`;
+    if (!state[id]) btn.addEventListener('click', () => completeStep(id, btn));
+    section.appendChild(btn);
+    const nav = document.querySelector(`.nav-item[href="#${id}"]`);
+    if (nav && state[id]) nav.classList.add('done');
+  });
+}
+
+function completeStep(id, btn) {
+  const state = getState(); state[id] = true; saveState(state);
+  btn.classList.add('done');
+  btn.querySelector('.btn-icon').innerHTML = '<svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>';
+  btn.querySelector('.btn-txt').textContent  = '¡Paso completado!';
+  const nav = document.querySelector(`.nav-item[href="#${id}"]`);
+  if (nav) nav.classList.add('done');
+  updateProgress();
+  launchConfetti(STEPS.filter(s => state[s]).length === STEPS.length);
+}
+
+function launchConfetti(big) {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  const colors = ['#3b82f6','#2dd4bf','#22c55e','#f59e0b','#a78bfa','#f87171'];
+  const count  = big ? 180 : 60;
+  const parts  = Array.from({length: count}, () => ({
+    x: canvas.width * (big ? Math.random() : .5 + (Math.random()-.5)*.4),
+    y: big ? -10 : canvas.height * .4,
+    r: Math.random() * 7 + 3, color: colors[Math.floor(Math.random() * colors.length)],
+    tilt: 0, tiltAngle: 0, tiltSpeed: Math.random()*.1+.05,
+    vx: Math.random()*4-2, vy: Math.random()*3+2
+  }));
+  let frame = 0; const total = big ? 160 : 80;
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    parts.forEach(p => {
+      ctx.beginPath(); ctx.fillStyle = p.color;
+      ctx.ellipse(p.x, p.y, p.r, p.r*.4, p.tilt, 0, Math.PI*2); ctx.fill();
+      p.x += p.vx; p.y += p.vy; p.tiltAngle += p.tiltSpeed; p.tilt = Math.sin(p.tiltAngle)*12; p.vy += .08;
+    });
+    if (++frame < total) requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  draw();
+}
+
+function getChecklistState() { try { return JSON.parse(localStorage.getItem('s2-checklist') || '{}'); } catch { return {}; } }
+function saveChecklistState(s) { try { localStorage.setItem('s2-checklist', JSON.stringify(s)); } catch {} }
+
+function renderChecklist() {
+  const state = getChecklistState();
+  document.querySelectorAll('#checklist-ul li').forEach(li => {
+    const id = li.dataset.check;
+    if (state[id]) { li.classList.add('marcado'); li.querySelector('.check-box').textContent = '✓'; }
+    li.addEventListener('click', () => {
+      const s = getChecklistState();
+      s[id] = !s[id];
+      saveChecklistState(s);
+      li.classList.toggle('marcado', s[id]);
+      li.querySelector('.check-box').textContent = s[id] ? '✓' : '';
+      const allChecked = Array.from(document.querySelectorAll('#checklist-ul li')).every(el => s[el.dataset.check]);
+      if (allChecked) launchConfetti(false);
+    });
+  });
+}
+
+const sections = document.querySelectorAll('.section');
+const navItems = document.querySelectorAll('.nav-item');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navItems.forEach(n => n.classList.remove('active'));
+      const a = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { threshold: 0.25 });
+sections.forEach(s => obs.observe(s));
+
+renderButtons();
+updateProgress();
+renderChecklist();
+
+/* ═══ Selector de aprendiz + envío a Google Sheets (Apps Script) ═══ */
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzHCBDSjIhE5SwS0Uue_gQXZMM3GNwtUukK-3d1LiuGFhgtluVolOTZhVh9WwBZxX0/exec';
+const ARCHIVO_ACTUAL  = '02_GUIA_COMPONENTES_RESPONSIVE';
+const APRENDIZ_KEY    = 'sena-aprendiz-nombre';
+
+const APRENDIZ_TRIGGER = document.getElementById('aprendiz-trigger');
+const APRENDIZ_PANEL   = document.getElementById('aprendiz-panel');
+const APRENDIZ_BUSCAR  = document.getElementById('aprendiz-search');
+const APRENDIZ_TEXTO   = document.getElementById('aprendiz-trigger-text');
+const APRENDIZ_ITEMS   = Array.from(document.querySelectorAll('#aprendiz-list li'));
+const APRENDIZ_VACIO   = document.getElementById('aprendiz-empty');
+const APRENDIZ_LISTA   = document.getElementById('aprendiz-list');
+const selectAprendiz = { value: '', classList: APRENDIZ_TRIGGER.classList,
+  scrollIntoView: (o) => APRENDIZ_TRIGGER.scrollIntoView(o) };
+
+function tituloAprendiz(n) {
+  return n.toLowerCase().replace(/(^|\s)\S/g, (c) => c.toUpperCase());
+}
+function marcarAprendiz(nombre) {
+  selectAprendiz.value = nombre;
+  APRENDIZ_TEXTO.textContent = nombre ? tituloAprendiz(nombre) : 'Selecciona tu nombre';
+  APRENDIZ_TEXTO.classList.toggle('placeholder', !nombre);
+  APRENDIZ_ITEMS.forEach((li) => li.setAttribute('aria-selected', li.dataset.nombre === nombre ? 'true' : 'false'));
+}
+function posicionarAprendiz() {
+  const r = APRENDIZ_TRIGGER.getBoundingClientRect();
+  const ancho = Math.min(Math.max(r.width, 320), window.innerWidth - 16);
+  APRENDIZ_PANEL.style.width = ancho + 'px';
+  APRENDIZ_PANEL.style.left = Math.max(8, Math.min(r.left, window.innerWidth - ancho - 8)) + 'px';
+  APRENDIZ_PANEL.style.top = (r.bottom + 6) + 'px';
+  APRENDIZ_LISTA.style.maxHeight = Math.max(140, Math.min(260, window.innerHeight - r.bottom - 90)) + 'px';
+}
+function abrirAprendiz(abrir) {
+  APRENDIZ_PANEL.hidden = !abrir;
+  if (abrir) posicionarAprendiz();
+  APRENDIZ_TRIGGER.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+  if (abrir) { APRENDIZ_BUSCAR.value = ''; filtrarAprendices(); APRENDIZ_BUSCAR.focus(); }
+}
+function filtrarAprendices() {
+  const q = APRENDIZ_BUSCAR.value.toLowerCase().trim();
+  let visibles = 0;
+  APRENDIZ_ITEMS.forEach((li) => {
+    const ok = !q || li.dataset.nombre.toLowerCase().includes(q);
+    li.hidden = !ok;
+    if (ok) visibles++;
+  });
+  APRENDIZ_VACIO.hidden = visibles > 0;
+}
+function elegirAprendiz(nombre) {
+  marcarAprendiz(nombre);
+  try { localStorage.setItem(APRENDIZ_KEY, nombre); } catch {}
+  selectAprendiz.classList.remove('falta');
+  abrirAprendiz(false);
+  APRENDIZ_TRIGGER.focus();
+}
+APRENDIZ_TRIGGER.addEventListener('click', () => abrirAprendiz(APRENDIZ_PANEL.hidden));
+APRENDIZ_BUSCAR.addEventListener('input', filtrarAprendices);
+APRENDIZ_BUSCAR.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') { abrirAprendiz(false); APRENDIZ_TRIGGER.focus(); }
+  if (e.key === 'Enter') {
+    const primero = APRENDIZ_ITEMS.find((li) => !li.hidden);
+    if (primero) elegirAprendiz(primero.dataset.nombre);
+  }
+});
+APRENDIZ_ITEMS.forEach((li) => li.addEventListener('click', () => elegirAprendiz(li.dataset.nombre)));
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.aprendiz-wrap')) abrirAprendiz(false);
+});
+window.addEventListener('resize', () => { if (!APRENDIZ_PANEL.hidden) posicionarAprendiz(); });
+APRENDIZ_TRIGGER.closest('.sidebar').addEventListener('scroll', () => { if (!APRENDIZ_PANEL.hidden) abrirAprendiz(false); });
+let nombreGuardado = '';
+try { nombreGuardado = localStorage.getItem(APRENDIZ_KEY) || ''; } catch {}
+if (APRENDIZ_ITEMS.some((li) => li.dataset.nombre === nombreGuardado)) marcarAprendiz(nombreGuardado);
+
+const btnEnviar = document.getElementById('btn-enviar');
+const statusEl  = document.getElementById('submit-status');
+
+btnEnviar.addEventListener('click', async () => {
+  if (!URL_APPS_SCRIPT) {
+    statusEl.textContent = 'El envío de progreso aún no está activo. Tu avance queda guardado en este navegador.';
+    statusEl.className = 'submit-status err';
+    return;
+  }
+  const aprendiz = selectAprendiz.value;
+  if (!aprendiz) {
+    selectAprendiz.classList.add('falta');
+    statusEl.textContent = 'Selecciona tu nombre arriba antes de enviar.';
+    statusEl.className = 'submit-status err';
+    selectAprendiz.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const state = getState();
+  const pasosCompletados = STEPS.filter(s => state[s]);
+
+  btnEnviar.disabled = true;
+  statusEl.textContent = 'Enviando...';
+  statusEl.className = 'submit-status';
+
+  try {
+    await fetch(URL_APPS_SCRIPT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({
+        tipo: 'progreso',
+        aprendiz: aprendiz,
+        archivo: ARCHIVO_ACTUAL,
+        completados: pasosCompletados.length,
+        total: STEPS.length,
+        pasos: pasosCompletados
+      })
+    });
+    statusEl.textContent = 'Progreso enviado — ' + pasosCompletados.length + '/' + STEPS.length + ' pasos.';
+    statusEl.className = 'submit-status ok';
+  } catch (err) {
+    statusEl.textContent = 'No se pudo enviar. Revisa tu conexión e intenta de nuevo.';
+    statusEl.className = 'submit-status err';
+  } finally {
+    btnEnviar.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
