@@ -450,18 +450,21 @@ function calcularEstado() {
   return minutosActual <= minutosCierre ? 'A tiempo' : 'Tarde';
 }
 
+/* Busca si este nombre ya quedó CONFIRMADO como registrado hoy (no antes de intentar enviarlo). */
+function buscarRegistroHoy(nombre) {
+  const hoy = new Date().toLocaleDateString('es-CO');
+  let lista = [];
+  try { lista = JSON.parse(localStorage.getItem('ra-s1-asistencias-hoy') || '[]'); } catch (e) { lista = []; }
+  const limpio = String(nombre || '').trim().toLowerCase();
+  return lista.find(a => a.fecha === hoy && String(a.nombre).trim().toLowerCase() === limpio) || null;
+}
+
 function guardarAsistenciaLocal(nombre, documento, estado) {
   const hoy = new Date().toLocaleDateString('es-CO');
   let lista = [];
   try { lista = JSON.parse(localStorage.getItem('ra-s1-asistencias-hoy') || '[]'); } catch (e) { lista = []; }
-
-  const limpio = String(nombre || '').trim();
-  if (!lista.some(a => a.fecha === hoy && String(a.nombre).trim().toLowerCase() === limpio.toLowerCase())) {
-    lista.push({ nombre: limpio, documento, hora: new Date().toLocaleTimeString('es-CO'), fecha: hoy, estado });
-    localStorage.setItem('ra-s1-asistencias-hoy', JSON.stringify(lista));
-    return true;
-  }
-  return false;
+  lista.push({ nombre: String(nombre || '').trim(), documento, hora: new Date().toLocaleTimeString('es-CO'), fecha: hoy, estado });
+  localStorage.setItem('ra-s1-asistencias-hoy', JSON.stringify(lista));
 }
 
 btnRegistrar.addEventListener('click', async () => {
@@ -469,21 +472,25 @@ btnRegistrar.addEventListener('click', async () => {
   const documento = inputDoc.value.trim();
   if (!nombre || !documento) return;
 
+  const registroPrevio = buscarRegistroHoy(nombre);
+  if (registroPrevio) {
+    mostrarToast('warn', 'Ya estás registrado hoy', `${nombre.split(' ')[0]}, tu entrada ya quedó registrada hoy a las ${registroPrevio.hora}.`);
+    btnRegistrar.querySelector('span').textContent = 'Ya registraste tu entrada';
+    trigger.disabled = true;
+    inputDoc.disabled = true;
+    btnRegistrar.disabled = true;
+    return;
+  }
+
   btnRegistrar.disabled = true;
   btnRegistrar.querySelector('span').textContent = 'Registrando...';
   trigger.disabled = true;
   inputDoc.disabled = true;
 
   const estado = calcularEstado();
-  const esNuevo = guardarAsistenciaLocal(nombre, documento, estado);
-
-  if (!esNuevo) {
-    mostrarToast('warn', 'Ya estás registrado hoy', `${nombre.split(' ')[0]}, tu entrada ya quedó registrada hoy.`);
-    btnRegistrar.querySelector('span').textContent = 'Ya registraste tu entrada';
-    return;
-  }
 
   if (!URL_APPS_SCRIPT) {
+    guardarAsistenciaLocal(nombre, documento, estado);
     const titulo = estado === 'A tiempo' ? '¡Registrado a tiempo!' : 'Registrado — llegaste tarde';
     mostrarToast(estado === 'A tiempo' ? 'ok' : 'warn', titulo, 'El envío a Google Sheets aún no está activo. Tu entrada quedó guardada en este navegador.');
     btnRegistrar.querySelector('span').textContent = 'Entrada registrada';
@@ -499,9 +506,12 @@ btnRegistrar.addEventListener('click', async () => {
     const data = await res.json();
 
     if (data.ok) {
+      guardarAsistenciaLocal(nombre, documento, data.estado);
       const titulo = data.estado === 'A tiempo' ? '¡Registrado a tiempo!' : 'Registrado — llegaste tarde';
       mostrarToast(data.estado === 'A tiempo' ? 'ok' : 'warn', titulo, data.mensaje);
     } else if (data.yaRegistrado) {
+      // Ya estaba en Sheets (de otra sesión/navegador) — reflejarlo también acá para no volver a intentarlo.
+      guardarAsistenciaLocal(nombre, documento, estado);
       mostrarToast('warn', 'Ya estás registrado hoy', data.mensaje);
     } else {
       mostrarToast('err', 'No se pudo registrar', data.mensaje);
@@ -513,6 +523,7 @@ btnRegistrar.addEventListener('click', async () => {
     }
     btnRegistrar.querySelector('span').textContent = 'Entrada registrada';
   } catch (err) {
+    guardarAsistenciaLocal(nombre, documento, estado);
     mostrarToast('ok', 'Entrada registrada localmente', 'No se pudo conectar con Sheets, pero tu asistencia quedó guardada en este navegador.');
     btnRegistrar.querySelector('span').textContent = 'Entrada registrada';
   }
