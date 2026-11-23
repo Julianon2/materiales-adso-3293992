@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Juego de Memoria — Sesión 1 | Tailwind CSS</title>
+<title>Juego de Memoria — Fase React y Tailwind CSS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -148,12 +148,12 @@ h1.titulo{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;line-heig
 
   <!-- ═══ PANTALLA 1: SELECCIÓN DE NIVEL ═══ -->
   <section class="screen active" id="screen-niveles">
-    <div class="badge-tag"><span class="dot"></span> Sesión 1 · Agilidad mental</div>
-    <h1 class="titulo">Juego de Memoria — Tailwind CSS</h1>
-    <p class="intro-desc">Encuentra las parejas de conceptos de hoy: Tailwind, Vite, el CDN, el linter y las clases que usamos para migrar el navbar de TechStore Pro.</p>
+    <div class="badge-tag"><span class="dot"></span> Sesiones 1 a 3 · Repaso acumulativo</div>
+    <h1 class="titulo">Juego de Memoria — React y Tailwind CSS</h1>
+    <p class="intro-desc">Encuentra las parejas de conceptos de Tailwind, Vite, el responsive design y React/JSX — todo lo visto en las sesiones 1, 2 y 3.</p>
     <div class="intro-regla">
       <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-      <span>Cada carta está bloqueada: para voltearla <strong>por primera vez</strong> debes responder bien una pregunta de la Sesión 1. Si aciertas, queda desbloqueada para siempre. Si fallas, sigue bloqueada y puedes volver a intentarlo.</span>
+      <span>Cada carta está bloqueada: para voltearla <strong>por primera vez</strong> debes responder bien una pregunta de cualquiera de las 3 sesiones. Si aciertas, queda desbloqueada para siempre. Si fallas, sigue bloqueada y puedes volver a intentarlo.</span>
     </div>
 
     <div class="niveles" id="niveles-wrap"></div>
@@ -209,29 +209,40 @@ h1.titulo{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;line-heig
 </div>
 
 <script>
-/* ═══ Conceptos de la Sesión 1 — Introducción a Tailwind CSS (parejas del tablero) ═══ */
+/* ═══ Conceptos de las Sesiones 1 a 3 — Tailwind CSS, Responsive y React/JSX (parejas del tablero) ═══ */
 const CONCEPTOS = [
+  // Sesión 1 — Introducción a Tailwind CSS
   { id: 'tailwind',  label: 'Tailwind CSS',    icon: '<circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>' },
   { id: 'vite',      label: 'Vite',            icon: '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>' },
   { id: 'utility',   label: 'Utility-first',   icon: '<path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.91a1 1 0 0 0 0-1.83Z"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/>' },
   { id: 'cdn',       label: 'CDN',             icon: '<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>' },
   { id: 'oxlint',    label: 'Linter (Oxlint)', icon: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>' },
-  { id: 'plugin',    label: 'Plugin',          icon: '<path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/>' },
-  { id: 'classname', label: 'className',      icon: '<path d="M16 18 22 12 16 6"/><path d="M8 6 2 12 8 18"/>' },
   { id: 'hover',     label: 'hover:',         icon: '<path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>' },
   { id: 'flexgap',   label: 'flex + gap',     icon: '<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>' },
-  { id: 'fragment',  label: 'Fragment <>',    icon: '<path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/>' },
   { id: 'techstore', label: 'TechStore Pro',  icon: '<circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>' },
-  { id: 'historia',  label: 'Historia (2017)', icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>' }
+  // Sesión 2 — Componentes y Responsive
+  { id: 'mobilefirst', label: 'Mobile-first',  icon: '<rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/>' },
+  { id: 'breakpoint',  label: 'Breakpoint',    icon: '<path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9"/>' },
+  { id: 'cssgrid',     label: 'CSS Grid',      icon: '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/>' },
+  { id: 'main',        label: '&lt;main&gt; real', icon: '<path d="M16 18 22 12 16 6"/><path d="M8 6 2 12 8 18"/>' },
+  { id: 'gridcols3',   label: 'lg:grid-cols-3', icon: '<rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/>' },
+  // Sesión 3 — React Intro / JSX
+  { id: 'react',       label: 'React',         icon: '<circle cx="12" cy="12" r="2"/><path d="M12 1c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9Z" opacity=".001"/><ellipse cx="12" cy="12" rx="10" ry="4.5"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(120 12 12)"/>' },
+  { id: 'jsx',         label: 'JSX',           icon: '<path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/>' },
+  { id: 'componente',  label: 'Componente',    icon: '<path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/>' },
+  { id: 'virtualdom',  label: 'Virtual DOM',   icon: '<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>' },
+  { id: 'importexport',label: 'import / export',icon: '<path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4"/><path d="m15 18 3 3 3-3"/><path d="M18 12v9"/>' },
+  { id: 'fragment',    label: 'Fragment <>',   icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>' },
+  { id: 'classname',   label: 'className',     icon: '<path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/>' }
 ];
 
 const NIVELES = {
   easy:   { nombre: 'Fácil',   detalle: '4 × 3 — 6 parejas',  pares: 6,  cols: 4 },
   normal: { nombre: 'Normal',  detalle: '4 × 4 — 8 parejas',  pares: 8,  cols: 4 },
-  hard:   { nombre: 'Difícil', detalle: '6 × 4 — 12 parejas', pares: 12, cols: 6 }
+  hard:   { nombre: 'Difícil', detalle: '6 × 6 — 18 parejas', pares: 18, cols: 6 }
 };
 
-/* ═══ Banco de preguntas — Sesión 1: Introducción a Tailwind CSS ═══
+/* ═══ Banco de preguntas — Sesiones 1 a 3 ═══
    Cada carta bloqueada dispara una pregunta al azar de este banco. */
 const BANCO_PREGUNTAS = [
   { topic: 'Concepto', question: '¿Qué significa que Tailwind CSS sea "utility-first"?',
@@ -281,7 +292,56 @@ const BANCO_PREGUNTAS = [
     answer: 1, explanation: 'Todo lo de esta fase es 100% frontend; backend/ y frontend/ siguen funcionando en paralelo.' },
   { topic: 'React', question: '¿Para qué sirve un fragment (<code>&lt;&gt;...&lt;/&gt;</code>) en un componente?',
     options: ['Para comentar código temporalmente', 'Para agrupar varios elementos sin agregar HTML real, porque un componente retorna un único elemento', 'Para importar estilos de Tailwind', 'Para declarar una variable global'],
-    answer: 1, explanation: 'React no permite devolver dos elementos sueltos uno al lado del otro; el fragment los agrupa sin crear una etiqueta extra.' }
+    answer: 1, explanation: 'React no permite devolver dos elementos sueltos uno al lado del otro; el fragment los agrupa sin crear una etiqueta extra.' },
+
+  /* ═══ Sesión 2 — Componentes y Responsive ═══ */
+  { topic: 'Mobile-first', question: '¿Qué significa diseñar "mobile-first" en Tailwind?',
+    options: ['Diseñar primero para escritorio y luego achicar', 'Diseñar primero para la pantalla más chica y agregar mejoras desde ahí hacia arriba', 'Usar solo colores oscuros', 'Que la página solo funcione en celular'],
+    answer: 1, explanation: 'Se empieza por el celular (sin prefijo) y se agregan mejoras a medida que hay más espacio — nunca al revés.' },
+  { topic: 'Breakpoints', question: '¿Qué significa el prefijo <code>md:</code> en una clase como <code>md:grid-cols-2</code>?',
+    options: ['Que solo aplica exactamente en pantallas de 768px', 'Que aplica desde 768px de ancho en adelante', 'Que aplica solo en modo oscuro', 'Que es una clase obsoleta'],
+    answer: 1, explanation: '<code>md:</code> activa la regla desde 768px de ancho hacia arriba, no solo en ese punto exacto.' },
+  { topic: 'Breakpoints', question: 'En <code>grid-cols-1 md:grid-cols-2 lg:grid-cols-3</code>, ¿cuántas clases independientes hay?',
+    options: ['Una sola regla con 3 partes', '4 clases independientes', '3 clases independientes', '2 clases independientes'],
+    answer: 2, explanation: 'Son 3 clases independientes (<code>grid-cols-1</code>, <code>md:grid-cols-2</code>, <code>lg:grid-cols-3</code>) que conviven en el mismo <code>className</code>, cada una controlando desde su propio ancho.' },
+  { topic: 'CSS Grid', question: '¿Qué hace la clase <code>grid</code> de Tailwind?',
+    options: ['Activa CSS Grid en el contenedor', 'Agrega un borde punteado', 'Oculta el elemento', 'Centra el texto verticalmente'],
+    answer: 0, explanation: '<code>grid</code> activa CSS Grid — se escribe una sola vez, no por cada breakpoint.' },
+  { topic: 'Arquitectura', question: '¿Por qué se reemplazó el fragment (<code>&lt;&gt;...&lt;/&gt;</code>) por un <code>&lt;main&gt;</code> en la Sesión 2?',
+    options: ['Porque el fragment ya no existe en React', 'Porque el fragment no admite <code>className</code>, así que no había padding ni orden real', 'Porque <code>&lt;main&gt;</code> es más corto de escribir', 'No hay ninguna razón técnica'],
+    answer: 1, explanation: 'El fragment agrupa pero no genera HTML real, así que no admite <code>className</code> — por eso no había padding ni separación hasta que se usó un <code>&lt;main&gt;</code> real.' },
+  { topic: 'Flexbox vs Grid', question: '¿Cuándo conviene usar Grid en vez de Flexbox?',
+    options: ['Cuando se necesita organizar filas Y columnas a la vez, como un catálogo de productos', 'Cuando solo hay un elemento en la página', 'Nunca, Flexbox siempre es mejor', 'Solo para animaciones'],
+    answer: 0, explanation: 'Grid se usa cuando se necesita control de filas y columnas simultáneamente — como el grid de tarjetas de producto.' },
+
+  /* ═══ Sesión 3 — React Intro / JSX ═══ */
+  { topic: 'React', question: '¿Qué es React, exactamente?',
+    options: ['Un lenguaje de programación nuevo', 'Una librería de JavaScript para construir interfaces con componentes', 'Una base de datos', 'Un framework de CSS'],
+    answer: 1, explanation: 'React es una librería (no un lenguaje) que permite construir interfaces armando piezas reutilizables llamadas componentes.' },
+  { topic: 'React', question: '¿Qué ventaja tiene React sobre manipular el DOM a mano con <code>innerHTML</code>?',
+    options: ['Ninguna, es exactamente igual', 'Actualiza solo la parte de la pantalla que cambió, en vez de redibujar todo', 'Es más lento a propósito', 'Elimina la necesidad de JavaScript'],
+    answer: 1, explanation: 'React compara los cambios y actualiza solo lo necesario en la pantalla real, en vez de volver a escribir todo el HTML cada vez.' },
+  { topic: 'Virtual DOM', question: '¿Qué es el Virtual DOM, en términos simples?',
+    options: ['Una copia del sitio en otro servidor', 'Una representación en memoria de la interfaz que React compara para saber qué cambió', 'Un nuevo lenguaje de marcado', 'Una base de datos para componentes'],
+    answer: 1, explanation: 'El Virtual DOM es una representación en memoria de la interfaz; React la compara contra la versión anterior para actualizar solo lo que cambió.' },
+  { topic: 'JSX', question: '¿Qué es JSX?',
+    options: ['Un archivo de configuración', 'Una extensión de JavaScript que permite escribir HTML dentro del código', 'Un nuevo lenguaje de estilos', 'Una librería aparte de React'],
+    answer: 1, explanation: 'JSX permite escribir marcado parecido a HTML directamente dentro de JavaScript, y se transforma en llamadas de React por debajo.' },
+  { topic: 'JSX', question: 'En JSX, ¿por qué se escribe <code>className</code> en vez de <code>class</code>?',
+    options: ['Porque "class" es palabra reservada de JavaScript', 'Porque es más corto', 'No hay ninguna razón, son intercambiables', 'Porque React no soporta el inglés'],
+    answer: 0, explanation: 'Como JSX es JavaScript por debajo, y <code>class</code> es palabra reservada del lenguaje, React usa <code>className</code> en su lugar.' },
+  { topic: 'Componentes', question: '¿Qué es, en esencia, un componente de React?',
+    options: ['Un archivo CSS', 'Una función de JavaScript que devuelve JSX', 'Una base de datos', 'Un atributo HTML'],
+    answer: 1, explanation: 'Un componente es simplemente una función que devuelve JSX — la interfaz que se va a mostrar.' },
+  { topic: 'Componentes', question: '¿Por qué los componentes de React siempre empiezan con mayúscula (ej. <code>Navbar</code>)?',
+    options: ['Es solo una moda sin razón técnica', 'Para que React distinga un componente propio de una etiqueta HTML normal', 'Porque minúscula da error de sintaxis', 'Para que se vea más profesional'],
+    answer: 1, explanation: 'React usa la mayúscula inicial para diferenciar un componente (<code>&lt;Navbar /&gt;</code>) de una etiqueta HTML normal (<code>&lt;nav&gt;</code>).' },
+  { topic: 'import/export', question: '¿Para qué sirve <code>export default</code> en un archivo de componente?',
+    options: ['Para borrar el componente', 'Para permitir que otro archivo importe y use ese componente', 'Para aplicarle estilos', 'Es obligatorio pero no hace nada'],
+    answer: 1, explanation: '<code>export default</code> hace que el componente esté disponible para que otro archivo lo traiga con <code>import</code>.' },
+  { topic: 'import/export', question: 'Si un componente vive en <code>Navbar.jsx</code>, ¿cómo se usa en <code>App.jsx</code>?',
+    options: ['Copiando y pegando todo el código dentro de App.jsx', 'Con <code>import Navbar from "./Navbar"</code> y luego <code>&lt;Navbar /&gt;</code>', 'No se puede usar en otro archivo', 'Escribiendo <code>include Navbar.jsx</code>'],
+    answer: 1, explanation: 'Se importa el componente con <code>import</code> y luego se usa como una etiqueta propia, <code>&lt;Navbar /&gt;</code>.' }
 ];
 
 const KEY_RECORDS = 'ra-s1-memoria-records';
