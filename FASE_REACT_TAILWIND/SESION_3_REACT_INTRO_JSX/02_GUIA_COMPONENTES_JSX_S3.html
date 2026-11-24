@@ -196,6 +196,32 @@ pre,pre *,.code-block,.code-block *{color:#e2e8f0;}
 .compare2 .cbox.mal .t{color:var(--red);} .compare2 .cbox.bien .t{color:var(--green);}
 .compare2 .d{font-size:13px;color:var(--txt-dim);line-height:1.55;}
 @media(max-width:700px){.compare2{grid-template-columns:1fr;}}
+
+/* ── Colapsar / mostrar sidebar ── */
+.sidebar{transition:transform .3s cubic-bezier(.16,1,.3,1);}
+.sidebar.collapsed{transform:translateX(-100%);}
+.main{transition:margin-left .3s cubic-bezier(.16,1,.3,1);}
+.main.expanded{margin-left:0;}
+.sidebar-brand{position:relative;}
+.sidebar-collapse-btn{position:absolute;top:-2px;right:-2px;background:transparent;border:1px solid transparent;color:var(--txt-dim);width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0;}
+.sidebar-collapse-btn:hover{background:var(--surface2);color:var(--txt);border-color:var(--border);}
+.sidebar-collapse-btn svg{width:15px;height:15px;}
+.floating-sidebar-toggle{position:fixed;top:18px;left:20px;z-index:999;background:var(--surface);border:1px solid var(--border);color:var(--txt);height:38px;padding:0 14px 0 10px;border-radius:10px;box-shadow:0 6px 18px rgba(15,23,42,.08),0 2px 4px rgba(0,0,0,.04);display:none;align-items:center;gap:8px;cursor:pointer;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;transition:all .25s cubic-bezier(.16,1,.3,1);}
+.floating-sidebar-toggle:hover{color:var(--teal);border-color:var(--teal);box-shadow:0 8px 22px rgba(1,135,81,.18);transform:translateY(-1px);}
+.sidebar.collapsed ~ .floating-sidebar-toggle,.floating-sidebar-toggle.visible{display:inline-flex !important;animation:fadeInToggle .25s ease-out forwards;}
+@keyframes fadeInToggle{from{opacity:0;transform:translateX(-12px);}to{opacity:1;transform:translateX(0);}}
+.sidebar-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:900;opacity:0;pointer-events:none;transition:opacity .25s ease;}
+.sidebar-backdrop.active{opacity:1;pointer-events:auto;}
+@media(max-width:1024px){
+  .sidebar{transform:translateX(-100%);z-index:1200;}
+  .sidebar.open{transform:translateX(0);box-shadow:10px 0 35px rgba(0,0,0,.25);}
+  .main{margin-left:0 !important;}
+  .floating-sidebar-toggle{display:flex !important;z-index:1050;}
+}
+@media(max-width:768px){
+  .floating-sidebar-toggle{top:12px;left:14px;height:34px;padding:0 10px;font-size:11px;}
+  .floating-sidebar-toggle span{display:none;}
+}
 </style>
 <canvas class="confetti-wrap" id="confetti-canvas"></canvas>
 </head>
@@ -203,6 +229,9 @@ pre,pre *,.code-block,.code-block *{color:#e2e8f0;}
 
 <div class="sidebar">
   <div class="sidebar-brand">
+    <button type="button" class="sidebar-collapse-btn" id="sidebar-collapse-btn" onclick="toggleSidebar()" title="Ocultar menú lateral" aria-label="Ocultar menú lateral">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m14 10-2 2 2 2"/></svg>
+    </button>
     <div class="curso">SENA ADSO · S3</div>
     <h1>Componentes y JSX — Guía Paso a Paso</h1>
     <div class="ficha">Ficha 3293992 · Nov 2026</div>
@@ -288,6 +317,14 @@ pre,pre *,.code-block,.code-block *{color:#e2e8f0;}
     </a>
   </div>
 </div>
+
+
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar()"></div>
+
+<button class="floating-sidebar-toggle" id="floating-toggle" onclick="toggleSidebar()" title="Mostrar menú lateral" aria-label="Mostrar menú lateral">
+  <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m11 10 2 2-2 2"/></svg>
+  <span>Menú</span>
+</button>
 
 <main class="main">
 
@@ -691,6 +728,30 @@ pre,pre *,.code-block,.code-block *{color:#e2e8f0;}
 </main>
 
 <script>
+
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const main = document.querySelector('.main');
+  const toggleBtn = document.getElementById('floating-toggle');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  if (window.innerWidth <= 1024) {
+    const abierto = sidebar.classList.toggle('open');
+    backdrop.classList.toggle('active', abierto);
+  } else {
+    const colapsado = sidebar.classList.toggle('collapsed');
+    main.classList.toggle('expanded', colapsado);
+    toggleBtn.classList.toggle('visible', colapsado);
+  }
+}
+
+document.querySelectorAll('.sidebar .nav-item').forEach((link) => {
+  link.addEventListener('click', () => {
+    if (window.innerWidth <= 1024) {
+      document.querySelector('.sidebar').classList.remove('open');
+      document.getElementById('sidebarBackdrop').classList.remove('active');
+    }
+  });
+});
 /* PENDIENTE DE APROBACIÓN: sin bloqueo de copiar/pegar todavía — se activa cuando el instructor confirme. */
 
 const STEPS = ['paso0','paso1','paso2','paso3','paso4','checklist'];
